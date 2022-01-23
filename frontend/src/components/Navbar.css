@@ -1,0 +1,7 @@
+#Navbar-container{
+    font-size: 2rem;
+}
+
+#Navbar-container:hover{
+    background-color: aqua;
+}
