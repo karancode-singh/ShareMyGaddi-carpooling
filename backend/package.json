@@ -1,0 +1,9 @@
+{ 
+  "type":"module",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^14.3.0",
+    "express": "^4.17.2",
+    "mongodb": "^4.3.1"
+  }
+}
