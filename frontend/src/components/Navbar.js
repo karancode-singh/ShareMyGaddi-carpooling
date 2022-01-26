@@ -5,7 +5,7 @@ import './Navbar.css'
 export default function Navbar(props) {
   return(
         <div id="Navbar-container" >
-            Hello {props.name}
+            Hello {props.name} !            
         </div>
     );
 }
