@@ -15,13 +15,19 @@ export default function Navbar() {
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
         <div className='navbar'>
-          <Link to='#' className='menu-bars'>
+          <Link to='#' className='menu-bars' id="hamburger">
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
-          <Link to='/' className='menu-bars nav-text'>
-            <AiIcons.AiFillCar />
+          <div  id="logo">
+            <AiIcons.AiFillCar /> 
+            <Link to='/' className='menu-bars nav-text'>
             ShareMyGaddi
-          </Link>
+            </Link>
+          </div>
+          
+          <div id="test">
+            Hello
+          </div>
 
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
