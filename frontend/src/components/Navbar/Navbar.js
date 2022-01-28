@@ -1,0 +1,70 @@
+import React, { useState } from 'react';
+import * as AiIcons from 'react-icons/ai';
+import * as FaIcons from 'react-icons/fa';
+import * as MdIcons from 'react-icons/md';
+import { Link, useLocation } from 'react-router-dom';
+import { IconContext } from 'react-icons';
+import './Navbar.css';
+import { SidebarData } from './SidebarData';
+import { Button } from 'react-bootstrap';
+
+export default function Navbar(props) {
+  const location = useLocation();
+  const [sidebar, setSidebar] = useState(false);
+  const showSidebar = () => setSidebar(!sidebar);
+
+  return (
+    <>
+      <IconContext.Provider value={{ color: '#fff' }}>
+        <div className='navbar'>
+          <Link to='#' className='menu-bars' id="hamburger">
+            <FaIcons.FaBars onClick={showSidebar} />
+          </Link>
+          <div id='logo'>
+            <AiIcons.AiFillCar />
+            <Link to='/' className='menu-bars nav-text'>
+              ShareMyGaddi
+            </Link>
+          </div>
+
+          {/* <div id="main-buttons" className={props.is_auth ? '' : 'hidden'}> */}
+          <div id='main-buttons'>
+            <Button variant='warning' href='/active-trip' className={props.is_trip_active ? 'main-button' : 'hidden'} disabled={'/active-trip' === location.pathname}>
+              <AiIcons.AiOutlineCar style={{color:'black', marginBottom: '0.1rem', marginRight: '0.3rem'}} /> Active Trip
+            </Button>
+            <Button variant='warning' href='/drive' className={props.is_trip_active ? 'hidden' : 'main-button'} disabled={'/drive' === location.pathname}>
+              <AiIcons.AiTwotoneCar style={{color:'black', marginBottom: '0.1rem', marginRight: '0.3rem'}} /> Drive
+            </Button>
+            <Button variant='warning' href='/ride' className={props.is_trip_active ? 'hidden' : 'main-button'} disabled={'/ride' === location.pathname}>
+            <MdIcons.MdPeopleOutline style={{color:'black', marginRight: '0.3rem'}} /> Ride
+            </Button>
+          </div>
+
+        </div>
+        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
+          <ul className='nav-menu-items row' onClick={showSidebar}>
+            <li className='navbar-toggle'>
+              <Link to='#' className='menu-bars'>
+                <AiIcons.AiOutlineClose />
+              </Link>
+            </li>
+            {SidebarData.map((item, index) => {
+              return (
+                <li key={index} className={item.cName}>
+                  <Link to={item.path}>
+                    {item.icon}
+                    <span>{item.title}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          {/* <ul className='nav-menu-items' onClick={showSidebar}>
+
+          </ul> */}
+        </nav>
+
+      </IconContext.Provider>
+    </>
+  );
+}
