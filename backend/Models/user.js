@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
-const schema = mongoose.Schema()
+const schema = mongoose.Schema
 const crypto = require('crypto')
-var uuidv1 = require('uuidv1')
+const { v1: uuidv1 } = require('uuid');
 const userSchema = new schema({
     name :{
         type:String,
@@ -49,12 +49,12 @@ userSchema.virtual("password").set(function(password){
 .get(function(){
     return this._password;
 });
-userSchema.method ={
+userSchema.methods ={
     authenticate:function(plainpassword){
-        this.securePassword(plainpassword)===this.encry_password;
+        return this.securePassword(plainpassword)===this.encry_password;
     },
     securePassword : function(plainpassword){
-        if(!password)
+        if(!plainpassword)
         return ""
         try{
             
