@@ -22,9 +22,17 @@
   flex-direction: row;
 }
 
-#test {
-  color: white;
+#main-buttons {
   margin-right: 1.5rem;
+}
+
+.main-button {
+  margin: 0.3rem;
+  font-weight: bold;
+}
+
+.hidden {
+  visibility: hidden;
 }
 
 #logo svg {
@@ -55,6 +63,8 @@
   left: -100%;
   transition: 850ms;
   z-index: 1;
+  /* display: flex;
+  align-items: center; */
 }
 
 .nav-menu.active {
@@ -66,7 +76,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: .5rem 0rem .5rem 1rem;
+  padding: .5rem 0rem .5rem 0;
   list-style: none;
   height: 3.75rem;
 }
@@ -89,6 +99,7 @@
 
 .nav-menu-items {
   width: 100%;
+  /* margin: auto; */
 }
 
 .navbar-toggle {

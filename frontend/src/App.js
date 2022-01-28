@@ -4,15 +4,13 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.css'
 import Navbar from './components/Navbar/Navbar'
 
-import Home from './temp-pages/Home';
-
-function App() {
+function App(props) {
   return (
     <>
       <Router>
         <Navbar />
         <Routes>
-          <Route path='/' exact element={Home} />
+          <Route path='/' exact element={Navbar} /> {/* {props.is_auth ? 'LoginPage' : (props.is_trip_active ? 'ActiveTrip' : 'TripHistory')} /> */}
         </Routes>
       </Router>
     </>
