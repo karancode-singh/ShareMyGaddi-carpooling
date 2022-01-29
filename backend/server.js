@@ -12,15 +12,11 @@ app.use(bodyparser.json())
 app.use(cookieparser())
 app.use(cors())
 
+//Routes
 app.get('/',(req, res) => {
     res.send("Hello Backend")
 })
 
-//Routes
 app.use("/api",authRoutes);
-
-app.get('/',(req,res) => {
- res.send("hello world")
-});
 
 export default app;
