@@ -1,9 +1,7 @@
 import User from "../Models/user.js";
-import checkAPIs from 'express-validator/check/index.js';
 import jwt from 'jsonwebtoken';
 import jexpressJwt from 'express-jwt';
-
-const { check,validationResult} = checkAPIs;
+import { check,validationResult} from 'express-validator';
 
 const signout = (req,res)=>{
     res.clearCookie("token");
@@ -16,11 +14,13 @@ const signup = (req,res)=>{
     console.log("signup");
     const error = validationResult(req)
     console.log(error);
+    
     if(!error.isEmpty()){
         return res.status(422).json({
             error:error.array()[0].msg
         })
     }
+
     const new_user = new User(req.body);
     new_user.save((err,user)=>{
         if(err){
