@@ -1,24 +1,28 @@
-const User = require("../Models/user")
-const { check , validationResult} = require('express-validator');
-var jwt = require('jsonwebtoken');
-var jexpressJwt = require('express-jwt');
-const user = require("../Models/user");
-exports.signout = (req,res)=>{
+import User from "../Models/user.js";
+import checkAPIs from 'express-validator/check/index.js';
+import jwt from 'jsonwebtoken';
+import jexpressJwt from 'express-jwt';
+
+const { check,validationResult} = checkAPIs;
+
+const signout = (req,res)=>{
     res.clearCookie("token");
     res.json({
         message: "user signout"
     });
 }
 
-exports.signup = (req,res)=>{
+const signup = (req,res)=>{
+    console.log("signup");
     const error = validationResult(req)
+    console.log(error);
     if(!error.isEmpty()){
         return res.status(422).json({
             error:error.array()[0].msg
         })
     }
-    const user = new User(req.body)
-    user.save((err,user)=>{
+    const new_user = new User(req.body);
+    new_user.save((err,user)=>{
         if(err){
             return res.status(400).json({
                 err:"Not able to save user to Db"
@@ -34,7 +38,7 @@ exports.signup = (req,res)=>{
     
 }
 
-exports.signin = (req,res)=>{
+const signin = (req,res)=>{
     const {email,password} = req.body;
     const error = validationResult(req)
     if(!error.isEmpty()){
@@ -70,3 +74,5 @@ exports.signin = (req,res)=>{
     })
     
 }
+
+export {signin,signout,signup}

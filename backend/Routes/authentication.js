@@ -1,7 +1,11 @@
-var express = require('express')
-const { check,validationResult} = require('express-validator');
+import express from "express";
+import checkAPIs from 'express-validator/check/index.js';
+
+const { check,validationResult} = checkAPIs;
+
 var router = express.Router()
-const {signout,signup,signin} = require("../Controllers/authenticate.js")
+
+import {signout,signup,signin} from "../Controllers/authenticate.js";
 
 router.post("/signup",[
     check("name","name should be atleast 5 characters long").isLength({min:5}),
@@ -18,4 +22,4 @@ router.post("/signin",[
 
 router.get("/signout",signout)
 
-module.exports = router;
+export default router;

@@ -1,7 +1,8 @@
-const mongoose = require('mongoose')
-const schema = mongoose.Schema
-const crypto = require('crypto')
-const { v1: uuidv1 } = require('uuid');
+import mongoose from "mongoose";
+import crypto from "crypto";
+import {v1 as uuidv1 } from "uuid";
+
+const schema = mongoose.Schema;
 const userSchema = new schema({
     name :{
         type:String,
@@ -67,4 +68,5 @@ userSchema.methods ={
         }
     }
 }
-module.exports = mongoose.model("user",userSchema)
+// module.exports = mongoose.model("user",userSchema)
+export default mongoose.model("user",userSchema)
