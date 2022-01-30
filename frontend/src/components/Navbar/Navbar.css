@@ -63,8 +63,7 @@
   left: -100%;
   transition: 850ms;
   z-index: 1;
-  /* display: flex;
-  align-items: center; */
+  flex-direction: column;
 }
 
 .nav-menu.active {
@@ -79,6 +78,7 @@
   padding: .5rem 0rem .5rem 0;
   list-style: none;
   height: 3.75rem;
+  width: 100%;
 }
 
 .nav-text a {
@@ -97,9 +97,15 @@
   background-color: #1a83ff;
 }
 
-.nav-menu-items {
+.sidebar-top-items {
   width: 100%;
-  /* margin: auto; */
+  height: 100%;
+}
+
+.sidebar-bottom-items {
+  width: 100%;
+  align-items: flex-end;
+  display: flex;
 }
 
 .navbar-toggle {
