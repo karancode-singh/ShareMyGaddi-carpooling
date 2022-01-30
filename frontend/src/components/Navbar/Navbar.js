@@ -4,9 +4,10 @@ import * as FaIcons from 'react-icons/fa';
 import * as MdIcons from 'react-icons/md';
 import { Link, useLocation } from 'react-router-dom';
 import { IconContext } from 'react-icons';
+import { Button } from 'react-bootstrap';
+import defaultImg from '../../logo.svg';
 import './Navbar.css';
 import { SidebarData } from './SidebarData';
-import { Button } from 'react-bootstrap';
 
 export default function Navbar(props) {
   const location = useLocation();
@@ -43,10 +44,18 @@ export default function Navbar(props) {
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='sidebar-top-items' onClick={showSidebar}>
-            <li className='navbar-toggle'>
+            <li className='navbar-toggle' style={{paddingLeft: '1rem'}}>
               <Link to='#' className='menu-bars'>
                 <AiIcons.AiOutlineClose />
               </Link>
+            </li>
+            <li>
+              {/* <img src={props.user.img} alt={props.user.name} /> */}
+              <img src={defaultImg} alt='Name' />
+            </li>
+            <li style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+              {/* <div style={{ color: 'white' }}>{props.user.name}</div> */}
+              <div style={{ color: 'white' }}>Full Name</div>
             </li>
             {SidebarData.map((item, index) => {
               return (
@@ -63,7 +72,7 @@ export default function Navbar(props) {
             {/* <li className={props.is_auth ? 'nav-text' : 'hidden'}> */}
             <li className='nav-text'>
               <Link to='/logout'> {/*call logout method*/}
-                <FaIcons.FaSignOutAlt/>
+                <FaIcons.FaSignOutAlt />
                 <span>Logout</span>
               </Link>
             </li>

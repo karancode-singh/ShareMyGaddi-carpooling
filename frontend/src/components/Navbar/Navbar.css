@@ -2,7 +2,6 @@
   background-color: #060b26;
   height: 5rem;
   display: flex;
-  /* justify-content: center; */
   align-items: center;
 }
 
@@ -89,7 +88,7 @@
   height: 100%;
   display: flex;
   align-items: center;
-  padding: 0 1rem;
+  padding: 0 2rem;
   border-radius: .25rem;
 }
 
@@ -119,4 +118,8 @@
 
 span {
   margin-left: 1rem;
+}
+
+ul{
+ padding: 0; 
 }
