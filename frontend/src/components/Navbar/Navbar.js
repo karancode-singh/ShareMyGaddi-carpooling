@@ -17,10 +17,12 @@ export default function Navbar(props) {
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
+        {/* Primary Navbar */}
         <div className='navbar'>
           <Link to='#' className='menu-bars' id="hamburger">
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
+          
           <div id='logo'>
             <AiIcons.AiFillCar />
             <Link to='/' className='menu-bars nav-text'>
@@ -40,8 +42,10 @@ export default function Navbar(props) {
               <MdIcons.MdPeopleOutline style={{ color: 'black', marginRight: '0.3rem' }} /> Ride
             </Button>
           </div>
-
         </div>
+        {/* Primary Navbar end*/}
+
+        {/* Sidebar*/}
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='sidebar-top-items' onClick={showSidebar}>
             <li className='navbar-toggle' style={{paddingLeft: '1rem'}}>
@@ -78,7 +82,7 @@ export default function Navbar(props) {
             </li>
           </ul>
         </nav>
-
+        {/* Sidebar end*/}
       </IconContext.Provider>
     </>
   );
