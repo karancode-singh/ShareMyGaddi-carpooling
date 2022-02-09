@@ -66,7 +66,7 @@ export default function Navbar(props) {
                 <li key={index} className='nav-text'>
                   <Link to={item.path}>
                     {item.icon}
-                    <span>{item.title}</span>
+                    <span style={{marginLeft: '1rem'}}>{item.title}</span>
                   </Link>
                 </li>
               );
@@ -77,7 +77,7 @@ export default function Navbar(props) {
             <li className='nav-text'>
               <Link to='/logout'> {/*call logout method*/}
                 <FaIcons.FaSignOutAlt />
-                <span>Logout</span>
+                <span style={{marginLeft: '1rem'}}>Logout</span>
               </Link>
             </li>
           </ul>
