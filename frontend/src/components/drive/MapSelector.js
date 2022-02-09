@@ -32,7 +32,7 @@ const autocompleteTextBoxStyle = {
   position: 'absolute',
   top: '1rem',
   left: '1.5rem',
-  maxWidth:'100%'
+  maxWidth: '100%'
 }
 
 // @ts-ignore
@@ -46,7 +46,6 @@ export default function MapSelector(props) {
   const [marker, setMarker] = React.useState(center);
   const [autocomplete, setAutocomplete] = React.useState(null);
   const [textBoxText, setTextBoxText] = React.useState('');
-  
 
   // @ts-ignore
   const onMapClick = React.useCallback((e) => {
@@ -58,14 +57,29 @@ export default function MapSelector(props) {
     // }, []);
   });
 
+  const mapRef = React.useRef();
+  const onMapLoad = React.useCallback((map) => {
+    mapRef.current = map;
+  }, []);
+
+  const panTo = React.useCallback(({ lat, lng }) => {
+    // @ts-ignore
+    mapRef.current.panTo({ lat, lng });
+    // @ts-ignore
+    mapRef.current.setZoom(14);
+  }, []);
+
   const onAutoCompleteLoad = (autocomplete) => {
     setAutocomplete(autocomplete);
   };
   const onPlaceChanged = () => {
-    setMarker({
+    setTextBoxText(autocomplete.getPlace().formatted_address);
+    const coord = {
       lat: autocomplete.getPlace().geometry.location.lat(),
       lng: autocomplete.getPlace().geometry.location.lng()
-    });
+    };
+    setMarker(coord);
+    panTo(coord);
   };
 
   if (loadError) return <h1>Map load error</h1>;
@@ -79,11 +93,12 @@ export default function MapSelector(props) {
       center={center}
       options={options}
       onClick={onMapClick}
-    // onLoad={onMapLoad}
+      onLoad={onMapLoad}
     >
       <Autocomplete
         onLoad={onAutoCompleteLoad}
         onPlaceChanged={onPlaceChanged}
+        restrictions={{ country: ['ca', 'us'] }}
       >
         <input
           type="text"
