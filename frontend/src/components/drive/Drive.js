@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import MapSelector from './MapSelector';
@@ -15,7 +15,7 @@ export default function Drive() {
 
     const openMapModal = (mapType) => {
         setMapType(mapType);
-        setModalTitle(mapType=='src' ? 'Source point' : 'Destination point');
+        setModalTitle(mapType == 'src' ? 'Source point' : 'Destination point');
         setShowModal(true);
     }
 
@@ -26,8 +26,9 @@ export default function Drive() {
             ...mapCoords,
             [mapType]: mapData
         });
-        console.log(mapCoords);
     }
+
+    useEffect(() => console.log(mapCoords), [mapCoords]);
 
     return (
         <>

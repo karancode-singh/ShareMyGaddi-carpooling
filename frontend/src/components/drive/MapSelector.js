@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-// @ts-ignore
 import configData from "../../config.json";
 import { GoogleMap, useLoadScript, Autocomplete, Marker } from '@react-google-maps/api';
 import { Button, Modal } from 'react-bootstrap';
@@ -36,11 +35,9 @@ const autocompleteTextBoxStyle = {
   maxWidth: '100%'
 }
 
-// @ts-ignore
 export default function MapSelector(props) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: configData.MAPS_API_KEY,
-    // @ts-ignore
     libraries,
   });
   const [marker, setMarker] = React.useState(center);
@@ -52,7 +49,6 @@ export default function MapSelector(props) {
     return null;
   }
 
-  // @ts-ignore
   const onMapClick = React.useCallback((e) => {
     const coords = {
       lat: e.latLng.lat(),
@@ -64,7 +60,6 @@ export default function MapSelector(props) {
   });
 
   const mapRef = React.useRef();
-  // @ts-ignore
   const onMapLoad = React.useCallback((map) => {
     setTextBoxText('');
     setMarker(props.mapCoords[props.mapType] == null ? center : props.mapCoords[props.mapType]);
@@ -73,9 +68,7 @@ export default function MapSelector(props) {
   });
 
   const panTo = React.useCallback(({ lat, lng }) => {
-    // @ts-ignore
     mapRef.current.panTo({ lat, lng });
-    // @ts-ignore
     mapRef.current.setZoom(14);
   }, []);
 
@@ -93,9 +86,8 @@ export default function MapSelector(props) {
   };
 
   if (loadError) return <h1>Map load error</h1>;
-  if (!isLoaded) return <h1>Loading...</h1>;
+  // if (!isLoaded) return <h1>Loading...</h1>;
 
-  // return props.showModal ?
   return (
     <Modal
       onHide={handleClose}
@@ -124,9 +116,7 @@ export default function MapSelector(props) {
               type="text"
               placeholder="Search"
               value={textBoxText}
-              // @ts-ignore
               style={autocompleteTextBoxStyle}
-              // @ts-ignore
               onChange={e => setTextBoxText(e.target.value)}
             />
           </Autocomplete>
