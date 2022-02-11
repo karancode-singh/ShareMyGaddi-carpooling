@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 // @ts-ignore
 import configData from "../../config.json";
 import { GoogleMap, useLoadScript, Autocomplete, Marker } from '@react-google-maps/api';
+import { Button, Modal } from 'react-bootstrap';
 
 const libraries = ["places"];
 const mapContainerStyle = {
@@ -42,25 +43,34 @@ export default function MapSelector(props) {
     // @ts-ignore
     libraries,
   });
-  // const [marker, setMarker] = React.useState(props.marker);
   const [marker, setMarker] = React.useState(center);
   const [autocomplete, setAutocomplete] = React.useState(null);
   const [textBoxText, setTextBoxText] = React.useState('');
 
+  const handleClose =() => {
+    props.handleCallback(true);
+    return null;
+  }
+
   // @ts-ignore
   const onMapClick = React.useCallback((e) => {
-    setTextBoxText('');
-    setMarker({
+    const coords = {
       lat: e.latLng.lat(),
       lng: e.latLng.lng()
-    });
+    }
+    setTextBoxText('');
+    setMarker(coords);
     // }, []);
   });
 
   const mapRef = React.useRef();
+  // @ts-ignore
   const onMapLoad = React.useCallback((map) => {
+    setTextBoxText('');
+    setMarker(props.mapCoords[props.mapType] == null ? center : props.mapCoords[props.mapType]);
     mapRef.current = map;
-  }, []);
+  // }, []);
+  });
 
   const panTo = React.useCallback(({ lat, lng }) => {
     // @ts-ignore
@@ -85,35 +95,52 @@ export default function MapSelector(props) {
   if (loadError) return <h1>Map load error</h1>;
   if (!isLoaded) return <h1>Loading...</h1>;
 
+  // return props.showModal ?
   return (
-    <GoogleMap
-      id="map"
-      mapContainerStyle={mapContainerStyle}
-      zoom={15}
-      center={center}
-      options={options}
-      onClick={onMapClick}
-      onLoad={onMapLoad}
+    <Modal
+      onHide={handleClose}
+      size='xl'
+      show={props.showModal}
     >
-      <Autocomplete
-        onLoad={onAutoCompleteLoad}
-        onPlaceChanged={onPlaceChanged}
-        restrictions={{ country: ['ca', 'us'] }}
-      >
-        <input
-          type="text"
-          placeholder="Search"
-          value={textBoxText}
-          // @ts-ignore
-          style={autocompleteTextBoxStyle}
-          // @ts-ignore
-          onChange={e => setTextBoxText(e.target.value)}
-        />
-      </Autocomplete>
-      <Marker
-        key={`${marker.lat}-${marker.lng}`}
-        position={{ lat: marker.lat, lng: marker.lng }}
-      />
-    </GoogleMap>
-  );
+      <Modal.Header closeButton>
+        <Modal.Title>{props.modalTitle}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <GoogleMap
+          id="map"
+          mapContainerStyle={mapContainerStyle}
+          zoom={15}
+          center={marker}
+          options={options}
+          onClick={onMapClick}
+          onLoad={onMapLoad}
+        >
+          <Autocomplete
+            onLoad={onAutoCompleteLoad}
+            onPlaceChanged={onPlaceChanged}
+            restrictions={{ country: ['ca', 'us'] }}
+          >
+            <input
+              type="text"
+              placeholder="Search"
+              value={textBoxText}
+              // @ts-ignore
+              style={autocompleteTextBoxStyle}
+              // @ts-ignore
+              onChange={e => setTextBoxText(e.target.value)}
+            />
+          </Autocomplete>
+          <Marker
+            key={`${marker.lat}-${marker.lng}`}
+            position={{ lat: marker.lat, lng: marker.lng }}
+          />
+        </GoogleMap>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>Close</Button>
+        <Button variant="primary" onClick={() => props.handleCallback(false,props.mapType,marker)}>Select</Button>
+      </Modal.Footer>
+    </Modal>
+  )
+    // : null;
 }
