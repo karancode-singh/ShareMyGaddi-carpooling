@@ -99,7 +99,6 @@ export default function MapSelector(props) {
       </Modal.Header>
       <Modal.Body>
         <GoogleMap
-          id="map"
           mapContainerStyle={mapContainerStyle}
           zoom={15}
           center={marker}
