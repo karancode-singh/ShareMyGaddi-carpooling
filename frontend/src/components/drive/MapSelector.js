@@ -1,9 +1,7 @@
-import React, { useRef } from 'react';
-import configData from "../../config.json";
-import { GoogleMap, useLoadScript, Autocomplete, Marker } from '@react-google-maps/api';
+import React, { useCallback, useRef, useState } from 'react';
+import { GoogleMap, Autocomplete, Marker } from '@react-google-maps/api';
 import { Button, Modal } from 'react-bootstrap';
 
-const libraries = ["places"];
 const mapContainerStyle = {
   height: "70vh",
   width: "100%",
@@ -36,20 +34,16 @@ const autocompleteTextBoxStyle = {
 }
 
 export default function MapSelector(props) {
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: configData.MAPS_API_KEY,
-    libraries,
-  });
-  const [marker, setMarker] = React.useState(center);
-  const [autocomplete, setAutocomplete] = React.useState(null);
-  const [textBoxText, setTextBoxText] = React.useState('');
+  const [marker, setMarker] = useState(center);
+  const [autocomplete, setAutocomplete] = useState(null);
+  const [textBoxText, setTextBoxText] = useState('');
 
-  const handleClose =() => {
+  const handleClose = () => {
     props.handleCallback(true);
     return null;
   }
 
-  const onMapClick = React.useCallback((e) => {
+  const onMapClick = useCallback((e) => {
     const coords = {
       lat: e.latLng.lat(),
       lng: e.latLng.lng()
@@ -59,17 +53,17 @@ export default function MapSelector(props) {
     // }, []);
   });
 
-  const mapRef = React.useRef();
-  const onMapLoad = React.useCallback((map) => {
+  const mapSelectorRef = useRef();
+  const onMapSelectorLoad = useCallback((mapSelector) => {
     setTextBoxText('');
     setMarker(props.mapCoords[props.mapType] == null ? center : props.mapCoords[props.mapType]);
-    mapRef.current = map;
-  // }, []);
+    mapSelectorRef.current = mapSelector;
+    // }, []);
   });
 
-  const panTo = React.useCallback(({ lat, lng }) => {
-    mapRef.current.panTo({ lat, lng });
-    mapRef.current.setZoom(14);
+  const panTo = useCallback(({ lat, lng }) => {
+    mapSelectorRef.current.panTo({ lat, lng });
+    mapSelectorRef.current.setZoom(14);
   }, []);
 
   const onAutoCompleteLoad = (autocomplete) => {
@@ -85,7 +79,7 @@ export default function MapSelector(props) {
     panTo(coord);
   };
 
-  if (loadError) return <h1>Map load error</h1>;
+  // if (loadError) return <h1>Map load error</h1>;
   // if (!isLoaded) return <h1>Loading...</h1>;
 
   return (
@@ -104,7 +98,7 @@ export default function MapSelector(props) {
           center={marker}
           options={options}
           onClick={onMapClick}
-          onLoad={onMapLoad}
+          onLoad={onMapSelectorLoad}
         >
           <Autocomplete
             onLoad={onAutoCompleteLoad}
@@ -127,9 +121,9 @@ export default function MapSelector(props) {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>Close</Button>
-        <Button variant="primary" onClick={() => props.handleCallback(false,props.mapType,marker)}>Select</Button>
+        <Button variant="primary" onClick={() => props.handleCallback(false, props.mapType, marker)}>Select</Button>
       </Modal.Footer>
     </Modal>
   )
-    // : null;
+  // : null;
 }

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import MapSelector from './MapSelector';
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
-import configData from "../../config.json";
+import { GoogleMap } from '@react-google-maps/api';
 import './Drive.css';
 
 const mapContainerStyle = {
@@ -21,10 +20,6 @@ const center = {
 };
 
 export default function Drive() {
-    const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: configData.MAPS_API_KEY,
-        // libraries,
-    });
     const [showModal, setShowModal] = useState(false);
     const [modalTitle, setModalTitle] = useState('Title Error');
     const [mapType, setMapType] = useState();
@@ -33,8 +28,8 @@ export default function Drive() {
         dst: null
     });
 
-    const mapRef = React.useRef();
-    const onMapLoad = React.useCallback((map) => {
+    const mapRef = useRef();
+    const onMapLoad = useCallback((map) => {
         mapRef.current = map;
         // }, []);
     });
@@ -68,7 +63,7 @@ export default function Drive() {
                                     <Form.Control readOnly defaultValue="Source not selected" />
                                 </Col>
                                 <Col xs="3">
-                                    <Button variant="primary" onClick={() => openMapModal('src')} style={{width:'100%'}}>
+                                    <Button variant="primary" onClick={() => openMapModal('src')} style={{ width: '100%' }}>
                                         Source
                                     </Button>
                                 </Col>
@@ -78,7 +73,7 @@ export default function Drive() {
                                     <Form.Control readOnly defaultValue="Destination not selected" />
                                 </Col>
                                 <Col xs="3">
-                                    <Button variant="primary" onClick={() => openMapModal('dst')}  style={{width:'100%'}}>
+                                    <Button variant="primary" onClick={() => openMapModal('dst')} style={{ width: '100%' }}>
                                         Destination
                                     </Button>
                                 </Col>
