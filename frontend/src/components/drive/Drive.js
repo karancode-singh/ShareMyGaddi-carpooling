@@ -84,14 +84,14 @@ export default function Drive() {
                         </Form>
                     </Col>
                     <Col md style={{ marginTop: '2rem' }}>
-                        <GoogleMap
+                        {/* <GoogleMap
                             mapContainerStyle={mapContainerStyle}
                             zoom={15}
                             center={center}
                             options={options}
                             onLoad={onMapLoad}
                         >
-                        </GoogleMap>
+                        </GoogleMap> */}
                     </Col>
                 </Row>
             </Container>

@@ -43,28 +43,26 @@ export default function MapSelector(props) {
     return null;
   }
 
-  const onMapClick = useCallback((e) => {
+  const onMapClick = (e) => {
     const coords = {
       lat: e.latLng.lat(),
       lng: e.latLng.lng()
     }
     setTextBoxText('');
     setMarker(coords);
-    // }, []);
-  });
+  };
 
   const mapSelectorRef = useRef();
-  const onMapSelectorLoad = useCallback((mapSelector) => {
+  const onMapSelectorLoad = (mapSelector) => {
     setTextBoxText('');
     setMarker(props.mapCoords[props.mapType] == null ? center : props.mapCoords[props.mapType]);
     mapSelectorRef.current = mapSelector;
-    // }, []);
-  });
+  };
 
-  const panTo = useCallback(({ lat, lng }) => {
+  const panTo = ({ lat, lng }) => {
     mapSelectorRef.current.panTo({ lat, lng });
     mapSelectorRef.current.setZoom(14);
-  }, []);
+  };
 
   const onAutoCompleteLoad = (autocomplete) => {
     setAutocomplete(autocomplete);
