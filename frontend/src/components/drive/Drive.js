@@ -29,10 +29,9 @@ export default function Drive() {
     });
 
     const mapRef = useRef();
-    const onMapLoad = useCallback((map) => {
+    const onMapLoad = (map) => {
         mapRef.current = map;
-        // }, []);
-    });
+    };
 
     const openMapModal = (mapType) => {
         setMapType(mapType);
@@ -49,7 +48,9 @@ export default function Drive() {
         });
     }
 
-    useEffect(() => console.log(mapCoords), [mapCoords]);
+    useEffect(() => {
+        console.log("useRffect coords:",mapCoords);
+    }, [mapCoords]);
 
     return (
         <>
@@ -60,7 +61,7 @@ export default function Drive() {
                         <Form>
                             <Form.Group as={Row} className="mb-3" controlId="src">
                                 <Col xs="9">
-                                    <Form.Control readOnly defaultValue="Source not selected" />
+                                    <Form.Control readOnly defaultValue="Source not selected" value={mapCoords['src'] ? mapCoords['src']['lat'] + ', ' + mapCoords['src']['lng'] : null} />
                                 </Col>
                                 <Col xs="3">
                                     <Button variant="primary" onClick={() => openMapModal('src')} style={{ width: '100%' }}>
@@ -70,7 +71,7 @@ export default function Drive() {
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3" controlId="dst">
                                 <Col xs="9">
-                                    <Form.Control readOnly defaultValue="Destination not selected" />
+                                    <Form.Control readOnly defaultValue="Destination not selected" value={mapCoords['dst'] ? mapCoords['dst']['lat'] + ', ' + mapCoords['dst']['lng'] : null} />
                                 </Col>
                                 <Col xs="3">
                                     <Button variant="primary" onClick={() => openMapModal('dst')} style={{ width: '100%' }}>
@@ -84,14 +85,14 @@ export default function Drive() {
                         </Form>
                     </Col>
                     <Col md style={{ marginTop: '2rem' }}>
-                        {/* <GoogleMap
+                        <GoogleMap
                             mapContainerStyle={mapContainerStyle}
                             zoom={15}
                             center={center}
                             options={options}
                             onLoad={onMapLoad}
                         >
-                        </GoogleMap> */}
+                        </GoogleMap>
                     </Col>
                 </Row>
             </Container>
