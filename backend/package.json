@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -16,9 +17,11 @@
     "express": "^4.17.2",
     "express-jwt": "^6.1.0",
     "express-validator": "^6.14.0",
+    "jest": "^27.4.7",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.8",
     "nodemon": "^2.0.15",
+    "supertest": "^6.2.2",
     "uuid": "^8.3.2"
   }
 }

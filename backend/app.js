@@ -1,12 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
-require('dotenv').config()
+
 const app = express();
 const bodyparser= require('body-parser')
 const cookieparser = require('cookie-parser')
 const cors = require('cors')
+require('dotenv').config()
+
 
 const authRoutes = require("./Routes/authentication")
+const userRoutes = require("./Routes/user")
+const allusersRoutes = require("./Routes/allusersRoutes")
 
 // Ports
 const port = process.env.PORT||5000;
@@ -24,10 +28,11 @@ app.use(cors())
 
 //Routes
 app.use("/api",authRoutes);
+app.use("/api",userRoutes)
+app.use("/api",allusersRoutes)
 
-app.get('/',(req,res) => {
- res.send("hello world")
-});
+
 app.listen(port,()=>{
-    console.log(`listening at ${port}`)
+    console.log(`listening a ${port}`)
 })
+module.exports = app;

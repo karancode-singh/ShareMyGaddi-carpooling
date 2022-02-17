@@ -1,10 +1,10 @@
 var express = require('express')
 const { check,validationResult} = require('express-validator');
 var router = express.Router()
-const {signout,signup,signin} = require("../Controllers/authenticate.js")
+const {signout,signup,signin, isSignedin} = require("../Controllers/authenticate.js")
 
 router.post("/signup",[
-    check("name","name should be atleast 5 characters long").isLength({min:5}),
+    check("name","name should be atleast 2 characters long").isLength({min:2}),
     check("email","name should be atleast 5 characters long").isEmail(),
     check("password","Should be atleast 3 char").isLength({min:3})
 
@@ -18,4 +18,7 @@ router.post("/signin",[
 
 router.get("/signout",signout)
 
+router.get("/test",isSignedin,(req,res)=>{
+res.json(req.auth);
+})
 module.exports = router;

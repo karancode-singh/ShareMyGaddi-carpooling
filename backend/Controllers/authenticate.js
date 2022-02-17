@@ -1,8 +1,9 @@
 const User = require("../Models/user")
 const { check , validationResult} = require('express-validator');
 var jwt = require('jsonwebtoken');
-var jexpressJwt = require('express-jwt');
+var expressJwt = require('express-jwt');
 const user = require("../Models/user");
+require('dotenv').config()
 exports.signout = (req,res)=>{
     res.clearCookie("token");
     res.json({
@@ -18,14 +19,15 @@ exports.signup = (req,res)=>{
         })
     }
     const user = new User(req.body)
+    
     user.save((err,user)=>{
         if(err){
             return res.status(400).json({
                 err:"Not able to save user to Db"
             })
         }
-        console.log("saved in db")
-        res.json({
+        res.status(200);
+            res.json({
             name :user.name,
             email: user.email,
             id: user._id
@@ -62,6 +64,7 @@ exports.signin = (req,res)=>{
         res.cookie("token",token,{expire: new Date() +9999});
         // send response to front end
         const{_id,name,email,role} = users;
+        res.status(200)
         return res.json(  
             {
                 token,
@@ -70,3 +73,23 @@ exports.signin = (req,res)=>{
     })
     
 }
+
+// is signed in route
+
+exports.isSignedin= expressJwt({
+    secret:process.env.SECRET,
+    algorithms: ['sha1', 'RS256', 'HS256'],
+    userProperty:"auth"
+
+})
+
+exports.isAuthenticated = (req,res,next) => {
+    let check = req.profile && req.auth && req.profile._id == req.auth._id;
+    if(!check){
+        return res.status(400).json({
+            error:"Access denied"
+        })
+    }
+    next()
+}
+

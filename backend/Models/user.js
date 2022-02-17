@@ -20,8 +20,8 @@ const userSchema = new schema({
         required:true,
         unique:true,
     },
-    userinfo:{
-        type:String,
+    phone_number:{
+        type:Number,
         trim:true,
     },
     encry_password:{
@@ -30,11 +30,11 @@ const userSchema = new schema({
     
     },
     salt:String, // will store the encryption of password field
-    role:{
-        type: Number, // higher the number higher the privleages
-        default:0
+    user_photo:{
+        data:Buffer,
+        ContentType:String
     },
-    purchases:{
+    Rides:{
         type:Array,
         default:[]
     }
