@@ -4,9 +4,10 @@ var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
 const user = require("../Models/user");
 require('dotenv').config()
+
 exports.signout = (req,res)=>{
     res.clearCookie("token");
-    res.json({
+    res.status(200).json({
         message: "user signout"
     });
 }
@@ -53,7 +54,7 @@ exports.signin = (req,res)=>{
         }
         //console.log(users.authenticate(password))
         if(!users.authenticate(password)){
-            return res.status(400).json({
+            return res.status(401).json({
                 error:"Email and Password does not match"
             })
 
