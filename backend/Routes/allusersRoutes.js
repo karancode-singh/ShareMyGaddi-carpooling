@@ -4,4 +4,4 @@ var router = express.Router()
 var {allusersRoutes} = require("../Controllers/allusersRoutes")
 router.get("/users",allusersRoutes)
 
-module.exports = router;
+export default router;

@@ -2,10 +2,12 @@ import User from "../Models/user.js";
 import checkAPIs from 'express-validator/check/index.js';
 import jwt from 'jsonwebtoken';
 import expressJwt from 'express-jwt';
+import dotenv from "dotenv";
+
 
 const { check,validationResult} = checkAPIs;
 
-require('dotenv').config()
+dotenv.config()
 
 const signout = (req,res)=>{
     res.clearCookie("token");
@@ -83,7 +85,6 @@ const isSignedin= expressJwt({
     secret:process.env.SECRET,
     algorithms: ['sha1', 'RS256', 'HS256'],
     userProperty:"auth"
-
 })
 
 const isAuthenticated = (req,res,next) => {

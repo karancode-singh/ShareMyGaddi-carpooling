@@ -6,5 +6,6 @@ const {getUserById,getuser,putuser} = require("../Controllers/user.js");
 router.param("userid",getUserById)
 router.get("/user/:userid",isSignedin,isAuthenticated,getuser)
 router.put("/user/:userid",isSignedin,isAuthenticated,putuser)
-module.exports =router;
+
+export default router;
 

@@ -1,18 +1,21 @@
-const express = require('express');
-const mongoose = require('mongoose');
+import express from "express";
+import mongoose from "mongoose";
+
+
+import bodyparser from "body-parser";
+import cookieparser from "cookie-parser";
+import cors from "cors";
+import swaggerUI from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
+import dotenv from "dotenv" 
+
+dotenv.config()
 
 const app = express();
-const bodyparser= require('body-parser')
-const cookieparser = require('cookie-parser')
-const cors = require('cors')
-const swaggerUI = require("swagger-ui-express")
-const swaggerJsDoc = require("swagger-jsdoc");
-require('dotenv').config()
 
-
-const authRoutes = require("./Routes/authentication.js")
-const userRoutes = require("./Routes/user")
-const allusersRoutes = require("./Routes/allusersRoutes")
+import authRoutes from "./Routes/authentication.js";
+import userRoutes from "./Routes/user.js";
+import allusersRoutes from "./Routes/allusersRoutes.js";
 
 var options = {
 	definition: {
@@ -30,6 +33,7 @@ var options = {
 	},
 	apis: ['./Routes/*.js'],
 };
+
 // Ports
 const port = process.env.PORT||5000;
 const specs = swaggerJsDoc(options);
@@ -58,4 +62,5 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.listen(port,()=>{
     console.log(`listening a ${port}`)
 })
-module.exports = app;
+
+export default app;
