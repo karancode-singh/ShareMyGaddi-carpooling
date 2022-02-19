@@ -34,13 +34,7 @@ var options = {
 	apis: ['./Routes/*.js'],
 };
 
-// Ports
-const port = process.env.PORT||5000;
 const specs = swaggerJsDoc(options);
-// MongoDb connection
-mongoose.connect(process.env.DATABASE)
-.then(console.log("DB Connected"))
-.catch(error => console.log(error));
 
 //Middleware
 app.use(bodyparser.json())
@@ -49,18 +43,14 @@ app.use(cors())
 
 
 //Routes
+app.get('/',(req, res) => {
+    res.send("Hello Backend")
+})
+
 app.use("/api",authRoutes);
 app.use("/api",userRoutes)
 app.use("/api",allusersRoutes)
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
-
-
-
-
-
-app.listen(port,()=>{
-    console.log(`listening a ${port}`)
-})
 
 export default app;
