@@ -1,5 +1,5 @@
 import User from "../Models/user.js";
-import checkAPIs from 'express-validator/check/index.js';
+import checkAPIs from "express-validator";
 import jwt from 'jsonwebtoken';
 import expressJwt from 'express-jwt';
 import dotenv from "dotenv";

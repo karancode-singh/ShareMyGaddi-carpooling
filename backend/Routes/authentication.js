@@ -63,47 +63,6 @@ import {signout, signup, signin, isSignedin} from "../Controllers/authenticate.j
   *   description: Signout API
   */
 
-/**
- * @swagger
- *  /api/signout:
- *   get:
- *     summary: Signout
- *     tags: [Signout]
-*     responses:
- *       200:
- *         description: Signing successfull ...
- *         contens:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Book'
- *      
- *   
- *              
- */
-
-/**
- * @swagger
- *  /api/signin:
- *   post:
- *     summary: Sigin
- *     tags: [Signin]
- *     responses:
- *       200:
- *         description: Signing successfull ...
- *         contens:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Book'
- *       404:
- *         description: The User was not found
- *       422:
- *          description: Input parametes entered are wrong...
- *       400:
- *          description: Entered Email does not exists...
- *       401:
- *          description: Entered Email or Entered password is incorrect...
- *              
- */
 
 /**
  * @swagger
@@ -117,7 +76,7 @@ import {signout, signup, signin, isSignedin} from "../Controllers/authenticate.j
  *         contens:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Book'
+ *               type: string
  *       
  *       422:
  *          description: Input parametes entered are wrong...
@@ -133,11 +92,65 @@ router.post("/signup",[
 
 ],signup)
 
+/**
+ * @swagger
+ *  /api/signin:
+ *   post:
+ *     summary: Sigin
+ *     tags: [Signin]
+ *     requestBody:
+ *         required: true
+ *         content:
+ *           application/Json:
+ *              schema:
+ *               type: object
+ *               properties:
+ *                email:
+ *                  type: string 
+ *                password:
+ *                  type: string
+ *                  format: password 
+ * 
+ *     responses:
+ *       200:
+ *         description: Signing successfull ...
+ *         contens:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *    
+ *       422:
+ *          description: Input parametes entered are wrong...
+ *       400:
+ *          description: Entered Email does not exists...
+ *       401:
+ *          description: Entered Email or Entered password is incorrect...
+ *              
+ */
+
 router.post("/signin",[
     check("email","name should be atleast 5 characters long").isEmail(),
     check("password","Should be atleast 3 char").isLength({min:3})
 
 ],signin)
+
+/**
+ * @swagger
+ *  /api/signout:
+ *   get:
+ *     summary: Signout
+ *     tags: [Signout]
+ *     responses:
+ *       200:
+ *         description: Signing successfull ...
+ *         contens:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
+ *      
+ *   
+ *              
+ */
 
 router.get("/signout",signout)
 
