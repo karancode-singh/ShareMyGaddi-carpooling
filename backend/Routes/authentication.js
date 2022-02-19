@@ -1,7 +1,5 @@
 import express from "express";
-import checkAPIs from 'express-validator/check/index.js';
-
-const { check,validationResult} = checkAPIs;
+import { check,validationResult} from 'express-validator';
 
 var router = express.Router()
 
