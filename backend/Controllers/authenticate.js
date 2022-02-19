@@ -1,27 +1,30 @@
-const User = require("../Models/user")
-const { check , validationResult} = require('express-validator');
-var jwt = require('jsonwebtoken');
-var expressJwt = require('express-jwt');
-const user = require("../Models/user");
+import User from "../Models/user.js";
+import checkAPIs from 'express-validator/check/index.js';
+import jwt from 'jsonwebtoken';
+import expressJwt from 'express-jwt';
+
+const { check,validationResult} = checkAPIs;
+
 require('dotenv').config()
 
-exports.signout = (req,res)=>{
+const signout = (req,res)=>{
     res.clearCookie("token");
     res.status(200).json({
         message: "user signout"
     });
 }
 
-exports.signup = (req,res)=>{
+const signup = (req,res)=>{
+    console.log("signup");
     const error = validationResult(req)
+    console.log(error);
     if(!error.isEmpty()){
         return res.status(422).json({
             error:error.array()[0].msg
         })
     }
-    const user = new User(req.body)
-    
-    user.save((err,user)=>{
+    const new_user = new User(req.body);
+    new_user.save((err,user)=>{
         if(err){
             return res.status(400).json({
                 err:"Not able to save user to Db"
@@ -37,7 +40,7 @@ exports.signup = (req,res)=>{
     
 }
 
-exports.signin = (req,res)=>{
+const signin = (req,res)=>{
     const {email,password} = req.body;
     const error = validationResult(req)
     if(!error.isEmpty()){
@@ -76,15 +79,14 @@ exports.signin = (req,res)=>{
 }
 
 // is signed in route
-
-exports.isSignedin= expressJwt({
+const isSignedin= expressJwt({
     secret:process.env.SECRET,
     algorithms: ['sha1', 'RS256', 'HS256'],
     userProperty:"auth"
 
 })
 
-exports.isAuthenticated = (req,res,next) => {
+const isAuthenticated = (req,res,next) => {
     let check = req.profile && req.auth && req.profile._id == req.auth._id;
     if(!check){
         return res.status(400).json({
@@ -94,3 +96,4 @@ exports.isAuthenticated = (req,res,next) => {
     next()
 }
 
+export {signin, signout, signup, isSignedin, isAuthenticated}

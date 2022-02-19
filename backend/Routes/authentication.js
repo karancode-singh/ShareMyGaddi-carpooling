@@ -1,7 +1,11 @@
-var express = require('express')
-const { check,validationResult} = require('express-validator');
+import express from "express";
+import checkAPIs from 'express-validator/check/index.js';
+
+const { check,validationResult} = checkAPIs;
+
 var router = express.Router()
-const {signout,signup,signin, isSignedin} = require("../Controllers/authenticate.js")
+
+import {signout, signup, signin, isSignedin} from "../Controllers/authenticate.js";
 
 /**
  * @swagger
@@ -140,4 +144,4 @@ router.get("/signout",signout)
 router.get("/test",isSignedin,(req,res)=>{
 res.json(req.auth);
 })
-module.exports = router;
+export default router;
