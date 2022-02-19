@@ -33,7 +33,6 @@ var options = {
 };
 
 const specs = swaggerJsDoc(options);
-
 //Middleware
 app.use(bodyparser.json())
 app.use(cookieparser())

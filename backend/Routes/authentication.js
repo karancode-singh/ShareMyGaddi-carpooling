@@ -66,8 +66,27 @@ import {signout, signup, signin, isSignedin} from "../Controllers/authenticate.j
  * @swagger
  *  /api/signup:
  *   post:
- *     summary: SigUp
- *     tags: [SignUp]
+ *     summary: Sigup
+ *     tags: [Signup]
+ *     requestBody:
+ *         required: true
+ *         content:
+ *           application/Json:
+ *              schema:
+ *               type: object
+ *               properties:
+ *                Name:
+ *                  type: string
+ *                LastName:
+ *                  type: string
+ *                Email:
+ *                  type: string
+ *                PhoneNumber:
+ *                  type: number
+ *                Password:
+ *                  type: string
+ *                profile photo:
+ *                  type: string
  *     responses:
  *       200:
  *         description: Signing successfull ...
@@ -75,14 +94,15 @@ import {signout, signup, signin, isSignedin} from "../Controllers/authenticate.j
  *           application/json:
  *             schema:
  *               type: string
- *       
  *       422:
  *          description: Input parametes entered are wrong...
  *       400:
  *          description: Entered Email does not exists...
- *       
+ *       401:
+ *          description: Entered Email or Entered password is incorrect...
  *              
  */
+
 router.post("/signup",[
     check("name","name should be atleast 2 characters long").isLength({min:2}),
     check("email","name should be atleast 5 characters long").isEmail(),

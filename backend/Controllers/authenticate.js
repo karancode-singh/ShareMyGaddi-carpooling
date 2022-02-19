@@ -14,9 +14,7 @@ const signout = (req,res)=>{
 }
 
 const signup = (req,res)=>{
-    console.log("signup");
     const error = validationResult(req)
-    console.log(error);
     if(!error.isEmpty()){
         return res.status(422).json({
             error:error.array()[0].msg
@@ -24,9 +22,11 @@ const signup = (req,res)=>{
     }
     const new_user = new User(req.body);
     new_user.save((err,user)=>{
+        console.log(err)
         if(err){
             return res.status(400).json({
-                err:"Not able to save user to Db"
+                err:"Not able to save user to Db",
+                msg:err
             })
         }
         res.status(200);
