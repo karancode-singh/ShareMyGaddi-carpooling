@@ -1,5 +1,6 @@
-var u = require("../Models/user")
-exports.allusersRoutes=(req,res)=>{
+import  u from "../Models/user.js";
+
+const allusersRoutes=(req,res)=>{
     u.find().exec((err,ud)=>{
         if(err){
             res.status(400).json({
@@ -9,3 +10,5 @@ exports.allusersRoutes=(req,res)=>{
         res.json(ud)
     })
 }
+
+export {allusersRoutes}

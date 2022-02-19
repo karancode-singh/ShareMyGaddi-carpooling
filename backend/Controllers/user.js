@@ -1,6 +1,6 @@
-const User = require("../Models/user")
+import User from "../Models/user.js";
 
-exports.getUserById= (req,res,next,id)=>{
+const getUserById= (req,res,next,id)=>{
     User.findById(id).exec((err,user)=>{
         if(err){
             return res.status(400).json({
@@ -12,14 +12,14 @@ exports.getUserById= (req,res,next,id)=>{
     })
 }
 
-exports.getuser=(req,res)=>{
+const getuser=(req,res)=>{
     req.profile.salt=undefined
     req.profile.encry_password=undefined
     return res.json(req.profile);
     
 }
 
-exports.putuser = (req,res)=>{
+const putuser = (req,res)=>{
     User.findByIdAndUpdate(
         {_id: req.profile._id},
         {$set:req.body},
@@ -35,7 +35,6 @@ exports.putuser = (req,res)=>{
         res.status(200).json(user)
         }
     )
-
-        
-    
 }
+
+export {getUserById, getuser, putuser}

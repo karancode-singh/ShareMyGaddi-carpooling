@@ -1,7 +1,9 @@
-var express = require("express");
-const { isSignedin,isAuthenticated } = require("../Controllers/authenticate.js");
+import express from "express";
+import { isSignedin,isAuthenticated } from "../Controllers/authenticate.js";
+
+import {getUserById,getuser,putuser} from "../Controllers/user.js";
+
 var router = express.Router()
-const {getUserById,getuser,putuser} = require("../Controllers/user.js");
 
 router.param("userid",getUserById)
 router.get("/user/:userid",isSignedin,isAuthenticated,getuser)
