@@ -1,11 +1,8 @@
 import User from "../Models/user.js";
-import checkAPIs from "express-validator";
+import { check,validationResult} from 'express-validator';
 import jwt from 'jsonwebtoken';
 import expressJwt from 'express-jwt';
 import dotenv from "dotenv";
-
-
-const { check,validationResult} = checkAPIs;
 
 dotenv.config()
 
@@ -54,7 +51,7 @@ const signin = (req,res)=>{
     User.findOne({email},(err,users)=>{
         if(err || !users ){
             return res.status(400).json({
-                error:"User email does not exits"
+                error:"User email does not exist"
             })
         }
         //console.log(users.authenticate(password))
