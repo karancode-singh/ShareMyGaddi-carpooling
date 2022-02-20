@@ -75,17 +75,17 @@ import {signout, signup, signin, isSignedin} from "../Controllers/authenticate.j
  *              schema:
  *               type: object
  *               properties:
- *                Name:
+ *                name:
  *                  type: string
- *                LastName:
+ *                lastname:
  *                  type: string
- *                Email:
+ *                email:
  *                  type: string
- *                PhoneNumber:
+ *                phone_number:
  *                  type: number
- *                Password:
+ *                password:
  *                  type: string
- *                profile photo:
+ *                user_photo:
  *                  type: string
  *     responses:
  *       200:
@@ -96,8 +96,6 @@ import {signout, signup, signin, isSignedin} from "../Controllers/authenticate.j
  *               type: string
  *       422:
  *          description: Input parametes entered are wrong...
- *       400:
- *          description: Entered Email does not exists...
  *       401:
  *          description: Entered Email or Entered password is incorrect...
  *              
