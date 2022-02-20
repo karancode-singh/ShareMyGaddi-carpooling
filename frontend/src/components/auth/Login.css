@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #0d6efd;
+    /* background-color: #0d6efd; */
 }
 
 .login-content{
@@ -25,4 +25,10 @@
 .login-button{
     margin-top: 15px;
     width: 100%;
+}
+
+.signup-link{
+    text-align: center;
+    margin-top: 2rem;
+    display: block;
 }

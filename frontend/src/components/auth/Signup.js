@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import PropTypes from 'prop-types';
 import './Signup.css';
+import { Link } from "react-router-dom";
 
 // api post call
 function signupUser(userDetails) {
@@ -105,6 +106,7 @@ export default function Signup(props) {
             Sign Up
           </Button>
         </Form>
+        <Link to='/login' className="login-link">Login</Link>
       </div>
     </div>
   );

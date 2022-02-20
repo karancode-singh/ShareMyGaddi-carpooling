@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import PropTypes from 'prop-types';
 import './Login.css';
+import { Link } from "react-router-dom";
 
 // api post call
 function loginUser(credentials) {
@@ -67,6 +68,7 @@ export default function Login({ setToken }) {
             Login
           </Button>
         </Form>
+        <Link to='/signup' className="signup-link">SignUp</Link>
       </div>
     </div>
   );
