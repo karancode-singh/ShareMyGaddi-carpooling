@@ -1,4 +1,4 @@
-.login-container {
+.signup-container {
     padding: 60px 0;
     display: flex;
     justify-content: center;
@@ -6,7 +6,7 @@
     background-color: #0d6efd;
 }
 
-.login-content{
+.signup-content{
     background-color: white;
     width: 33%;
     padding: 30px;
@@ -18,11 +18,7 @@
     font-weight: bold;
 }
 
-.form-group{
-    margin-bottom: 10px;
-}
-
-.login-button{
-    margin-top: 15px;
+.signup-button{
+    margin-top: 25px;
     width: 100%;
 }

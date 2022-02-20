@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import "./Register.css";
+import Button from "react-bootstrap/Button";
+import { useFormFields } from "../../lib/hooksLib";
+
 
 export default function Signup() {
   const [fields, handleFieldChange] = useFormFields({
@@ -9,9 +12,9 @@ export default function Signup() {
     confirmPassword: "",
     confirmationCode: "",
   });
-  const history = useHistory();
+  // const history = useHistory();
   const [newUser, setNewUser] = useState(null);
-  const { userHasAuthenticated } = useAppContext();
+  // const { userHasAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
 
   function validateForm() {
@@ -55,8 +58,8 @@ export default function Signup() {
           />
           <Form.Text muted>Please check your email for the code.</Form.Text>
         </Form.Group>
-        <LoaderButton
-          block
+        <Button
+          
           size="lg"
           type="submit"
           variant="success"
@@ -64,7 +67,7 @@ export default function Signup() {
           disabled={!validateConfirmationForm()}
         >
           Verify
-        </LoaderButton>
+        </Button> 
       </Form>
     );
   }
@@ -97,8 +100,8 @@ export default function Signup() {
             value={fields.confirmPassword}
           />
         </Form.Group>
-        <LoaderButton
-          block
+        <Button
+          
           size="lg"
           type="submit"
           variant="success"
@@ -106,7 +109,7 @@ export default function Signup() {
           disabled={!validateForm()}
         >
           Signup
-        </LoaderButton>
+        </Button> 
       </Form>
     );
   }
