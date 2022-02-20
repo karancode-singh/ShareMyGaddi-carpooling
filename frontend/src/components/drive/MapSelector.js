@@ -77,9 +77,6 @@ export default function MapSelector(props) {
     panTo(coord);
   };
 
-  // if (loadError) return <h1>Map load error</h1>;
-  // if (!isLoaded) return <h1>Loading...</h1>;
-
   return (
     <Modal
       onHide={handleClose}

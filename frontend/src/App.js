@@ -16,16 +16,19 @@ import { useLoadScript } from '@react-google-maps/api';
 const libraries = ['places'];
 
 function App() {
+  const { token, setToken } = useToken();
+
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: configData.MAPS_API_KEY,
     libraries
   });
 
-  const { token, setToken } = useToken();
+  if (loadError) return <h1>Map load error</h1>;
+  if (!isLoaded) return <h1>Loading...</h1>;
 
   return (
     <Router>
-      <Navbar setToken={setToken}/>
+      <Navbar setToken={setToken} />
       {/* <Navbar /> */}
       <Routes>
         {/* <Route exact path='/' element={props.is_auth ? <Login setToken={setToken} /> : (props.is_trip_active ? 'ActiveTrip' : 'TripHistory')} /> */}
