@@ -2,12 +2,15 @@ import logo from './logo.svg';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css'
-import Navbar from './components/Navbar/Navbar'
-import Login from './components/Navbar/Login';
-import Register from './components/Navbar/Register';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import Signup from './components/Navbar/Signup';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import Signup from './components/auth/Signup';
 import useToken from './lib/useToken';
+import Navbar from './components/navbar/Navbar';
+import Drive from './components/drive/Drive';
+import NotFound from './components/misc/NotFound';
+
 function App(props) {
 
   const { token, setToken } = useToken();
@@ -24,21 +27,20 @@ function App(props) {
 
 
   return (
-    <>
-      <Router>
-        {/* <Navbar />  */}
-        {/* <Login /> */}
-        {/* <Register/> */}
-        {/* <Login/> */}
-        <Signup />
-        <Routes>
-          {/* <Route path='/' exact element={Navbar} /> {props.is_auth ? 'LoginPage' : (props.is_trip_active ? 'ActiveTrip' : 'TripHistory')} /> */}
-          {/* <Route path='/login' exact element={Login} /> */}
-          {/* <Route path='/register' exact element={Register} /> */}
-          <Route path='/signup' exact element={Signup} />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <Navbar />
+      {/* <Register/> */}
+      {/* <Login/> */}
+      <Signup />
+      <Routes>
+        {/* <Route exact path='/' element={Navbar} /> {props.is_auth ? 'LoginPage' : (props.is_trip_active ? 'ActiveTrip' : 'TripHistory')} /> */}
+        {/* <Route path='/login' exact element={Login} /> */}
+        {/* <Route path='/register' exact element={Register} /> */}
+        <Route path='/signup' exact element={Signup} />
+        <Route exact path='/drive' element={<Drive />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 
   // return (
