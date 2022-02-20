@@ -6,10 +6,10 @@
   /* float: left; */
 }
 
-.modal{
+.modal {
   z-index: 2000;
 }
 
-.modal-backdrop{
+.modal-backdrop {
   z-index: 1000;
 }

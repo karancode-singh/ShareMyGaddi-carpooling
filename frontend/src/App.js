@@ -10,22 +10,16 @@ import useToken from './lib/useToken';
 import Navbar from './components/navbar/Navbar';
 import Drive from './components/drive/Drive';
 import NotFound from './components/misc/NotFound';
+import { useLoadScript } from '@react-google-maps/api';
+import configData from "./config.json";
+
+const libraries = ['places'];
 
 function App(props) {
-
-  const { token, setToken } = useToken();
-
-  // if (!token) {
-  //   return <Login setToken={setToken} />
-  // }
-  // if (token) {
-  //   return (
-  //     <div className="wrapper" > Application Display </div>
-
-  //   );
-  // }
-
-
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: configData.MAPS_API_KEY,
+    libraries
+  });
   return (
     <Router>
       <Navbar />
@@ -34,9 +28,6 @@ function App(props) {
       <Signup />
       <Routes>
         {/* <Route exact path='/' element={Navbar} /> {props.is_auth ? 'LoginPage' : (props.is_trip_active ? 'ActiveTrip' : 'TripHistory')} /> */}
-        {/* <Route path='/login' exact element={Login} /> */}
-        {/* <Route path='/register' exact element={Register} /> */}
-        <Route path='/signup' exact element={Signup} />
         <Route exact path='/drive' element={<Drive />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
