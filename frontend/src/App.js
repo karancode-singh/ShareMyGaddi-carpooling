@@ -7,7 +7,7 @@ import configData from "./config.json";
 // import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
-import useToken from './lib/UseToken';
+import useToken from './libraries/UseToken';
 import Navbar from './components/navbar/Navbar';
 import Drive from './components/drive/Drive';
 import NotFound from './components/misc/NotFound';
