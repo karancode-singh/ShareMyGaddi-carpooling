@@ -1,33 +1,32 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import PropTypes from 'prop-types';
 import './Signup.css';
 import { Link } from "react-router-dom";
+import { GlobalContext } from "lib/GlobalState";
 
 // api post call
-function signupUser(userDetails) {
-  console.log("user details", userDetails);
-  // return "Signup Successful"
-  //  return fetch('http://localhost:8080/signup', {
-  //    method: 'POST',
-  //     headers: {
-  //     'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(userDetails)
-  //   })
-  //  .then(data => data.json())
-
+function signupUser(userDetails, globalSate) {
+   return fetch(globalSate.endPoint + '/signup', {
+     method: 'POST',
+      headers: {
+      'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userDetails)
+    })
+   .then(data => data.json());
 }
 
 
-export default function Signup(props) {
+export default function Signup({ setToken }) {
 
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setconfirmPassword] = useState("");
+  const [globalSate, setGlobalState] = useContext(GlobalContext);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -38,9 +37,9 @@ export default function Signup(props) {
       password,
       confirmpassword
     }
-    const setUserDetails = await signupUser(data);
-    console.log(setUserDetails);
-    // setToken(token);
+    const setUserDetails = await signupUser(data,globalSate);
+    console.log('setUserDetails:',setUserDetails);
+    setToken(setUserDetails.token);
   }
 
   function validateForm() {

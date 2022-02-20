@@ -1,28 +1,27 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import PropTypes from 'prop-types';
 import './Login.css';
 import { Link } from "react-router-dom";
+import { GlobalContext } from '../../lib/GlobalState'
 
 // api post call
-function loginUser(credentials) {
-  console.log("Credentials", credentials);
-  return "sharemygadditoken"
-
-  //     return fetch('http://localhost:8080/login', {
-  //    method: 'POST',
-  //    headers: {
-  //      'Content-Type': 'application/json'
-  //    },
-  //    body: JSON.stringify(credentials)
-  //  })
-  //    .then(data => data.json())
+function loginUser(credentials, globalSate) {
+  console.log(globalSate);
+  return fetch(globalSate.endPoint + '/signin', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  }).then(data => data.json());
 }
 
 
 export default function Login({ setToken }) {
 
+  const [globalSate, setGlobalState] = useContext(GlobalContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -32,10 +31,9 @@ export default function Login({ setToken }) {
       email,
       password
     }
-    const token = await loginUser(data);
-    console.log(token);
-    //sessionStorage.setItem('token', JSON.stringify(token));
-    setToken(token);
+    const sessionUserDetails = await loginUser(data,globalSate);
+    console.log('sessionUserDetails:', sessionUserDetails);
+    setToken(sessionUserDetails.token);
   }
 
   function validateForm() {
