@@ -12,11 +12,10 @@ import Navbar from './components/navbar/Navbar';
 import Drive from './components/drive/Drive';
 import NotFound from './components/misc/NotFound';
 import { useLoadScript } from '@react-google-maps/api';
-import GlobalState from 'lib/GlobalState';
 
 const libraries = ['places'];
 
-function App(props) {
+function App() {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: configData.MAPS_API_KEY,
     libraries
@@ -25,19 +24,18 @@ function App(props) {
   const { token, setToken } = useToken();
 
   return (
-    <GlobalState>
-      <Router>
-        <Navbar />
-        <Routes>
-          {/* <Route exact path='/' element={props.is_auth ? <Login setToken={setToken} /> : (props.is_trip_active ? 'ActiveTrip' : 'TripHistory')} /> */}
-          <Route exact path='/' element={props.is_auth ? <Login setToken={setToken} /> : <Drive />} />
-          <Route exact path='/login' element={<Login setToken={setToken} />} />
-          <Route exact path='/signup' element={<Signup setToken={setToken} />} />
-          <Route exact path='/drive' element={<Drive />} />
-          <Route path='*' element={<NotFound />} />
-        </Routes>
-      </Router>
-    </GlobalState>
+    <Router>
+      <Navbar setToken={setToken}/>
+      {/* <Navbar /> */}
+      <Routes>
+        {/* <Route exact path='/' element={props.is_auth ? <Login setToken={setToken} /> : (props.is_trip_active ? 'ActiveTrip' : 'TripHistory')} /> */}
+        <Route exact path='/' element={token ? <NotFound /> : <Login setToken={setToken} />} />
+        <Route exact path='/login' element={<Login setToken={setToken} />} />
+        <Route exact path='/signup' element={<Signup setToken={setToken} />} />
+        <Route exact path='/drive' element={<Drive />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 }
 export default App;

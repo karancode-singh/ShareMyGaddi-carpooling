@@ -4,36 +4,31 @@ import Button from "react-bootstrap/Button";
 import PropTypes from 'prop-types';
 import './Login.css';
 import { Link } from "react-router-dom";
-import { GlobalContext } from '../../lib/GlobalState'
-
-// api post call
-function loginUser(credentials, globalSate) {
-  console.log(globalSate);
-  return fetch(globalSate.endPoint + '/signin', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(credentials)
-  }).then(data => data.json());
-}
-
+import configData from "../../config.json";
 
 export default function Login({ setToken }) {
 
-  const [globalSate, setGlobalState] = useContext(GlobalContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  function loginUser(credentials) {
+    return fetch(configData.END_POINT + '/signin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(credentials)
+    }).then(data => data.json());
+  }
   const handleSubmit = async e => {
     e.preventDefault();
     const data = {
       email,
       password
     }
-    const sessionUserDetails = await loginUser(data,globalSate);
-    console.log('sessionUserDetails:', sessionUserDetails);
+    const sessionUserDetails = await loginUser(data);
     setToken(sessionUserDetails.token);
+    window.location.reload();
   }
 
   function validateForm() {

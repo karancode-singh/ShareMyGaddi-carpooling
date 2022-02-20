@@ -21,7 +21,7 @@
   flex-direction: row;
 }
 
-#main-buttons {
+.main-buttons {
   margin-right: 1.5rem;
 }
 

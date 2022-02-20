@@ -4,20 +4,7 @@ import Button from "react-bootstrap/Button";
 import PropTypes from 'prop-types';
 import './Signup.css';
 import { Link } from "react-router-dom";
-import { GlobalContext } from "lib/GlobalState";
-
-// api post call
-function signupUser(userDetails, globalSate) {
-   return fetch(globalSate.endPoint + '/signup', {
-     method: 'POST',
-      headers: {
-      'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userDetails)
-    })
-   .then(data => data.json());
-}
-
+import configData from "../../config.json";
 
 export default function Signup({ setToken }) {
 
@@ -26,8 +13,16 @@ export default function Signup({ setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setconfirmPassword] = useState("");
-  const [globalSate, setGlobalState] = useContext(GlobalContext);
 
+  function signupUser(userDetails) {
+    return fetch(configData.END_POINT + '/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userDetails)
+    }).then(data => data.json());
+  }
   const handleSubmit = async e => {
     e.preventDefault();
     const data = {
@@ -37,15 +32,15 @@ export default function Signup({ setToken }) {
       password,
       confirmpassword
     }
-    const setUserDetails = await signupUser(data,globalSate);
-    console.log('setUserDetails:',setUserDetails);
+    const setUserDetails = await signupUser(data);
     setToken(setUserDetails.token);
+    window.location.reload();
   }
 
   function validateForm() {
     return email.length > 0 && password.length > 0 &&
-    firstname.length > 0 && lastname.length > 0 &&
-    password === confirmpassword
+      firstname.length > 0 && lastname.length > 0 &&
+      password === confirmpassword
   }
 
   return (
