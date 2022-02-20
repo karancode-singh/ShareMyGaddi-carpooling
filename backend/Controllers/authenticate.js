@@ -7,7 +7,15 @@ import dotenv from "dotenv";
 dotenv.config()
 
 const signout = (req,res)=>{
-    res.clearCookie("token");
+    
+    
+    if(Object.keys(req.cookies).length === 0 )
+    {
+        return res.status(400).json({
+        message: "user already signedout"});
+    
+    }
+    res.clearCookie("token")
     res.status(200).json({
         message: "user signout"
     });

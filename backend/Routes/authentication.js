@@ -158,12 +158,9 @@ router.post("/signin",[
  *     tags: [Signout]
  *     responses:
  *       200:
- *         description: Signing successfull ...
- *         contens:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Book'
- *      
+ *         description: Signout successfull ...
+ *      400:
+ *          description: Singout already done...
  *   
  *              
  */
