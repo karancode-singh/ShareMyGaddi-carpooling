@@ -1,0 +1,34 @@
+.login-container {
+    padding: 60px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #0d6efd; */
+}
+
+.login-content{
+    background-color: white;
+    width: 33%;
+    padding: 30px;
+    border-radius: 5px
+}
+
+.heading-text{
+    text-align: center;
+    font-weight: bold;
+}
+
+.form-group{
+    margin-bottom: 10px;
+}
+
+.login-button{
+    margin-top: 15px;
+    width: 100%;
+}
+
+.signup-link{
+    text-align: center;
+    margin-top: 2rem;
+    display: block;
+}
