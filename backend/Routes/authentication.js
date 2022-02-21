@@ -55,14 +55,6 @@ import {signout, signup, signin, isSignedin} from "../Controllers/authenticate.j
  *         
  */
 /**
-  * @swagger
-  * tags:
-  *   name: Signout
-  *   description: Signout API
-  */
-
-
-/**
  * @swagger
  *  /api/signup:
  *   post:
@@ -149,21 +141,18 @@ router.post("/signin",[
     check("password","Should be atleast 3 char").isLength({min:3})
 
 ],signin)
-
 /**
  * @swagger
  *  /api/signout:
  *   get:
- *     summary: Signout
+ *     summary : Signout
  *     tags: [Signout]
  *     responses:
- *       200:
- *         description: Signout successfull ...
- *      400:
- *          description: Singout already done...
- *   
- *              
- */
+ *               200:
+ *                description: Signout successfull ...
+ *               400:
+ *                description: Bad Request ...
+*/
 
 router.get("/signout",signout)
 
