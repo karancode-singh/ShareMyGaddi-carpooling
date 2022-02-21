@@ -1,14 +1,13 @@
-import logo from './logo.svg';
-import React, { createContext } from 'react';
+// import logo from './logo.svg';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css'
 import configData from "./config.json";
-// import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import useToken from './libraries/UseToken';
-import Navbar from './components/Navbar/Navbar';
+import Navbar from './components/navbar/Navbar';
 import Drive from './components/drive/Drive';
 import NotFound from './components/misc/NotFound';
 import { useLoadScript } from '@react-google-maps/api';

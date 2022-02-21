@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 export default function useToken() {
 
@@ -11,7 +11,7 @@ export default function useToken() {
   const [token, setToken] = useState(getToken());
 
   const saveToken = data => {
-    if(data==null) {
+    if (data == null) {
       sessionStorage.removeItem('token');
     }
     sessionStorage.setItem('token', JSON.stringify(data));

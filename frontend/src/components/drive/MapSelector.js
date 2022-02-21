@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { GoogleMap, Autocomplete, Marker } from '@react-google-maps/api';
 import { Button, Modal } from 'react-bootstrap';
 
@@ -120,5 +120,4 @@ export default function MapSelector(props) {
       </Modal.Footer>
     </Modal>
   )
-  // : null;
 }
