@@ -1,8 +1,8 @@
-const {signup} = require('../Controllers/authenticate.js');
-const User = require("../Models/user")
-const route = require('../Routes/authentication.js')
-const app= require("../app");
-const request  = require('supertest');
+const {signup} = import('../Controllers/authenticate.js');
+const User = import("../Models/user")
+const route = import('../Routes/authentication.js')
+const app= import("../app");
+const request  = import('supertest');
 const endpoint = "/api/signup";
 const endpoint2 = "/api/signin";
 describe(endpoint,()=>{

@@ -33,8 +33,7 @@ const signup = (req,res)=>{
         console.log(err)
         if(err){
             return res.status(400).json({
-                err:"Not able to save user to Db",
-                msg:err
+                err:"User with this Email already regsitered with system",
             })
         }
         res.status(200);
