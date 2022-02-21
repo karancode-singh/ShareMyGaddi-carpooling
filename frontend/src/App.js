@@ -8,7 +8,7 @@ import configData from "./config.json";
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import useToken from './libraries/UseToken';
-import Navbar from './components/navbar/Navbar';
+import Navbar from './components/Navbar/Navbar';
 import Drive from './components/drive/Drive';
 import NotFound from './components/misc/NotFound';
 import { useLoadScript } from '@react-google-maps/api';
