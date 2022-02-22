@@ -9,7 +9,7 @@ dotenv.config()
 const signout = (req,res)=>{
     console.log(Object.values(req.cookies))
     
-    if(Object.values(req.cookies) != 'tokken' )
+    if(Object.keys(req.cookies) != 'tokken' )
     {
         return res.status(400).json({
         message: "user already signedout"});
