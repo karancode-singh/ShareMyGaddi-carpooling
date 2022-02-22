@@ -9,7 +9,7 @@ dotenv.config()
 const signout = (req,res)=>{
     console.log(Object.values(req.cookies))
     
-    if(Object.values(req.cookies) != 'tokken' )
+    if(Object.keys(req.cookies) != 'tokken' )
     {
         return res.status(400).json({
         message: "user already signedout"});
@@ -76,7 +76,7 @@ const signin = (req,res)=>{
         // send response to front end
         const{_id,name,email,role} = users;
         res.status(200)
-        
+        console.log("[Backend] Signin: Sending token-"+token)
         return res.json(  
             {
                 token,

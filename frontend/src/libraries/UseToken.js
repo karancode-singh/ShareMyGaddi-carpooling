@@ -1,21 +1,23 @@
 import { useState } from 'react';
+import Cookies from 'js-cookie';
 
 export default function useToken() {
-
     const getToken = () => {
-        const tokenString = sessionStorage.getItem('token');
-        const userToken = JSON.parse(tokenString);
+        const userToken = Cookies.get('tokken');
         return userToken;
     };
 
     const [token, setToken] = useState(getToken());
 
     const saveToken = data => {
-        if (data == null) {
-        sessionStorage.removeItem('token');
+        if (data === null) {
+            Cookies.remove('tokken');
         }
-        sessionStorage.setItem('token', JSON.stringify(data));
-        setToken(data.token);
+        else{
+            console.log("Token:"+data)
+            Cookies.set('tokken', JSON.stringify(data));
+            setToken(data.token);
+        }
     };
 
     return {
