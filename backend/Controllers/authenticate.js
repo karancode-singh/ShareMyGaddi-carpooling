@@ -9,14 +9,14 @@ dotenv.config()
 const signout = (req,res)=>{
     console.log(Object.values(req.cookies))
     
-    if(Object.keys(req.cookies) != 'tokken' )
+    if(Object.keys(req.cookies) != 'token' )
     {
         return res.status(400).json({
         message: "user already signedout"});
     
     }
     console.log(Object.keys(req.cookies))
-    res.clearCookie("tokken")
+    res.clearCookie("token")
     res.status(200).json({
         message: "user signout"
     });
@@ -72,11 +72,10 @@ const signin = (req,res)=>{
         // create token and put in cookie
         const token = jwt.sign({_id:users._id},process.env.SECRET)
         // put in cookie
-        res.cookie("tokken",token,{expire: new Date() +9999});
+        res.cookie("token",token,{expire: new Date() +9999});
         // send response to front end
         const{_id,name,email,role} = users;
         res.status(200)
-        
         return res.json(  
             {
                 token,

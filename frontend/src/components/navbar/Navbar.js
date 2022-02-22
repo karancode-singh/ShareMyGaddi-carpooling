@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Cookies from 'js-cookie'
 import * as AiIcons from 'react-icons/ai';
 import * as FaIcons from 'react-icons/fa';
 import * as MdIcons from 'react-icons/md';
@@ -20,7 +21,7 @@ export default function Navbar(props) {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Authorization': 'Bearer ' + Cookies.get('token')
       },
       // body: JSON.stringify(credentials)
       // }).then(data => data.json());
@@ -38,7 +39,7 @@ export default function Navbar(props) {
       <IconContext.Provider value={{ color: '#fff' }}>
         {/* Primary Navbar */}
         <div className='navbar'>
-          {sessionStorage.getItem('token') ?
+          {Cookies.get('token') ?
             <Link to='#' className={'menu-bars'} id="hamburger">
               <FaIcons.FaBars onClick={showSidebar} />
             </Link> : null}
@@ -50,7 +51,7 @@ export default function Navbar(props) {
             </Link>
           </div>
 
-          {sessionStorage.getItem('token') ?
+          {Cookies.get('token') ?
             <div className={'main-buttons'}>
               {/* <div id='main-buttons'> */}
               <Button variant='warning' href='/active-trip' className={props.is_trip_active ? 'main-button' : 'hidden'} disabled={'/active-trip' === location.pathname}>
@@ -67,7 +68,7 @@ export default function Navbar(props) {
         {/* Primary Navbar end*/}
 
         {/* Sidebar*/}
-        {sessionStorage.getItem('token') ?
+        {Cookies.get('token') ?
           <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
             <ul className='sidebar-top-items' onClick={showSidebar}>
               <li className='navbar-toggle' style={{ paddingLeft: '1rem' }}>

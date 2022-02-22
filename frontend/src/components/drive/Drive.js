@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import MapSelector from './MapSelector';
 import { GoogleMap } from '@react-google-maps/api';
 import './Drive.css';
@@ -35,7 +34,7 @@ export default function Drive() {
 
     const openMapModal = (mapType) => {
         setMapType(mapType);
-        setModalTitle(mapType == 'src' ? 'Source point' : 'Destination point');
+        setModalTitle(mapType === 'src' ? 'Source point' : 'Destination point');
         setShowModal(true);
     }
 
