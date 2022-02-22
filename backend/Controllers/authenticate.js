@@ -76,7 +76,6 @@ const signin = (req,res)=>{
         // send response to front end
         const{_id,name,email,role} = users;
         res.status(200)
-        console.log("[Backend] Signin: Sending token-"+token)
         return res.json(  
             {
                 token,
