@@ -14,8 +14,7 @@ export default function useToken() {
             Cookies.remove('tokken');
         }
         else{
-            console.log("Token:"+data)
-            Cookies.set('tokken', JSON.stringify(data));
+            Cookies.set('tokken', data);
             setToken(data.token);
         }
     };
