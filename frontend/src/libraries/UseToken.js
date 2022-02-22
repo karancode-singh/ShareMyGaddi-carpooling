@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 export default function useToken() {
     const getToken = () => {
-        const userToken = Cookies.get('tokken');
+        const userToken = Cookies.get('token');
         return userToken;
     };
 
@@ -11,10 +11,10 @@ export default function useToken() {
 
     const saveToken = data => {
         if (data === null) {
-            Cookies.remove('tokken');
+            Cookies.remove('token');
         }
-        else{
-            Cookies.set('tokken', data);
+        else {
+            Cookies.set('token', data);
             setToken(data.token);
         }
     };
