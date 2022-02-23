@@ -34,11 +34,12 @@ const signup = (req,res)=>{
         console.log(err)
         if(err){
             return res.status(400).json({
-                err:"User with this Email already regsitered with system",
+                error:"User with this Email already regsitered with system",
             })
         }
         res.status(200);
-            res.json({
+        
+        res.json({
             name :user.name,
             email: user.email,
             id: user._id
@@ -74,13 +75,12 @@ const signin = (req,res)=>{
         // put in cookie
         res.cookie("token",token,{expire: new Date() +9999});
         // send response to front end
-        const{_id,name,email,role} = users;
+        const {_id,name,email,role} = users;
         res.status(200)
-        return res.json(  
-            {
-                token,
-                user:{_id,name,email,role}
-            })
+        return  res.json({
+                    token,
+                    user:{_id,name,email,role}
+                })
     })
     
 }
