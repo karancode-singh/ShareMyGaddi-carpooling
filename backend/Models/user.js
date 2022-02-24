@@ -1,6 +1,9 @@
-import mongoose from "mongoose";
-import crypto from "crypto";
-import {v1 as uuidv1 } from "uuid";
+const mongoose= require("mongoose");
+//import mongoose from "mongoose";
+const crypto = require("crypto");
+//import crypto from "crypto";
+const { v1: uuidv1 } = require('uuid');
+//import {v1 as uuidv1 } from "uuid";
 
 const schema = mongoose.Schema;
 const userSchema = new schema({
@@ -46,26 +49,25 @@ userSchema.virtual("password").set(function(password){
     this.salt=uuidv1();
     this.encry_password= this.securePassword(password);
 })
-.get(function(){
+/*.get(function(){
     return this._password;
 });
+*/
 userSchema.methods ={
     authenticate:function(plainpassword){
         return this.securePassword(plainpassword)===this.encry_password;
     },
     securePassword : function(plainpassword){
-        if(!plainpassword)
-        return ""
-        try{
+        /*if(!plainpassword)
+        return ""*/
+        
             
             return crypto.createHmac('sha256', this.salt)
             .update(plainpassword)
             .digest('hex');
-        }
-        catch(err){
-                return "";
-        }
+        
+        
     }
 }
-// module.exports = mongoose.model("user",userSchema)
-export default mongoose.model("user",userSchema)
+ module.exports = mongoose.model("user",userSchema)
+//export default mongoose.model("user",userSchema)

@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "type": "module",
+  
   "scripts": {
-    "start": "nodemon index.js",
-    "test": "jest"
+    "start": "nodemon app.js",
+    "test": "jest --coverage"
   },
   "author": "",
   "license": "ISC",
