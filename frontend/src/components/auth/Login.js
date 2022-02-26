@@ -39,11 +39,12 @@ export default function Login({ setToken }) {
     return (
         <div className="login-container">
             <div className="login-content">
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit} data-test="login-form">
                     <h3 className="heading-text">Login</h3>
                     <Form.Group size="lg" controlId="email" className="form-group">
                         <Form.Label>Email</Form.Label>
                         <Form.Control
+                        data-test="form-control"
                             autoFocus
                             type="email"
                             value={email}
@@ -58,7 +59,7 @@ export default function Login({ setToken }) {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </Form.Group>
-                    <Button size="lg" type="submit" disabled={!validateForm()} className="login-button">
+                    <Button data-test="login-button" size="lg" type="submit" disabled={!validateForm()} className="login-button">
                         Login
                     </Button>
                 </Form>
@@ -67,3 +68,7 @@ export default function Login({ setToken }) {
         </div>
     );
 }
+
+// Login.propTypes = {
+//     setToken: PropTypes.func.isRequired
+//   };
