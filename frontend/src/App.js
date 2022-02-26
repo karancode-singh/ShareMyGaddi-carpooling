@@ -5,7 +5,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.css'
 import configData from "./config.json";
 import Login from './components/auth/Login';
-import Signup from './components/auth/Signup';
+import SignUp from './components/auth/SignUp';
 import useToken from './libraries/UseToken';
 import Navbar from './components/navbar/Navbar';
 import Drive from './components/drive/Drive';
@@ -33,7 +33,7 @@ function App() {
         {/* <Route exact path='/' element={props.is_auth ? <Login setToken={setToken} /> : (props.is_trip_active ? 'ActiveTrip' : 'TripHistory')} /> */}
         <Route exact path='/' element={token ? <NotFound /> : <Login setToken={setToken} />} />
         <Route exact path='/login' element={<Login setToken={setToken} />} />
-        <Route exact path='/signup' element={<Signup setToken={setToken} />} />
+        <Route exact path='/signup' element={<SignUp setToken={setToken} />} />
         <Route exact path='/drive' element={<Drive />} />
         <Route path='*' element={<NotFound />} />
       </Routes>

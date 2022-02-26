@@ -25,8 +25,18 @@ describe("signUp", () => {
     });
 
     it("Should render Signup button", () => {
-        const signUpButton = wrapper.find(`[data-test='signUp-button']`);
+        const signUpButton = wrapper.find(`[data-test='signup-button']`);
         expect(signUpButton.length).toBe(1);
+    });
+
+    it("Should sign-up", () => {
+        wrapper.find(`[data-test='first-name-form-control']`).simulate("change", { target: { value: "foofoo" } });
+        wrapper.find(`[data-test='last-name-form-control']`).simulate("change", { target: { value: "barbar" } });
+        wrapper.find(`[data-test='email-form-control']`).simulate("change", { target: { value: "foo@bar.com" } });
+        wrapper.find(`[data-test='password-form-control']`).simulate("change", { target: { value: "foobar" } });
+        wrapper.find(`[data-test='conf-password-form-control']`).simulate("change", { target: { value: "foobar" } });
+        wrapper.find(`[data-test='signup-button']`).simulate('click');
+        //TODO: cover the handle signup function by stubbing it
     });
 
     afterEach(() => {

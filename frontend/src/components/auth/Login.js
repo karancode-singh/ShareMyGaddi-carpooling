@@ -44,7 +44,7 @@ export default function Login({ setToken }) {
                     <Form.Group size="lg" controlId="email" className="form-group">
                         <Form.Label>Email</Form.Label>
                         <Form.Control
-                        data-test="form-control"
+                            data-test="email-form-control"
                             autoFocus
                             type="email"
                             value={email}
@@ -54,6 +54,7 @@ export default function Login({ setToken }) {
                     <Form.Group size="lg" controlId="password" className="form-group">
                         <Form.Label>Password</Form.Label>
                         <Form.Control
+                            data-test="password-form-control"
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}

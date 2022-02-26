@@ -44,11 +44,11 @@ describe("login", () => {
     expect(loginButton.length).toBe(1);
   });
 
-  it("TODO1", () => {
-    console.log(wrapper.find('.form-group').debug());
-    // wrapper.find('.form-group')[0].simulate("change", { target: { value: "foo" }})
-    // wrapper.find('.form-group')[1].simulate("change", { target: { value: "bar" }})
-    // wrapper.find('.login-button')[0].simulate('click');
+  it("Should log-in", () => {
+    wrapper.find(`[data-test='email-form-control']`).simulate("change", { target: { value: "foo@bar.com" }});
+    wrapper.find(`[data-test='password-form-control']`).simulate("change", { target: { value: "foobar" }});
+    wrapper.find(`[data-test='login-button']`).simulate('click');
+    //TODO: cover the handle login function by stubbing it
   });
 
   afterEach(() => {
