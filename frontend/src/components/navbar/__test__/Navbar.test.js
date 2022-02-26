@@ -1,10 +1,8 @@
-import Enzyme, { shallow } from "enzyme";
+import { shallow } from "enzyme";
 import React from "react";
-import Adapter from 'enzyme-adapter-react-16';
 import Cookies from 'js-cookie';
 import Navbar from "../Navbar";
 
-Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock("react-router-dom", () => ({
     ...jest.requireActual("react-router-dom"),
