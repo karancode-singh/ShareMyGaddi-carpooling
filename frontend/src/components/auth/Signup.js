@@ -95,7 +95,7 @@ export default function Signup({ setToken }) {
               onChange={(e) => setconfirmPassword(e.target.value)}
             />
           </Form.Group>
-          <Button size="lg" type="submit" disabled={!validateForm()} className="signup-button">
+          <Button size="lg" type="submit" disabled={!validateForm()} className="signup-button" data-test="signUp-button">
             Sign Up
           </Button>
         </Form>

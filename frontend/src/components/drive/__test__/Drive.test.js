@@ -6,7 +6,7 @@ import Drive from "../Drive";
 
 Enzyme.configure({ adapter: new Adapter() })
 
-describe("navbar", () => {
+describe("drive", () => {
 
     let wrapper;
 
@@ -15,9 +15,20 @@ describe("navbar", () => {
         wrapper = shallow(<Drive />);
     });
 
-    it("TODO1", () => {
-        
-    });
+    it("Should render source button", () => {
+        const sourceButton= wrapper.find(`[data-test='source-button']`);
+        expect(sourceButton.length).toBe(1);
+     });
+
+     it("Should render destination button", () => {
+        const destinationButton= wrapper.find(`[data-test='destination-button']`);
+        expect(destinationButton.length).toBe(1);
+     });
+
+     it("Should render submit button", () => {
+        const submitButton= wrapper.find(`[data-test='submit-button']`);
+        expect(submitButton.length).toBe(1);
+     });
 
     afterEach(() => {
         jest.clearAllMocks();

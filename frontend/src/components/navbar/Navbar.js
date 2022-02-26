@@ -44,7 +44,7 @@ export default function Navbar(props) {
               <FaIcons.FaBars onClick={showSidebar} />
             </Link> : null}
 
-          <div id='logo'>
+          <div id='logo' data-test="shareMyGaddi-logo">
             <AiIcons.AiFillCar />
             <Link to='/' className='menu-bars nav-text'>
               ShareMyGaddi
@@ -54,14 +54,14 @@ export default function Navbar(props) {
           {Cookies.get('token') ?
             <div className={'main-buttons'}>
               {/* <div id='main-buttons'> */}
-              <Button variant='warning' href='/active-trip' className={props.is_trip_active ? 'main-button' : 'hidden'} disabled={'/active-trip' === location.pathname}>
-                <AiIcons.AiOutlineCar style={{ color: 'black', marginBottom: '0.1rem', marginRight: '0.3rem' }} /> Active Trip
+              <Button variant='warning' href='/active-trip' className={props.is_trip_active ? 'main-button' : 'hidden'} disabled={'/active-trip' === location.pathname} data-test="activeTrip-button">
+                <AiIcons.AiOutlineCar style={{ color: 'black', marginBottom: '0.1rem', marginRight: '0.3rem' }} data-test='activeTrip-icon'/> Active Trip
               </Button>
-              <Button variant='warning' href='/drive' className={props.is_trip_active ? 'hidden' : 'main-button'} disabled={'/drive' === location.pathname}>
-                <AiIcons.AiTwotoneCar style={{ color: 'black', marginBottom: '0.1rem', marginRight: '0.3rem' }} /> Drive
+              <Button variant='warning' href='/drive' className={props.is_trip_active ? 'hidden' : 'main-button'} disabled={'/drive' === location.pathname} data-test="drive-button">
+                <AiIcons.AiTwotoneCar style={{ color: 'black', marginBottom: '0.1rem', marginRight: '0.3rem' }} data-test='drive-icon'/> Drive
               </Button>
-              <Button variant='warning' href='/ride' className={props.is_trip_active ? 'hidden' : 'main-button'} disabled={'/ride' === location.pathname}>
-                <MdIcons.MdPeopleOutline style={{ color: 'black', marginRight: '0.3rem' }} /> Ride
+              <Button variant='warning' href='/ride' className={props.is_trip_active ? 'hidden' : 'main-button'} disabled={'/ride' === location.pathname} data-test="ride-button">
+                <MdIcons.MdPeopleOutline style={{ color: 'black', marginRight: '0.3rem' }} data-test='ride-icon'/> Ride
               </Button>
             </div> : null}
         </div>
@@ -78,7 +78,7 @@ export default function Navbar(props) {
               </li>
               <li>
                 {/* <img src={props.user.img} alt={props.user.name} /> */}
-                <img src={defaultImg} alt='Name' />
+                <img src={defaultImg} alt='Name' data-test="name-image" />
               </li>
               <li style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
                 {/* <div style={{ color: 'white' }}>{props.user.name}</div> */}

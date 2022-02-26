@@ -63,7 +63,7 @@ export default function Drive() {
                                     <Form.Control readOnly defaultValue="Source not selected" value={mapCoords['src'] ? mapCoords['src']['lat'] + ', ' + mapCoords['src']['lng'] : null} />
                                 </Col>
                                 <Col xs="3">
-                                    <Button variant="primary" onClick={() => openMapModal('src')} style={{ width: '100%' }}>
+                                    <Button variant="primary" onClick={() => openMapModal('src')} style={{ width: '100%' }} data-test="source-button">
                                         Source
                                     </Button>
                                 </Col>
@@ -73,12 +73,12 @@ export default function Drive() {
                                     <Form.Control readOnly defaultValue="Destination not selected" value={mapCoords['dst'] ? mapCoords['dst']['lat'] + ', ' + mapCoords['dst']['lng'] : null} />
                                 </Col>
                                 <Col xs="3">
-                                    <Button variant="primary" onClick={() => openMapModal('dst')} style={{ width: '100%' }}>
+                                    <Button variant="primary" onClick={() => openMapModal('dst')} style={{ width: '100%' }} data-test="destination-button">
                                         Destination
                                     </Button>
                                 </Col>
                             </Form.Group>
-                            <Button variant="primary" type="submit">
+                            <Button variant="primary" type="submit" data-test="submit-button">
                                 Submit
                             </Button>
                         </Form>
