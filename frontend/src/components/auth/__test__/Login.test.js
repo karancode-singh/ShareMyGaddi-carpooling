@@ -1,9 +1,6 @@
-import Enzyme, { mount, shallow } from "enzyme";
+import {shallow} from "enzyme";
 import React from "react";
-import Adapter from 'enzyme-adapter-react-16';
 import Login from "../Login";
-
-Enzyme.configure({ adapter: new Adapter() });
 
 global.fetch = jest.fn(() =>
   Promise.resolve({
@@ -30,25 +27,31 @@ global.fetch = jest.fn(() =>
 // });
 
 describe("login", () => {
-    const setToken = jest.fn();
-    let wrapper;
-    // const setState = jest.fn();
-    // const useStateSpy = jest.spyOn(React, "useState");
-    // useStateSpy.mockImplementation((init) => [init, setState]);
+  const setToken = jest.fn();
+  const handleSubmit = jest.fn();
+  let wrapper;
+  // const setState = jest.fn();
+  // const useStateSpy = jest.spyOn(React, "useState");
+  // useStateSpy.mockImplementation((init) => [init, setState]);
 
-    beforeEach(() => {
-        // fetch.mockClear();
-        wrapper = shallow(<Login setToken={setToken} />);
-    });
+  beforeEach(() => {
+    // fetch.mockClear();
+    wrapper = shallow(<Login setToken={setToken} />);
+  });
 
-    it("TODO1", () => {
-        console.log(wrapper.find('.form-group').debug());
-        // wrapper.find('.form-group')[0].simulate("change", { target: { value: "foo" }})
-        // wrapper.find('.form-group')[1].simulate("change", { target: { value: "bar" }})
-        // wrapper.find('.login-button')[0].simulate('click');
-    });
+  it("Should render login button", () => {
+    const loginButton = wrapper.find(`[data-test='login-button']`);
+    expect(loginButton.length).toBe(1);
+  });
 
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
+  it("TODO1", () => {
+    console.log(wrapper.find('.form-group').debug());
+    // wrapper.find('.form-group')[0].simulate("change", { target: { value: "foo" }})
+    // wrapper.find('.form-group')[1].simulate("change", { target: { value: "bar" }})
+    // wrapper.find('.login-button')[0].simulate('click');
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 })
