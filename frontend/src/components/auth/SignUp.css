@@ -23,6 +23,10 @@
     width: 100%;
 }
 
+.signup-button:hover{
+    cursor: pointer; 
+}
+
 .login-link{
     text-align: center;
     margin-top: 2rem;

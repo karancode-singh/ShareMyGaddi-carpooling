@@ -7,7 +7,7 @@ import configData from "../../config.json";
 
 export default function SignUp({ setToken }) {
 
-  const [firstname, setFirstname] = useState("");
+  const [name, setName] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,20 +25,26 @@ export default function SignUp({ setToken }) {
   const handleSubmit = async e => {
     e.preventDefault();
     const data = {
-      firstname,
+      name,
       lastname,
       email,
       password,
       confirmpassword
     }
     const setUserDetails = await signupUser(data);
-    setToken(setUserDetails.token);
-    window.location.reload();
+    if(!setUserDetails.error){
+      alert("User signup successful!");
+      window.location.href = "/"
+    }
+    else{
+      alert("Signup failed. Please try again");
+      window.location.reload();
+    }
   }
 
   function validateForm() {
     return email.length > 0 && password.length > 0 &&
-      firstname.length > 0 && lastname.length > 0 &&
+      name.length > 0 && lastname.length > 0 &&
       password === confirmpassword
   }
 
@@ -48,14 +54,14 @@ export default function SignUp({ setToken }) {
         <Form onSubmit={handleSubmit}>
           <h3 className="heading-text">Sign Up</h3>
 
-          <Form.Group size="lg" controlId="firstname">
+          <Form.Group size="lg" controlId="name">
             <Form.Label>First Name</Form.Label>
             <Form.Control
               autoFocus
               data-test="first-name-form-control"
               type="text"
-              value={firstname}
-              onChange={(e) => setFirstname(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </Form.Group>
 
