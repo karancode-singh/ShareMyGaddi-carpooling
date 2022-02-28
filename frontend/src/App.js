@@ -1,27 +1,43 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Navbar from './components/Navbar'
+import 'bootstrap/dist/css/bootstrap.css'
+import configData from "./config.json";
+import Login from './components/auth/Login';
+import Signup from './components/auth/Signup';
+import useToken from './libraries/UseToken';
+import Navbar from './components/navbar/Navbar';
+import Drive from './components/drive/Drive';
+import NotFound from './components/misc/NotFound';
+import { useLoadScript } from '@react-google-maps/api';
+
+const libraries = ['places'];
 
 function App() {
+  const { token, setToken } = useToken();
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: configData.MAPS_API_KEY,
+    libraries
+  });
+
+  if (loadError) return <h1>Map load error</h1>;
+  if (!isLoaded) return <h1>Loading...</h1>;
+
   return (
-    <div className="App">
-      <Navbar name={"Nav"}/>
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
-    </div>
+    <Router>
+      <Navbar setToken={setToken} />
+      {/* <Navbar /> */}
+      <Routes>
+        {/* <Route exact path='/' element={props.is_auth ? <Login setToken={setToken} /> : (props.is_trip_active ? 'ActiveTrip' : 'TripHistory')} /> */}
+        <Route exact path='/' element={token ? <NotFound /> : <Login setToken={setToken} />} />
+        <Route exact path='/login' element={<Login setToken={setToken} />} />
+        <Route exact path='/signup' element={<Signup setToken={setToken} />} />
+        <Route exact path='/drive' element={<Drive />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 }
-
 export default App;

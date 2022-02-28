@@ -1,0 +1,15 @@
+.pac-container {
+  background-color: #FFF;
+  z-index: 3000;
+  position: fixed;
+  display: inline-block;
+  /* float: left; */
+}
+
+.modal {
+  z-index: 2000;
+}
+
+.modal-backdrop {
+  z-index: 1000;
+}
