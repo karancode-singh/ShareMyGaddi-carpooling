@@ -31,7 +31,7 @@ function App() {
       {/* <Navbar /> */}
       <Routes>
         {/* <Route exact path='/' element={props.is_auth ? <Login setToken={setToken} /> : (props.is_trip_active ? 'ActiveTrip' : 'TripHistory')} /> */}
-        <Route exact path='/' element={token ? <NotFound /> : <Login setToken={setToken} />} />
+        <Route exact path='/' element={token ? <Drive /> : <Login setToken={setToken} />} />
         <Route exact path='/login' element={<Login setToken={setToken} />} />
         <Route exact path='/signup' element={<SignUp setToken={setToken} />} />
         <Route exact path='/drive' element={<Drive />} />
