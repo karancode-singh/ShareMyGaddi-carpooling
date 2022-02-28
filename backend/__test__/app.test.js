@@ -8,7 +8,7 @@ const endpoint2 = "/api/signin";
 const endpoint3= "/api/signout";
 const endpoint4 ="/api/users"
 
-
+// Unit Test Signup
 describe(endpoint,()=>{
     it("post"+ endpoint,async ()=>{
         const response =  await request(app)
@@ -44,16 +44,16 @@ describe(endpoint,()=>{
        
     })
 })
-// always change this
+// Integration Test Signup
 describe(endpoint,()=>{
     it("post"+ endpoint,async ()=>{
         const response =  await request(app)
         .post(endpoint)
         .send({
             
-                "name":"user125",
+                "name":"user126",
                 "Lastname":"user_surname",
-                "email": "user125@gmil.com",
+                "email": "user126@gmil.com",
                 "password":"user124"
             
         })
@@ -62,6 +62,7 @@ describe(endpoint,()=>{
     })
 })
 
+//Unit Test SignIn
 describe(endpoint2,()=>{
     it("post"+ endpoint2,async ()=>{
         const response = await request(app)
@@ -97,7 +98,7 @@ describe(endpoint2,()=>{
     })
     
 })
-
+// Integration test SignIn
 describe(endpoint2,()=>{
     it("post"+ endpoint2,async ()=>{
         const response = await request(app)

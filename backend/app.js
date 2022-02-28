@@ -16,7 +16,7 @@ const swaggerDocument = YAML.load('./swagger.yaml');
 const authRoutes = require("./Routes/authentication");
 
 const allusersRoutes= require("./Routes/allusersRoutes");
-// import bodyparser from "body-parser";
+
 // import cookieparser from "cookie-parser";
 // import cors from "cors";
 //import swaggerUI from "swagger-ui-express";
