@@ -1,7 +1,7 @@
 import Enzyme, { mount, shallow } from "enzyme";
 import React from "react";
 import Adapter from 'enzyme-adapter-react-16';
-import Signup from "../Signup";
+import SignUp from "../SignUp";
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -11,7 +11,7 @@ global.fetch = jest.fn(() =>
     })
 );
 
-describe("signUp", () => {
+describe("signup", () => {
     const setToken = jest.fn();
     const handleSubmit = jest.fn();
     let wrapper;
@@ -21,7 +21,7 @@ describe("signUp", () => {
 
     beforeEach(() => {
         // fetch.mockClear();
-        wrapper = shallow(<Signup setToken={setToken} />);
+        wrapper = shallow(<SignUp setToken={setToken} />);
     });
 
     it("Should render Signup button", () => {
