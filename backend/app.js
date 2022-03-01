@@ -1,13 +1,13 @@
 const express = require('express');
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
 const app = express();
-const bodyparser=require('body-parser');
+const bodyparser = require('body-parser');
 const cookieparser = require('cookie-parser');
 const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config()
 
-const swaggerUI =require("swagger-ui-express");
+const swaggerUI = require("swagger-ui-express");
 const YAML = require("yamljs");
 const swaggerDocument = YAML.load('./swagger.yaml');
 
@@ -15,7 +15,7 @@ const swaggerDocument = YAML.load('./swagger.yaml');
 
 const authRoutes = require("./Routes/authentication");
 
-const allusersRoutes= require("./Routes/allusersRoutes");
+const allusersRoutes = require("./Routes/allusersRoutes");
 // import bodyparser from "body-parser";
 // import cookieparser from "cookie-parser";
 // import cors from "cors";
@@ -33,7 +33,7 @@ const allusersRoutes= require("./Routes/allusersRoutes");
 
 // MongoDb connection
 mongoose.connect(process.env.DATABASE_URI)
-.then(console.log("DB Connected"))
+    .then(console.log("DB Connected"))
 //.catch(error => console.log(error));
 
 //Middleware
@@ -42,8 +42,8 @@ app.use(cookieparser())
 app.use(cors())
 
 //Routes
-app.use("/api",authRoutes);
-app.use("/api",allusersRoutes)
+app.use("/api", authRoutes);
+app.use("/api", allusersRoutes)
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 
@@ -54,9 +54,9 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // Include variables from .env
 
-app.listen(process.env.PORT,()=>{
+app.listen(process.env.PORT, () => {
     console.log(`Listening to port ${process.env.PORT}`);
-    
+
 })
 module.exports = app;
 // MongoDb connection
