@@ -1,9 +1,6 @@
-import Enzyme, { mount, shallow } from "enzyme";
+import Enzyme, { shallow } from "enzyme";
 import React from "react";
-import Adapter from 'enzyme-adapter-react-16';
 import SignUp from "../SignUp";
-
-Enzyme.configure({ adapter: new Adapter() });
 
 global.fetch = jest.fn(() =>
     Promise.resolve({
