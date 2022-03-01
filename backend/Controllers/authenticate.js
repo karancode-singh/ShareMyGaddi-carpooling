@@ -95,7 +95,7 @@ exports.signin = (req,res)=>{
     
 }
 
-// is signed in route
+
 // exports.isSignedin= expressJwt({
 //     secret:process.env.SECRET,
 //     algorithms: ['sha1', 'RS256', 'HS256'],
@@ -103,16 +103,19 @@ exports.signin = (req,res)=>{
 // })
 
 exports.isSignedin= (req,res,next)=>{
-    let token = req.cookies.jwt;
+    let token = Object.values(req.cookies)[0]; // check in other system
     if(token){
         jwt.verify(token,process.env.SECRET,(err,decodestring)=>{
             if(err)
             {
+                console.log(err)
                 return res.status(400).json({
-                    error:"User not signed in"
+                    error:"User seems to be incorrect"
                 })
             }
             else{
+                req.auth=decodestring
+                //console.log(decodestring)
                 next()
             }
         })
@@ -120,7 +123,7 @@ exports.isSignedin= (req,res,next)=>{
     else{
 
                 return res.status(400).json({
-                    error:"User not signed in"
+                    error:"User not signed in....."
                 })
     }
 }
@@ -128,11 +131,11 @@ exports.isSignedin= (req,res,next)=>{
 
 exports.isAuthenticated = (req,res,next) => {
     let check = req.profile && req.auth && req.profile._id == req.auth._id;
-    console.log(req.profile)
-    console.log(req.auth)
+    //console.log(req.profile._id)
+    //console.log(req.auth)
     if(!check){
         return res.status(400).json({
-            error:"Access denied"
+            error:"Access denied......"
         })
     }
     next()
