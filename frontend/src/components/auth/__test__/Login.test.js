@@ -8,7 +8,7 @@ global.fetch = jest.fn(() =>
   })
 );
 
-//or try//
+//or try
 // window.fetch = jest.fn().mockImplementation(() => {
 //     return new Promise((resolve, reject) => {
 //         resolve({
