@@ -1,12 +1,12 @@
-import {shallow} from "enzyme";
+import { shallow } from "enzyme";
 import React from "react";
 import Login from "../Login";
 
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    json: () => Promise.resolve({ token: 'token' }),
-  })
-);
+// global.fetch = jest.fn(() =>
+//   Promise.resolve({
+//     json: () => Promise.resolve({ token: 'tokken' }),
+//   })
+// );
 
 //or try
 // window.fetch = jest.fn().mockImplementation(() => {
@@ -28,14 +28,12 @@ global.fetch = jest.fn(() =>
 
 describe("login", () => {
   const setToken = jest.fn();
-  const handleSubmit = jest.fn();
   let wrapper;
   // const setState = jest.fn();
   // const useStateSpy = jest.spyOn(React, "useState");
   // useStateSpy.mockImplementation((init) => [init, setState]);
 
   beforeEach(() => {
-    // fetch.mockClear();
     wrapper = shallow(<Login setToken={setToken} />);
   });
 
@@ -45,13 +43,18 @@ describe("login", () => {
   });
 
   it("Should log-in", () => {
-    wrapper.find(`[data-test='email-form-control']`).simulate("change", { target: { value: "foo@bar.com" }});
-    wrapper.find(`[data-test='password-form-control']`).simulate("change", { target: { value: "foobar" }});
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({ token: 'tokken' }),
+      })
+    );
+    wrapper.find(`[data-test='email-form-control']`).simulate("change", { target: { value: "foo@bar.com" } });
+    wrapper.find(`[data-test='password-form-control']`).simulate("change", { target: { value: "foobar" } });
     wrapper.find(`[data-test='login-button']`).simulate('click');
-    //TODO: cover the handle login function by stubbing it
   });
 
   afterEach(() => {
+    // fetch.mockClear();
     jest.clearAllMocks();
   });
 })

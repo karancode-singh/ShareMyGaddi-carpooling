@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css'
 import configData from "./config.json";
@@ -30,11 +30,10 @@ function App() {
       <Navbar setToken={setToken} />
       {/* <Navbar /> */}
       <Routes>
-        {/* <Route exact path='/' element={props.is_auth ? <Login setToken={setToken} /> : (props.is_trip_active ? 'ActiveTrip' : 'TripHistory')} /> */}
-        <Route exact path='/' element={token ? <Drive /> : <Login setToken={setToken} />} />
-        <Route exact path='/login' element={<Login setToken={setToken} />} />
-        <Route exact path='/signup' element={<SignUp setToken={setToken} />} />
-        <Route exact path='/drive' element={<Drive />} />
+        <Route exact path='/' element={token ? <Navigate to="/drive" /> : <Navigate to="/login" />} />
+        <Route exact path='/login' element={token ? <Navigate to="/" /> : <Login setToken={setToken} />} />
+        <Route exact path='/signup' element={token ? <Navigate to="/" /> : <SignUp setToken={setToken} />} />
+        <Route exact path='/drive' element={token ? <Drive /> : <Navigate to="/" />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>

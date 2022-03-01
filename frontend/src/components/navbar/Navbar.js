@@ -21,7 +21,7 @@ export default function Navbar(props) {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + Cookies.get('token')
+        'Authorization': 'Bearer ' + Cookies.get('tokken')
       },
       // body: JSON.stringify(credentials)
       // }).then(data => data.json());
@@ -39,7 +39,7 @@ export default function Navbar(props) {
       <IconContext.Provider value={{ color: '#fff' }}>
         {/* Primary Navbar */}
         <div className='navbar'>
-          {Cookies.get('token') ?
+          {Cookies.get('tokken') ?
             <Link to='#' className={'menu-bars'} id="hamburger">
               <FaIcons.FaBars onClick={showSidebar} />
             </Link> : null}
@@ -51,7 +51,7 @@ export default function Navbar(props) {
             </Link>
           </div>
 
-          {Cookies.get('token') ?
+          {Cookies.get('tokken') ?
             <div className={'main-buttons'}>
               {/* <div id='main-buttons'> */}
               <Button variant='warning' href='/active-trip' className={props.is_trip_active ? 'main-button' : 'hidden'} disabled={'/active-trip' === location.pathname} data-test="activeTrip-button">
@@ -68,7 +68,7 @@ export default function Navbar(props) {
         {/* Primary Navbar end*/}
 
         {/* Sidebar*/}
-        {Cookies.get('token') ?
+        {Cookies.get('tokken') ?
           <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
             <ul className='sidebar-top-items' onClick={showSidebar}>
               <li className='navbar-toggle' style={{ paddingLeft: '1rem' }}>

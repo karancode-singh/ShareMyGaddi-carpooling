@@ -14,10 +14,23 @@ export default function Login({ setToken }) {
         return fetch(configData.END_POINT + '/signin', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(credentials)
-        }).then(data => data.json());
+        })
+            .then((response) => {
+                console.log(response);
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error(response.statusText);
+            })
+            .then((responseJson) => {
+                return responseJson;
+            })
+            .catch((error) => {
+                alert(error);
+            });
     }
 
     const handleSubmit = async e => {
@@ -26,9 +39,9 @@ export default function Login({ setToken }) {
             email,
             password
         }
-
         const sessionUserDetails = await loginUser(data);
-        setToken(sessionUserDetails.token);
+        if (sessionUserDetails && sessionUserDetails.token)
+            setToken(sessionUserDetails.token);
         window.location.reload();
     }
 

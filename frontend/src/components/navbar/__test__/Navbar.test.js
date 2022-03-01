@@ -16,7 +16,7 @@ describe("navbar", () => {
     let wrapper;
 
     beforeEach(() => {
-        Cookies.get = jest.fn().mockImplementation(() => 'token');
+        Cookies.get = jest.fn().mockImplementation(() => 'tokken');
         wrapper = shallow(<Navbar />);
     });
    

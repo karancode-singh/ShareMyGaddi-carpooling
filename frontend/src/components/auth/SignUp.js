@@ -20,7 +20,20 @@ export default function SignUp({ setToken }) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(userDetails)
-    }).then(data => data.json());
+    })
+      .then((response) => {
+        console.log(response);
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error(response.statusText);
+      })
+      .then((responseJson) => {
+        return responseJson;
+      })
+      .catch((error) => {
+        alert(error);
+      });
   }
   const handleSubmit = async e => {
     e.preventDefault();
@@ -31,15 +44,10 @@ export default function SignUp({ setToken }) {
       password,
       confirmpassword
     }
-    const setUserDetails = await signupUser(data);
-    if(!setUserDetails.error){
-      alert("User signup successful!");
-      window.location.href = "/"
-    }
-    else{
-      alert("Signup failed. Please try again");
-      window.location.reload();
-    }
+    const sessionUserDetails = await signupUser(data);
+    if (sessionUserDetails && sessionUserDetails.token)
+      setToken(sessionUserDetails.token);
+    window.location.reload();
   }
 
   function validateForm() {
