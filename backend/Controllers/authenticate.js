@@ -96,20 +96,46 @@ exports.signin = (req,res)=>{
 }
 
 // is signed in route
-exports.isSignedin= expressJwt({
-    secret:process.env.SECRET,
-    algorithms: ['sha1', 'RS256', 'HS256'],
-    userProperty:"auth"
-})
+// exports.isSignedin= expressJwt({
+//     secret:process.env.SECRET,
+//     algorithms: ['sha1', 'RS256', 'HS256'],
+//     userProperty:"auth"
+// })
 
-// exports.isAuthenticated = (req,res,next) => {
-//     let check = req.profile && req.auth && req.profile._id == req.auth._id;
-//     if(!check){
-//         return res.status(400).json({
-//             error:"Access denied"
-//         })
-//     }
-//     next()
-// }
+exports.isSignedin= (req,res,next)=>{
+    let token = req.cookies.jwt;
+    if(token){
+        jwt.verify(token,process.env.SECRET,(err,decodestring)=>{
+            if(err)
+            {
+                return res.status(400).json({
+                    error:"User not signed in"
+                })
+            }
+            else{
+                next()
+            }
+        })
+    }
+    else{
+
+                return res.status(400).json({
+                    error:"User not signed in"
+                })
+    }
+}
+
+
+exports.isAuthenticated = (req,res,next) => {
+    let check = req.profile && req.auth && req.profile._id == req.auth._id;
+    console.log(req.profile)
+    console.log(req.auth)
+    if(!check){
+        return res.status(400).json({
+            error:"Access denied"
+        })
+    }
+    next()
+}
 
 //export {signin, signout, signup, isSignedin, isAuthenticated}

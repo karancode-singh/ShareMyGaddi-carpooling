@@ -16,6 +16,7 @@ const swaggerDocument = YAML.load('./swagger.yaml');
 const authRoutes = require("./Routes/authentication");
 
 const allusersRoutes= require("./Routes/allusersRoutes");
+const userRoutes = require("./Routes/user.js")
 
 // import cookieparser from "cookie-parser";
 // import cors from "cors";
@@ -43,7 +44,8 @@ app.use(cors())
 
 //Routes
 app.use("/api",authRoutes);
-app.use("/api",allusersRoutes)
+app.use("/api",allusersRoutes);
+app.use("/api",userRoutes);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 
