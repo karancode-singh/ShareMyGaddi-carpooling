@@ -2,7 +2,7 @@ import Enzyme, { shallow } from "enzyme";
 import React from "react";
 import Adapter from 'enzyme-adapter-react-16';
 import Cookies from 'js-cookie';
-import Drive from "../Drive";
+import DriveRide from "../DriveRide";
 
 Enzyme.configure({ adapter: new Adapter() })
 
@@ -12,7 +12,7 @@ describe("drive", () => {
 
     beforeEach(() => {
         Cookies.get = jest.fn().mockImplementation(() => 'tokken');
-        wrapper = shallow(<Drive />);
+        wrapper = shallow(<DriveRide type={'drive'} />);
     });
 
     it("Should render source button", () => {
@@ -25,9 +25,9 @@ describe("drive", () => {
         expect(destinationButton.length).toBe(1);
      });
 
-     it("Should render submit button", () => {
-        const submitButton= wrapper.find(`[data-test='submit-button']`);
-        expect(submitButton.length).toBe(1);
+     it("Should render drive button", () => {
+        const driveButton= wrapper.find(`[data-test='drive-button']`);
+        expect(driveButton.length).toBe(1);
      });
 
     afterEach(() => {

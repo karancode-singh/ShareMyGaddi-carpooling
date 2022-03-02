@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Container, FloatingLabel, Form, Row } from 'react-bootstrap';
 import MapSelector from './MapSelector';
 import { DirectionsRenderer, DirectionsService, GoogleMap } from '@react-google-maps/api';
 import DatePicker from "react-datepicker";
-import './Drive.css';
+import './DriveRide.css';
 import "react-datepicker/dist/react-datepicker.css";
 
 const mapContainerStyle = {
@@ -20,7 +20,7 @@ const center = {
     lng: -80.54225947407059,
 };
 
-export default function Drive() {
+export default function DriveRide({ type }) {
     const [showModal, setShowModal] = useState(false);
     const [modalTitle, setModalTitle] = useState('Title Error');
     const [mapType, setMapType] = useState();
@@ -91,8 +91,8 @@ export default function Drive() {
                                     </Button>
                                 </Col>
                             </Form.Group>
-                            <Row>
-                                <Col xs="6" sm="3">
+                            <Row style={{ marginTop: '1rem' }}>
+                                <Col xs="6" sm="3" md="4">
                                     <label>Date of trip: </label>
                                 </Col>
                                 <Col xs="6">
@@ -103,11 +103,33 @@ export default function Drive() {
                                         onChange={(date) => setDate(date)} />
                                 </Col>
                             </Row>
+                            {
+                                type === 'drive' ?
+                                    <Row style={{ marginTop: '1rem' }}>
+                                        <Col sm="7" md="12" xl="8">
+                                            <FloatingLabel controlId="ridingWith" label="Select number of people can ride with">
+                                                <Form.Select>
+                                                    <option>----- Select -----</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </Form.Select>
+                                            </FloatingLabel>
+                                        </Col>
+                                    </Row>
+                                    : null
+                            }
                             <Row className='justify-content-center'>
                                 <Col className='col-auto'>
-                                    <Button variant="primary" type="submit" data-test="submit-button" style={{ marginTop: '3rem' }}>
-                                        Ready to drive!
-                                    </Button>
+                                    {
+                                        type === 'drive' ?
+                                            <Button variant="primary" type="submit" data-test="drive-button" style={{ marginTop: '3rem' }}>
+                                                Ready to drive!
+                                            </Button> :
+                                            <Button variant="primary" type="submit" data-test="ride-button" style={{ marginTop: '3rem' }}>
+                                                Ready to ride!
+                                            </Button>
+                                    }
                                 </Col>
                             </Row>
                         </Form>
