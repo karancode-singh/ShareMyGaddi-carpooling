@@ -65,7 +65,7 @@ export default function Navbar(props) {
                         </Button>
                     </Link>
                     <Link to='/ride'>
-                        <Button variant='warning' className={props.is_trip_active ? 'hidden' : 'main-button'} disabled={'/ride' === location.pathname} data-test="ride-button" onClick={()=>props.setCounter(props.counter+1)}>
+                        <Button variant='warning' className={props.is_trip_active ? 'hidden' : 'main-button'} disabled={'/ride' === location.pathname} data-test="ride-button">
                             <MdIcons.MdPeopleOutline style={{ color: 'black', marginRight: '0.3rem' }} data-test='ride-icon'/> Ride
                         </Button>
                     </Link>
