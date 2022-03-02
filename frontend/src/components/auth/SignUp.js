@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import './Signup.css';
+import './SignUp.css';
 import { Link } from "react-router-dom";
 import configData from "../../config.json";
 
-export default function Signup({ setToken }) {
+export default function SignUp({ setToken }) {
 
   const [name, setName] = useState("");
   const [lastname, setLastname] = useState("");
@@ -20,7 +20,20 @@ export default function Signup({ setToken }) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(userDetails)
-    }).then(data => data.json());
+    })
+      .then((response) => {
+        console.log(response);
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error(response.statusText);
+      })
+      .then((responseJson) => {
+        return responseJson;
+      })
+      .catch((error) => {
+        alert(error);
+      });
   }
   const handleSubmit = async e => {
     e.preventDefault();
@@ -31,15 +44,10 @@ export default function Signup({ setToken }) {
       password,
       confirmpassword
     }
-    const setUserDetails = await signupUser(data);
-    if(!setUserDetails.error){
-      alert("User signup successful!");
-      window.location.href = "/"
-    }
-    else{
-      alert("Signup failed. Please try again");
-      window.location.reload();
-    }
+    const sessionUserDetails = await signupUser(data);
+    if (sessionUserDetails && sessionUserDetails.token)
+      setToken(sessionUserDetails.token);
+    window.location.reload();
   }
 
   function validateForm() {
@@ -58,6 +66,7 @@ export default function Signup({ setToken }) {
             <Form.Label>First Name</Form.Label>
             <Form.Control
               autoFocus
+              data-test="first-name-form-control"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -68,6 +77,7 @@ export default function Signup({ setToken }) {
             <Form.Label>Last Name</Form.Label>
             <Form.Control
               autoFocus
+              data-test="last-name-form-control"
               type="text"
               value={lastname}
               onChange={(e) => setLastname(e.target.value)}
@@ -78,6 +88,7 @@ export default function Signup({ setToken }) {
             <Form.Label>Email</Form.Label>
             <Form.Control
               autoFocus
+              data-test="email-form-control"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -86,6 +97,7 @@ export default function Signup({ setToken }) {
           <Form.Group size="lg" controlId="password">
             <Form.Label>Password</Form.Label>
             <Form.Control
+              data-test="password-form-control"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -96,12 +108,13 @@ export default function Signup({ setToken }) {
             <Form.Label>Confirm Password </Form.Label>
             <Form.Control
               autoFocus
+              data-test="conf-password-form-control"
               type="password"
               value={confirmpassword}
               onChange={(e) => setconfirmPassword(e.target.value)}
             />
           </Form.Group>
-          <Button size="lg" type="submit" disabled={!validateForm()} className="signup-button">
+          <Button size="lg" type="submit" disabled={!validateForm()} className="signup-button" data-test="signup-button">
             Sign Up
           </Button>
         </Form>
