@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import MapSelector from './MapSelector';
-import { GoogleMap } from '@react-google-maps/api';
+import { DirectionsRenderer, DirectionsService, GoogleMap } from '@react-google-maps/api';
+import DatePicker from "react-datepicker";
 import './Drive.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 const mapContainerStyle = {
     height: "60vh",
@@ -26,6 +28,8 @@ export default function Drive() {
         src: null,
         dst: null
     });
+    const [routeResp, setRouteResp] = useState();
+    const [date, setDate] = useState(new Date());
 
     const mapRef = useRef();
     const onMapLoad = (map) => {
@@ -47,8 +51,17 @@ export default function Drive() {
         });
     }
 
+    const directionsCallback = (response) => {
+        if (response !== null) {
+            if (response.status === 'OK')
+                setRouteResp(response)
+            else
+                alert('Problem fetching directions')
+        } else alert('Problem fetching directions')
+    }
+
     useEffect(() => {
-        console.log("useRffect coords:",mapCoords);
+        setRouteResp(null);
     }, [mapCoords]);
 
     return (
@@ -78,9 +91,25 @@ export default function Drive() {
                                     </Button>
                                 </Col>
                             </Form.Group>
-                            <Button variant="primary" type="submit" data-test="submit-button">
-                                Submit
-                            </Button>
+                            <Row>
+                                <Col xs="6" sm="3">
+                                    <label>Date of trip: </label>
+                                </Col>
+                                <Col xs="6">
+                                    <DatePicker
+                                        selected={date}
+                                        minDate={new Date()}
+                                        closeOnScroll={true}
+                                        onChange={(date) => setDate(date)} />
+                                </Col>
+                            </Row>
+                            <Row className='justify-content-center'>
+                                <Col className='col-auto'>
+                                    <Button variant="primary" type="submit" data-test="submit-button" style={{ marginTop: '3rem' }}>
+                                        Ready to drive!
+                                    </Button>
+                                </Col>
+                            </Row>
                         </Form>
                     </Col>
                     <Col md style={{ marginTop: '2rem' }}>
@@ -91,6 +120,32 @@ export default function Drive() {
                             options={options}
                             onLoad={onMapLoad}
                         >
+                            {
+                                (routeResp == null &&
+                                    mapCoords['src'] != null && mapCoords['dst'] != null) && (
+                                    <DirectionsService
+                                        // required
+                                        options={{
+                                            destination: mapCoords['dst'],
+                                            origin: mapCoords['src'],
+                                            travelMode: 'DRIVING'
+                                        }}
+                                        // required
+                                        callback={directionsCallback}
+                                    />
+                                )
+                            }
+
+                            {
+                                routeResp !== null && (
+                                    <DirectionsRenderer
+                                        // required
+                                        options={{
+                                            directions: routeResp
+                                        }}
+                                    />
+                                )
+                            }
                         </GoogleMap>
                     </Col>
                 </Row>
