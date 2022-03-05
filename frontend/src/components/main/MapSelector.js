@@ -115,7 +115,7 @@ export default function MapSelector(props) {
         </GoogleMap>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>Close</Button>
+        <Button variant="secondary" data-test="close-button" onClick={handleClose}>Close</Button>
         <Button variant="primary" onClick={() => props.handleCallback(false, props.mapType, marker)}>Select</Button>
       </Modal.Footer>
     </Modal>

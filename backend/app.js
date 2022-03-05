@@ -1,13 +1,13 @@
 const express = require('express');
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
 const app = express();
-const bodyparser=require('body-parser');
+const bodyparser = require('body-parser');
 const cookieparser = require('cookie-parser');
 const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config()
 
-const swaggerUI =require("swagger-ui-express");
+const swaggerUI = require("swagger-ui-express");
 const YAML = require("yamljs");
 const swaggerDocument = YAML.load('./swagger.yaml');
 
@@ -34,7 +34,7 @@ const userRoutes = require("./Routes/user.js")
 
 // MongoDb connection
 mongoose.connect(process.env.DATABASE_URI)
-.then(console.log("DB Connected"))
+    .then(console.log("DB Connected"))
 //.catch(error => console.log(error));
 
 //Middleware
@@ -56,9 +56,9 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // Include variables from .env
 
-app.listen(process.env.PORT,()=>{
+app.listen(process.env.PORT, () => {
     console.log(`Listening to port ${process.env.PORT}`);
-    
+
 })
 module.exports = app;
 // MongoDb connection
