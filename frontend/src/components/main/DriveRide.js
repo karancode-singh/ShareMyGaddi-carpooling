@@ -3,8 +3,10 @@ import { Button, Col, Container, FloatingLabel, Form, Row } from 'react-bootstra
 import MapSelector from './MapSelector';
 import { DirectionsRenderer, DirectionsService, GoogleMap } from '@react-google-maps/api';
 import DatePicker from "react-datepicker";
+import configData from "../../config.json";
 import './DriveRide.css';
 import "react-datepicker/dist/react-datepicker.css";
+import Cookies from 'js-cookie';
 
 const mapContainerStyle = {
     height: "60vh",
@@ -30,6 +32,7 @@ export default function DriveRide({ type }) {
     });
     const [routeResp, setRouteResp] = useState();
     const [date, setDate] = useState(new Date());
+    const [riders, setRiders] = useState();
 
     const mapRef = useRef();
     const onMapLoad = (map) => {
@@ -58,6 +61,44 @@ export default function DriveRide({ type }) {
             else
                 alert('Problem fetching directions')
         } else alert('Problem fetching directions')
+    }
+
+    const handleDriveSubmit = () => {
+        const data = {
+            src: {
+                lat: mapCoords.src.lat,
+                lng: mapCoords.src.lng
+            },
+            dst: {
+                lat: mapCoords.dst.lat,
+                lng: mapCoords.dst.lng
+            },
+            route: routeResp.routes[0].overview_path,
+            date: date,
+            max_riders: riders
+        }
+        console.log(data);
+        return fetch(configData.END_POINT + '/drive', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + Cookies.get('tokken')
+            },
+            body: JSON.stringify(data)
+        })
+            .then((response) => {
+                console.log(response);
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error(response.statusText);
+            })
+            .then((responseJson) => {
+                console.log(responseJson);
+            })
+            .catch((error) => {
+                alert(error);
+            });
     }
 
     useEffect(() => {
@@ -108,7 +149,7 @@ export default function DriveRide({ type }) {
                                     <Row style={{ marginTop: '1rem' }}>
                                         <Col sm="7" md="12" xl="8">
                                             <FloatingLabel controlId="ridingWith" label="Select number of people can ride with">
-                                                <Form.Select>
+                                                <Form.Select onChange={e => { setRiders(e.target.value) }}>
                                                     <option>----- Select -----</option>
                                                     <option value="1">One</option>
                                                     <option value="2">Two</option>
@@ -123,7 +164,7 @@ export default function DriveRide({ type }) {
                                 <Col className='col-auto'>
                                     {
                                         type === 'drive' ?
-                                            <Button variant="primary" type="submit" data-test="drive-button" style={{ marginTop: '3rem' }}>
+                                            <Button variant="primary" type="submit" data-test="drive-button" style={{ marginTop: '3rem' }} onClick={handleDriveSubmit}>
                                                 Ready to drive!
                                             </Button> :
                                             <Button variant="primary" type="submit" data-test="ride-button" style={{ marginTop: '3rem' }}>

@@ -87,40 +87,38 @@ exports.signin = (req, res) => {
 //     userProperty:"auth"
 // })
 
-exports.isSignedin= (req,res,next)=>{
+exports.isSignedin = (req, res, next) => {
     let token = Object.values(req.cookies)[0]; // check in other system
-    if(token){
-        jwt.verify(token,process.env.SECRET,(err,decodestring)=>{
-            if(err)
-            {
+    if (token) {
+        jwt.verify(token, process.env.SECRET, (err, decodestring) => {
+            if (err) {
                 console.log(err)
                 return res.status(400).json({
-                    error:"User seems to be incorrect"
+                    error: "User seems to be incorrect"
                 })
             }
-            else{
-                req.auth=decodestring
-                //console.log(decodestring)
+            else {
+                req.auth = decodestring
                 next()
             }
         })
     }
-    else{
+    else {
 
-                return res.status(400).json({
-                    error:"User not signed in....."
-                })
+        return res.status(400).json({
+            error: "User not signed in....."
+        })
     }
 }
 
 
-exports.isAuthenticated = (req,res,next) => {
+exports.isAuthenticated = (req, res, next) => {
     let check = req.profile && req.auth && req.profile._id == req.auth._id;
     //console.log(req.profile._id)
     //console.log(req.auth)
-    if(!check){
+    if (!check) {
         return res.status(400).json({
-            error:"Access denied......"
+            error: "Access denied......"
         })
     }
     next()
