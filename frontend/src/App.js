@@ -35,7 +35,7 @@ function App() {
         <Route exact path='/login' element={token ? <Navigate to="/" /> : <Login setToken={setToken} />} />
         <Route exact path='/signup' element={token ? <Navigate to="/" /> : <SignUp setToken={setToken} />} />
         <Route exact path='/drive' element={token ? <Drive /> : <Navigate to="/" />} />        
-        <Route exact path='/triphistory' element={token ? <TripHistory /> : <Navigate to="/" />} />
+        <Route exact path='/trip-history' element={token ? <TripHistory /> : <Navigate to="/" />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>
