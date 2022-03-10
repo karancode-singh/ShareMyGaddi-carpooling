@@ -1,0 +1,17 @@
+.tripDate{
+    float: right !important;
+}
+
+.source{
+    text-align: start;
+    margin-right: 80%;
+}
+
+.card-body{
+    padding: 25px;
+}
+
+.trip-card{
+    margin: 20px;
+    background-color: aqua;
+}
