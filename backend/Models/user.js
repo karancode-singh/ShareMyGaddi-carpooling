@@ -12,7 +12,7 @@ const userSchema = new schema({
         require: true,
         maxlength: 32,
         trim: true
-    },
+    },    
     lastname: {
         type: String,
         maxlength: 32,

@@ -19,6 +19,12 @@ export default function TripHistory() {
             destination: "University of Waterloo",
             tripDate: "01-03-2022",
             rider: "Ran"
+        },
+        {
+            source: "lester ",
+            destination: "University of Waterloo",
+            tripDate: "01-03-2022",
+            rider: "Ran"
         }
     ]
 

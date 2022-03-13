@@ -8,10 +8,10 @@ import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
 import useToken from './libraries/UseToken';
 import Navbar from './components/navbar/Navbar';
-import Drive from './components/drive/Drive';
 import NotFound from './components/misc/NotFound';
 import TripHistory from './components/triphistory/TripHistory';
 import { useLoadScript } from '@react-google-maps/api';
+import DriveRide from './components/main/DriveRide';
 
 const libraries = ['places'];
 
@@ -34,7 +34,8 @@ function App() {
         <Route exact path='/' element={token ? <Navigate to="/drive" /> : <Navigate to="/login" />} />
         <Route exact path='/login' element={token ? <Navigate to="/" /> : <Login setToken={setToken} />} />
         <Route exact path='/signup' element={token ? <Navigate to="/" /> : <SignUp setToken={setToken} />} />
-        <Route exact path='/drive' element={token ? <Drive /> : <Navigate to="/" />} />        
+        <Route exact path='/drive' element={token ? <DriveRide type='drive' /> : <Navigate to="/" />} />
+        <Route exact path='/ride' element={token ? <DriveRide type='ride' /> : <Navigate to="/" />} />
         <Route exact path='/trip-history' element={token ? <TripHistory /> : <Navigate to="/" />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
