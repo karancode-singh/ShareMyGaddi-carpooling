@@ -18,8 +18,11 @@ exports.drive = (req, res) => {
                 max_riders: req.body.max_riders,
             });
             tripObj.save((err, trip) => {
-                if (err)
-                    return res.status(500).end();
+                if (err){ // ToDo: Handle error coming due to not selecting all the required fields
+                    return res.status(500).json({
+                        "error": err
+                    });
+                }
                 res.status(200).json(trip);
                 user.active_trip = trip._id;
                 user.trip_role_driver = true;

@@ -85,11 +85,11 @@ export default function DriveRide({ type }) {
             headers: {
                 'Content-Type': 'application/json',
                 // 'Authorization': 'Bearer ' + Cookies.get('tokken')
+                'Coookie': Cookies.get('tokken')
             },
             body: JSON.stringify(data)
         })
             .then((response) => {
-                console.log(response);
                 if (response.ok) {
                     return response.json();
                 }

@@ -88,7 +88,8 @@ exports.signin = (req, res) => {
 // })
 
 exports.isSignedin = (req, res, next) => {
-    let token = Object.values(req.cookies)[0]; // check in other system
+    // let token = Object.values(req.cookies)[0]; // check in other system
+    let token = req.get('coookie')
     if (token) {
         jwt.verify(token, process.env.SECRET, (err, decodestring) => {
             if (err) {
