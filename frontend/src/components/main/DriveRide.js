@@ -13,7 +13,6 @@ const mapContainerStyle = {
     width: "100%",
 };
 const options = {
-    // styles: mapStyles,
     disableDefaultUI: true,
     zoomControl: true,
 };
@@ -81,10 +80,9 @@ export default function DriveRide({ type }) {
         console.log(data);
         return fetch(configData.END_POINT + '/drive', {
             method: 'POST',
-            // credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer ' + Cookies.get('tokken')
+                // 'Authorization': 'Bearer ' + Cookies.get('tokken'),  //another working solution
                 'Coookie': Cookies.get('tokken')
             },
             body: JSON.stringify(data)

@@ -80,15 +80,15 @@ exports.signin = (req, res) => {
 
 }
 
-
-// exports.isSignedin= expressJwt({
-//     secret:process.env.SECRET,
-//     algorithms: ['sha1', 'RS256', 'HS256'],
-//     userProperty:"auth"
-// })
-
 exports.isSignedin = (req, res, next) => {
-    // let token = Object.values(req.cookies)[0]; // check in other system
+    //another working solution BEGIN
+    // let token = null;
+    // const bearerHeader = req.headers['authorization'];
+    // if (bearerHeader) {
+    //     const bearer = bearerHeader.split(' ');
+    //     token = bearer[1];
+    // }
+    //another working solution END
     let token = req.get('coookie')
     if (token) {
         jwt.verify(token, process.env.SECRET, (err, decodestring) => {
@@ -121,5 +121,3 @@ exports.isAuthenticated = (req, res, next) => {
     }
     next()
 }
-
-//export {signin, signout, signup, isSignedin, isAuthenticated}

@@ -16,6 +16,9 @@ const tripSchema = new schema({
     route: {
         type: Array
     },
+    waypoints: {
+        type: Array
+    },
     date: {
         type: Date,
         required: true,
