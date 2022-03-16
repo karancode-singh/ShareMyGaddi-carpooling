@@ -93,9 +93,8 @@ exports.isSignedin = (req, res, next) => {
         jwt.verify(token, process.env.SECRET, (err, decodestring) => {
             if (err) {
                 console.log(err)
-                return res.status(400).json({
-                    error: "User seems to be incorrect"
-                })
+                res.statusMessage = "User seems to be incorrect";
+                return res.status(400).end();
             }
             else {
                 req.auth = decodestring
@@ -104,10 +103,8 @@ exports.isSignedin = (req, res, next) => {
         })
     }
     else {
-
-        return res.status(400).json({
-            error: "User not signed in....."
-        })
+        res.statusMessage = "User not signed in";
+        return res.status(400).end();
     }
 }
 

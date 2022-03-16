@@ -63,7 +63,8 @@ export default function DriveRide({ type }) {
         } else alert('Problem fetching directions')
     }
 
-    const handleDriveSubmit = () => {
+    const handleDriveSubmit = (event) => {
+        event.preventDefault();
         const data = {
             src: {
                 lat: mapCoords.src.lat,
@@ -80,9 +81,10 @@ export default function DriveRide({ type }) {
         console.log(data);
         return fetch(configData.END_POINT + '/drive', {
             method: 'POST',
+            // credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + Cookies.get('tokken')
+                // 'Authorization': 'Bearer ' + Cookies.get('tokken')
             },
             body: JSON.stringify(data)
         })
@@ -97,6 +99,7 @@ export default function DriveRide({ type }) {
                 console.log(responseJson);
             })
             .catch((error) => {
+                console.log(error);
                 alert(error);
             });
     }
