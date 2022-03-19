@@ -30,7 +30,7 @@ export default function DriveRide({ type }) {
         dst: null
     });
     const [routeResp, setRouteResp] = useState();
-    const [date, setDate] = useState(new Date());
+    const [dateTime, setDateTime] = useState(new Date(new Date().getTime() + (60 * 60 * 1000)));
     const [riders, setRiders] = useState();
 
     const mapRef = useRef();
@@ -74,7 +74,7 @@ export default function DriveRide({ type }) {
                 lng: mapCoords.dst.lng
             },
             route: routeResp.routes[0].overview_path,
-            date: date,
+            dateTime: dateTime,
             max_riders: riders
         }
         console.log(data);
@@ -139,10 +139,10 @@ export default function DriveRide({ type }) {
                                 </Col>
                                 <Col xs="6">
                                     <DatePicker
-                                        selected={date}
+                                        selected={dateTime}
                                         minDate={new Date()}
                                         closeOnScroll={true}
-                                        onChange={(date) => setDate(date)} />
+                                        onChange={(date) => setDateTime(date)} />
                                 </Col>
                             </Row>
                             {
@@ -192,7 +192,10 @@ export default function DriveRide({ type }) {
                                         options={{
                                             destination: mapCoords['dst'],
                                             origin: mapCoords['src'],
-                                            travelMode: 'DRIVING'
+                                            travelMode: 'DRIVING',
+                                            drivingOptions: {
+                                                departureTime: dateTime
+                                            }
                                         }}
                                         // required
                                         callback={directionsCallback}
