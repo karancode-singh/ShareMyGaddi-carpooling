@@ -135,14 +135,16 @@ export default function DriveRide({ type }) {
                             </Form.Group>
                             <Row style={{ marginTop: '1rem' }}>
                                 <Col xs="6" sm="3" md="4">
-                                    <label>Date of trip: </label>
+                                    <label>Date-Time of trip: </label>
                                 </Col>
                                 <Col xs="6">
                                     <DatePicker
+                                        showTimeSelect
                                         selected={dateTime}
                                         minDate={new Date()}
                                         closeOnScroll={true}
-                                        onChange={(date) => setDateTime(date)} />
+                                        onChange={(date) => setDateTime(date)}
+                                        dateFormat="MMMM d @ h:mm aa" />
                                 </Col>
                             </Row>
                             {
