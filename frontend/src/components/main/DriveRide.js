@@ -13,7 +13,6 @@ const mapContainerStyle = {
     width: "100%",
 };
 const options = {
-    // styles: mapStyles,
     disableDefaultUI: true,
     zoomControl: true,
 };
@@ -63,7 +62,8 @@ export default function DriveRide({ type }) {
         } else alert('Problem fetching directions')
     }
 
-    const handleDriveSubmit = () => {
+    const handleDriveSubmit = (event) => {
+        event.preventDefault();
         const data = {
             src: {
                 lat: mapCoords.src.lat,
@@ -82,12 +82,12 @@ export default function DriveRide({ type }) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + Cookies.get('tokken')
+                // 'Authorization': 'Bearer ' + Cookies.get('tokken'),  //another working solution
+                'Coookie': Cookies.get('tokken')
             },
             body: JSON.stringify(data)
         })
             .then((response) => {
-                console.log(response);
                 if (response.ok) {
                     return response.json();
                 }
@@ -97,6 +97,7 @@ export default function DriveRide({ type }) {
                 console.log(responseJson);
             })
             .catch((error) => {
+                console.log(error);
                 alert(error);
             });
     }
