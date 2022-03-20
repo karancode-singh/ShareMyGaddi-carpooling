@@ -81,16 +81,16 @@ exports.signin = (req, res) => {
 }
 
 exports.isSignedin = (req, res, next) => {
-    //another working solution BEGIN
-    // let token = null;
-    // const bearerHeader = req.headers['authorization'];
-    // if (bearerHeader) {
-    //     const bearer = bearerHeader.split(' ');
-    //     token = bearer[1];
-    // }
-    //another working solution END
-    
     let token = req.get('coookie')
+    if (!token) {
+        //another working solution BEGIN
+        const bearerHeader = req.headers['authorization'];
+        if (bearerHeader) {
+            const bearer = bearerHeader.split(' ');
+            token = bearer[1];
+        }
+        //another working solution END
+    }
     if (token) {
         jwt.verify(token, process.env.SECRET, (err, decodestring) => {
             if (err) {
