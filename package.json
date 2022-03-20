@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@googlemaps/google-maps-services-js": "^3.3.11",
-    "@mapbox/polyline": "^1.1.1"
-  }
-}
