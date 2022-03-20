@@ -9,7 +9,7 @@ dotenv.config()
 
 // const MS_PER_MINUTE = 60000;
 const offsetDurationInMinutes = 15;
-const pct = .2;
+const pct = .3; // Percent of route points for source (others are checked for destination)
 const radiusOffset = 50;    //TODO: TUNE
 
 exports.drive = (req, res) => {
@@ -253,8 +253,7 @@ exports.tripDone = (req, res) => {
                                 }
                             })
                         });
-                        //TODO: Check if any issue (should not be since foreach is NOT async)
-                        //POTENTIAL ISSUE: Need to return 200 when 1, 2, 3 (all) are done
+                        //POTENTIAL ISSUE (should not be since foreach is NOT async): Need to return 200 when 1, 2, 3 (all) are done
                         return res.status(200).end();
                     }
                 })
