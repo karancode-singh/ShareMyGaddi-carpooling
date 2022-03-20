@@ -47,9 +47,12 @@ exports.drive = (req, res) => {
 }
 
 exports.ride = (req, res) => {
+    console.log(req.auth._id)
     User.findById(req.auth._id, (err, user) => {
+        console.log(err);
         if (err)
             return res.status(500).end();
+        console.log(user.active_trip)    
         if (user.active_trip == undefined || user.active_trip == null) {
             //Matching logic START
             console.log('ride req.body', req.body);
@@ -158,5 +161,50 @@ exports.cancelTrip = (req, res) => {
                 });
             });
         }
+    })
+}
+
+exports.histroy =(req,res)=>{
+    const u = require("../Models/user.js")
+}
+exports.drivedone=(req,res)=>{
+    
+    //var ab=ObjectId('623628d6e2cb3e73c861dde1')
+    User.findById(req.auth._id,(err, user) => {
+        if (err)
+            return res.status(500).end();
+        else{
+            
+            
+            Trip.findById(user.active_trip,(err,trips)=>{
+                if(err)
+                return res.status(500).end();
+                else{
+                    trips.riders.forEach(temp=>{
+                        User.findById(temp,(err,user2)=>{
+                            
+                            if(err)
+                            return res.status(500).end();
+                            else{
+                                
+                                user2.trips.push(user.active_trip);
+                                
+                                trips.riders.pop(temp)
+                                
+                                user2.save((err)=>{
+                                    res.statusMessage = "Error in saving trip to table.";
+                            return res.status(500).end();
+                                })
+                            }
+                        })
+                    })
+                    
+                    
+                }
+            })
+        }
+        
+        
+
     })
 }

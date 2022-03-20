@@ -89,6 +89,7 @@ exports.isSignedin = (req, res, next) => {
     //     token = bearer[1];
     // }
     //another working solution END
+    
     let token = req.get('coookie')
     if (token) {
         jwt.verify(token, process.env.SECRET, (err, decodestring) => {
@@ -99,6 +100,7 @@ exports.isSignedin = (req, res, next) => {
             }
             else {
                 req.auth = decodestring
+                
                 next()
             }
         })
