@@ -1,13 +1,16 @@
 const Trip = require("../Models/tripModel");
 const User = require("../Models/user");
 const dotenv = require("dotenv");
+const { Client } = require("@googlemaps/google-maps-services-js");
+var polylineUtil = require('@mapbox/polyline');
+const mapsClient = new Client({});
 const { PolyUtil } = require("node-geometry-library");
 dotenv.config()
 
 // const MS_PER_MINUTE = 60000;
 const offsetDurationInMinutes = 15;
 const pct = .2;
-const radiusOffset = 25;
+const radiusOffset = 50;    //TODO: TUNE
 
 exports.drive = (req, res) => {
     User.findById(req.auth._id, (err, user) => {
@@ -20,7 +23,7 @@ exports.drive = (req, res) => {
                 source: req.body.src,
                 destination: req.body.dst,
                 route: req.body.route,
-                date: new Date(req.body.date),
+                dateTime: new Date(req.body.dateTime),
                 max_riders: req.body.max_riders,
             });
             tripObj.save((err, trip) => {
@@ -53,14 +56,14 @@ exports.ride = (req, res) => {
         if (user.active_trip == undefined || user.active_trip == null) {
             //Matching logic START
             console.log('ride req.body', req.body);
-            let startDate = new Date(req.body.date);
-            startDate.setMinutes(startDate.getMinutes() - offsetDurationInMinutes);
-            let endDate = new Date(req.body.date);
-            endDate.setMinutes(endDate.getMinutes() + offsetDurationInMinutes);
+            let startDateTime = new Date(req.body.dateTime);
+            startDateTime.setMinutes(startDateTime.getMinutes() - offsetDurationInMinutes);
+            let endDateTime = new Date(req.body.dateTime);
+            endDateTime.setMinutes(endDateTime.getMinutes() + offsetDurationInMinutes);
             Trip.find({
                 date: {
-                    $gte: startDate,
-                    $lte: endDate
+                    $gte: startDateTime,
+                    $lte: endDateTime
                 },
                 available_riders: true
             }, function (err, trips) {
@@ -71,13 +74,13 @@ exports.ride = (req, res) => {
                 var trip;
                 trips.forEach(tempTrip => {
                     const pctLen = parseInt(tempTrip.route.length * pct)
-                    let found = PolyUtil.isLocationOnEdge(
+                    let found = PolyUtil.isLocationOnPath(
                         req.body.src,
                         tempTrip.route.slice(0, pctLen),
                         radiusOffset
                     );
                     if (found) {
-                        found = PolyUtil.isLocationOnEdge(
+                        found = PolyUtil.isLocationOnPath(
                             req.body.dst,
                             tempTrip.route.slice(pctLen),
                             radiusOffset
@@ -93,23 +96,47 @@ exports.ride = (req, res) => {
                     res.statusMessage = "No match found";
                     return res.status(400).end();
                 }
-                trip.riders.push(user._id);
-                trip.available_riders = !(trip.riders.length === trip.max_riders);
-                trip.save((err, trip) => {
-                    if (err)
-                        return res.status(500).end();
-                    res.status(200).json(trip);
-                    user.active_trip = trip._id;
-                    user.trip_role_driver = false;
-                    user.save((err) => {
-                        if (err) {
-                            //TODO: revert
+                trip.waypoints = [...trip.waypoints, req.body.src, req.body.dst];
+                mapsClient.directions({
+                    params: {
+                        origin: trip.source,
+                        destination: trip.destination,
+                        waypoints: trip.waypoints,
+                        drivingOptions: {
+                            departureTime: new Date(trip.dateTime),  // for the time N milliseconds from now.
+                        },
+                        optimize: true,
+                        key: process.env.MAPS_API_KEY
+                    },
+                    timeout: 2000, // milliseconds
+                })
+                    .then((r) => {
+                        const routeArray = polylineUtil.decode(r.data.routes[0].overview_polyline.points);
+                        trip.route = Object.values(routeArray)
+                            .map(item => ({ lat: item[0], lng: item[1] }));
+                        trip.riders.push(user._id);
+                        trip.available_riders = !(trip.riders.length === trip.max_riders);
+                        trip.save((err, trip) => {
+                            if (err)
+                                return res.status(500).end();
+                            res.status(200).json(trip);
+                            user.active_trip = trip._id;
+                            user.trip_role_driver = false;
+                            user.save((err) => {
+                                if (err) {
+                                    //TODO: revert
+                                    return res.status(500).end();
+                                }
+                                return res;
+                            })
                             return res.status(500).end();
-                        }
-                        return res;
+                        });
                     })
-                    return res.status(500).end();
-                });
+                    .catch((e) => {
+                        console.log(e.response.data);
+                        res.statusMessage = e.response.data.error_message;
+                        return res.status(400).end();
+                    });
             });
         } else {
             res.statusMessage = "A trip is already active";
