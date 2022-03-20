@@ -52,7 +52,6 @@ exports.ride = (req, res) => {
         console.log(err);
         if (err)
             return res.status(500).end();
-        console.log(user.active_trip)    
         if (user.active_trip == undefined || user.active_trip == null) {
             //Matching logic START
             console.log('ride req.body', req.body);
@@ -61,11 +60,12 @@ exports.ride = (req, res) => {
             let endDate = new Date(req.body.date);
             endDate.setMinutes(endDate.getMinutes() + offsetDurationInMinutes);
             Trip.find({
+                completed: false,   //trip is active
+                available_riders: true,
                 date: {
                     $gte: startDate,
                     $lte: endDate
                 },
-                available_riders: true
             }, function (err, trips) {
                 if (err) {
                     res.statusMessage = "No matches found. No trips around your time.";
@@ -164,47 +164,74 @@ exports.cancelTrip = (req, res) => {
     })
 }
 
-exports.histroy =(req,res)=>{
-    const u = require("../Models/user.js")
-}
-exports.drivedone=(req,res)=>{
-    
-    //var ab=ObjectId('623628d6e2cb3e73c861dde1')
-    User.findById(req.auth._id,(err, user) => {
+exports.tripHistory = (req, res) => {
+    User.findById(req.auth._id, (err, user) => {
         if (err)
             return res.status(500).end();
-        else{
-            
-            
-            Trip.findById(user.active_trip,(err,trips)=>{
-                if(err)
-                return res.status(500).end();
-                else{
-                    trips.riders.forEach(temp=>{
-                        User.findById(temp,(err,user2)=>{
-                            
-                            if(err)
-                            return res.status(500).end();
-                            else{
-                                
-                                user2.trips.push(user.active_trip);
-                                
-                                trips.riders.pop(temp)
-                                
-                                user2.save((err)=>{
-                                    res.statusMessage = "Error in saving trip to table.";
-                            return res.status(500).end();
-                                })
-                            }
-                        })
-                    })
-                    
-                    
-                }
+        else {
+            Trip.find({ '_id': { $in: user.trips } }, (err, trips) => {
+                if (err)
+                    return res.status(500).end();
+                res.status(200).json(trips);
+                return res;
             })
         }
-        
-        
+    })
+}
 
+exports.tripDone = (req, res) => {
+    User.findById(req.auth._id, (err, user) => {
+        if (err)
+            return res.status(500).end();
+        else {
+            if (user.active_trip == undefined || user.active_trip == null) {
+                res.statusMessage = "No active trip";
+                return res.status(400).end();
+            } else {
+                Trip.findById(user.active_trip, (err, trip) => {
+                    if (err)
+                        return res.status(500).end();
+                    else {
+                        trip.completed = true;
+                        trip.save((err) => {    //1
+                            if (err) {
+                                res.statusMessage = "Error in saving trip status.";
+                                return res.status(500).end();
+                            }
+                        });
+                        user.trips.push(trip._id);
+                        user.active_trip = null;
+                        user.trip_role_driver = null;
+                        user.save((err) => {    //2
+                            if (err) {
+                                res.statusMessage = "Error in saving trip to table.";
+                                return res.status(500).end();
+                            }
+                        });
+                        trip.riders.forEach(rider => {  //3
+                            User.findById(rider, (err, user_rider) => {
+                                if (err)
+                                    return res.status(500).end();
+                                else {
+                                    user_rider.trips.push(trip._id);
+                                    user_rider.active_trip = null;
+                                    user_rider.trip_role_driver = null;
+                                    user_rider.save((err) => {
+                                        if (err) {
+                                            //TODO: revert
+                                            res.statusMessage = "Error in saving user data for a rider.";
+                                            return res.status(500).end();
+                                        }
+                                    })
+                                }
+                            })
+                        });
+                        //TODO: Check if any issue (should not be since foreach is NOT async)
+                        //POTENTIAL ISSUE: Need to return 200 when 1, 2, 3 (all) are done
+                        return res.status(200).end();
+                    }
+                })
+            }
+        }
     })
 }

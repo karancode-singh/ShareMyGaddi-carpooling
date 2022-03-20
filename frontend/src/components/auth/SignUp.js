@@ -45,9 +45,10 @@ export default function SignUp({ setToken }) {
       confirmpassword
     }
     const sessionUserDetails = await signupUser(data);
-    if (sessionUserDetails && sessionUserDetails.token)
+    if (sessionUserDetails && sessionUserDetails.token) {
       setToken(sessionUserDetails.token);
-    window.location.reload();
+      window.location.reload();
+    }
   }
 
   function validateForm() {

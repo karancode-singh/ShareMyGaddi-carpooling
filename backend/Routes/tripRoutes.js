@@ -2,11 +2,11 @@ const express = require("express");
 const { isSignedin } = require("../Controllers/authenticate");
 
 var router = express.Router()
-const { drive, ride, cancelTrip,drivedone } = require("../Controllers/trip.js");
+const { drive, ride, cancelTrip, tripDone, tripHistory } = require("../Controllers/trip.js");
 
-router.post("/drive", isSignedin, drive)
-router.post("/ride", isSignedin, ride)
+router.post("/trip/drive", isSignedin, drive)
+router.post("/trip/ride", isSignedin, ride)
 router.delete("/trip", isSignedin, cancelTrip)
-//router.get("/histroy",isSignedin,histroy)
-router.get("/drive/done",isSignedin,drivedone)
+router.post("/trip/done", isSignedin, tripDone)
+router.get("/trip/histroy", isSignedin, tripHistory)
 module.exports = router;
