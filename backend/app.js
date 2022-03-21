@@ -6,7 +6,7 @@ const cookieparser = require('cookie-parser');
 const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config()
-
+const {Client} = require("@googlemaps/google-maps-services-js");
 const swaggerUI = require("swagger-ui-express");
 const YAML = require("yamljs");
 const swaggerDocument = YAML.load('./swagger.yaml');
@@ -14,9 +14,9 @@ const swaggerDocument = YAML.load('./swagger.yaml');
 
 
 const authRoutes = require("./Routes/authentication");
-
-const allusersRoutes= require("./Routes/allusersRoutes");
-const userRoutes = require("./Routes/user.js")
+const allusersRoutes = require("./Routes/allusersRoutes");
+const userRoutes = require("./Routes/user.js");
+const tripRoutes = require("./Routes/tripRoutes");
 
 // import cookieparser from "cookie-parser";
 // import cors from "cors";
@@ -43,12 +43,30 @@ app.use(cookieparser())
 app.use(cors())
 
 //Routes
-app.use("/api",authRoutes);
-app.use("/api",allusersRoutes);
-app.use("/api",userRoutes);
+app.use("/api", authRoutes);
+app.use("/api", allusersRoutes);
+app.use("/api", userRoutes);
+app.use("/api", tripRoutes);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
+// const client = new Client({});
 
+// client
+//   .directions({
+//     params: {
+//       origin: "University of Waterloo",
+//       destination:"62 University Avenue waterloo",
+//       key: "AIzaSyA0TMLllm-NV9F0jmVCExcPYJI4WtHQ7z0",
+//     },
+//     timeout: 1000, // milliseconds
+//   })
+//   .then((r) => {
+//       console.log("success")
+//     console.log(r.data);
+//   })
+//   .catch((e) => {
+//     console.log(e);
+//   });
 //export default app;
 // import app from './app.js';
 // import mongoose from "mongoose";
@@ -58,7 +76,6 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.listen(process.env.PORT, () => {
     console.log(`Listening to port ${process.env.PORT}`);
-
 })
 module.exports = app;
 // MongoDb connection
