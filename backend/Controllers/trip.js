@@ -89,6 +89,7 @@ exports.ride = (req, res) => {
                 },
             }, function (err, trips) {
                 if (err) {
+                    console.log("ERROR");
                     res.statusMessage = "No matches found. No trips around your time.";
                     return res.status(400).end();
                 }
@@ -101,6 +102,7 @@ exports.ride = (req, res) => {
                         radiusOffset
                     );
                     if (found) {
+                        console.log("found");
                         found = PolyUtil.isLocationOnPath(
                             req.body.dst,
                             tempTrip.route.slice(pctLen),
@@ -223,7 +225,21 @@ exports.tripHistory = (req, res) => {
         }
     })
 }
-
+exports.tripDriver = (req, res) => {
+    User.findById(req.auth._id, (err, user) => {
+        if (err)
+            return res.status(500).end();
+        else {
+            if(user.trip_role_driver==undefined || user.trip_role_driver== false || user.trip_role_driver==null)
+            {
+                res.status(200).json({"isdriver":false})
+            }
+            else{
+                res.status(200).json({"isdriver":true})
+            }
+        }
+    })
+}
 exports.tripDone = (req, res) => {
     User.findById(req.auth._id, (err, user) => {
         if (err)
