@@ -7,6 +7,9 @@ import configData from "../../config.json";
 import './DriveRide.css';
 import "react-datepicker/dist/react-datepicker.css";
 import Cookies from 'js-cookie';
+import Geocode from "react-geocode";
+
+Geocode.setApiKey(configData.MAPS_API_KEY);
 
 const mapContainerStyle = {
     height: "60vh",
@@ -33,6 +36,9 @@ export default function DriveRide({ type }) {
     const [dateTime, setDateTime] = useState(new Date(new Date().getTime() + (60 * 60 * 1000)));
     const [riders, setRiders] = useState();
 
+    const [srcName, setsrcName] = useState("")
+    const [destName, setdestName] = useState("")
+
     const mapRef = useRef();
     const onMapLoad = (map) => {
         mapRef.current = map;
@@ -44,13 +50,41 @@ export default function DriveRide({ type }) {
         setShowModal(true);
     }
 
+    const getLocFromCoords = (coords, type) =>{
+        let lat = coords['lat']
+        let long =  coords['lng']
+    
+        Geocode.fromLatLng(lat, long).then(
+            (res) => {
+                const location = res.results[0].formatted_address;
+                if(type === 'src'){
+                    setsrcName(location)
+                }
+                else{
+                    setdestName(location)
+                }
+            },
+            (err) => {
+                console.error(err);
+                if(type === 'src'){
+                    setsrcName(lat+','+long)
+                }
+                else{
+                    setdestName(lat+','+long)
+                }
+            }
+        );
+    }
+
     const handleCallback = (closeButtonClicked, mapType, mapData) => {
         setShowModal(false);
         if (closeButtonClicked) return;
+
         setMapCoords({
             ...mapCoords,
             [mapType]: mapData
-        });
+        })
+        getLocFromCoords(mapData, mapType);
     }
 
     const directionsCallback = (response) => {
@@ -115,7 +149,7 @@ export default function DriveRide({ type }) {
                         <Form>
                             <Form.Group as={Row} className="mb-3" controlId="src">
                                 <Col xs="9">
-                                    <Form.Control readOnly defaultValue="Source not selected" value={mapCoords['src'] ? mapCoords['src']['lat'] + ', ' + mapCoords['src']['lng'] : null} />
+                                    <Form.Control readOnly defaultValue="Source not selected" value={mapCoords['src'] ? srcName : null} />
                                 </Col>
                                 <Col xs="3">
                                     <Button variant="primary" onClick={() => openMapModal('src')} style={{ width: '100%' }} data-test="source-button">
@@ -125,7 +159,7 @@ export default function DriveRide({ type }) {
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3" controlId="dst">
                                 <Col xs="9">
-                                    <Form.Control readOnly defaultValue="Destination not selected" value={mapCoords['dst'] ? mapCoords['dst']['lat'] + ', ' + mapCoords['dst']['lng'] : null} />
+                                    <Form.Control readOnly defaultValue="Destination not selected" value={mapCoords['dst'] ? destName : null} />
                                 </Col>
                                 <Col xs="3">
                                     <Button variant="primary" onClick={() => openMapModal('dst')} style={{ width: '100%' }} data-test="destination-button">
