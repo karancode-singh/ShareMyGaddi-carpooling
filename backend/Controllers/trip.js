@@ -50,6 +50,7 @@ exports.drive = (req, res) => {
 }
 
 exports.ride = (req, res) => {
+    //console.log("HI")
     console.log(req.auth._id)
     User.findById(req.auth._id, (err, user) => {
         console.log(err);
@@ -207,7 +208,21 @@ exports.tripHistory = (req, res) => {
         }
     })
 }
-
+exports.tripDriver = (req, res) => {
+    User.findById(req.auth._id, (err, user) => {
+        if (err)
+            return res.status(500).end();
+        else {
+            if(user.trip_role_driver==undefined || user.trip_role_driver== false || user.trip_role_driver==null)
+            {
+                res.status(200).json({"isdriver":false})
+            }
+            else{
+                res.status(200).json({"isdriver":true})
+            }
+        }
+    })
+}
 exports.tripDone = (req, res) => {
     User.findById(req.auth._id, (err, user) => {
         if (err)

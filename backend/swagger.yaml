@@ -130,7 +130,57 @@ paths:
           200:
             description: Signout successful
           400:
-            description: Bad Request ...                   
+            description: Bad Request ... 
+  /api/trip/drive:
+      post:
+        summary: Sigin user
+        tags: [Drive]
+        security: 
+          - bearerAuth: []
+        requestBody:
+          required: true
+          content:
+            application/Json:
+                schema:
+                  type: object
+                  properties:
+                    src:
+                      type: object
+                      example: 
+                        lat: 43.48849834594833 
+                        lng: -80.54167768508073
+                      required: true 
+                    dst:
+                      type: object
+                      example: 
+                        lat: 43.46897334449664 
+                        lng: -80.56300904300979
+                      required: true
+                    route: 
+                      type: array
+                      item: object
+                      example:
+                        [
+                          
+                          {lat: 43.4885 ,lng: -80.54153000000001 },{lat: 43.48774 ,lng: -80.54155}
+                        ]  
+                    dateTime:
+                      type: string 
+                      example: 2022-03-19T18:44:07.066Z
+                      required: true
+                    max_riders:
+                      type: number
+                      minimum: 1
+                      maximum: 3  
+                     
+        responses:
+          200:
+            description: Trip was succesfull
+          400:
+            description: Trip already Exits
+          500:
+            description: Server Error 
+                                     
 
         
         

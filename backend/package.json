@@ -10,11 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-<<<<<<< HEAD
-    "@googlemaps/google-maps-services-js": "^3.3.10",
-=======
     "@googlemaps/google-maps-services-js": "^3.3.11",
->>>>>>> 8fbae0d6e3b3b212e21becf02913eaed6365fcce
     "@mapbox/polyline": "^1.1.1",
     "body-parser": "^1.19.1",
     "cookie-parser": "^1.4.6",

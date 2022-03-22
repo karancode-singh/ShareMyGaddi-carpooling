@@ -83,16 +83,25 @@ exports.signin = (req, res) => {
 
 exports.isSignedin = (req, res, next) => {
     let token = req.get('coookie')
+    //console.log(req)
+    console.log(token)
     if (!token) {
+        console.log("hi")
         //another working solution BEGIN
         const bearerHeader = req.headers['authorization'];
+        //console.log(bearerHeader)
         if (bearerHeader) {
+           
             const bearer = bearerHeader.split(' ');
-            token = bearer[1];
+            
+            console.log(bearer)
+            token = bearer[2];
+            console.log(token)
         }
         //another working solution END
     }
     if (token) {
+    
         jwt.verify(token, process.env.SECRET, (err, decodestring) => {
             if (err) {
                 console.log(err)
@@ -101,6 +110,7 @@ exports.isSignedin = (req, res, next) => {
             }
             else {
                 req.auth = decodestring
+                
                 
                 next()
             }
