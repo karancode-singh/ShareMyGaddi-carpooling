@@ -5,7 +5,7 @@ import './Login.css';
 import { Link } from "react-router-dom";
 import configData from "../../config.json";
 
-export default function Login({ setToken }) {
+export default function Login({ setToken, setActiveTrip }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -40,8 +40,12 @@ export default function Login({ setToken }) {
             password
         }
         const sessionUserDetails = await loginUser(data);
-        if (sessionUserDetails && sessionUserDetails.token)
-            setToken(sessionUserDetails.token);
+        if (sessionUserDetails) {
+            if (sessionUserDetails.token)
+                setToken(sessionUserDetails.token);
+            if (sessionUserDetails.user.active_trip)
+                setActiveTrip(sessionUserDetails.user.active_trip);
+        }
         window.location.reload();
     }
 

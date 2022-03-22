@@ -12,6 +12,24 @@ const offsetDurationInMinutes = 15;
 const pct = .3; // Percent of route points for source (others are checked for destination)
 const radiusOffset = 50;    //TODO: TUNE
 
+exports.activeTrip = (req, res) => {
+    User.findById(req.auth._id, (err, user) => {
+        if (err)
+            return res.status(500).end();
+        else if (user.active_trip == undefined || user.active_trip == null) {
+            res.statusMessage = "No active trip";
+            return res.status(400).end();
+        } else {
+            Trip.findById(user.active_trip, (err, trip) => {
+                if (err)
+                    return res.status(500).end();
+                res.status(200).json(trip);
+                return res;
+            })
+        }
+    })
+}
+
 exports.drive = (req, res) => {
     User.findById(req.auth._id, (err, user) => {
         if (err)

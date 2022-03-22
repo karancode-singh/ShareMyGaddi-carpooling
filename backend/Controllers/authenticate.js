@@ -70,11 +70,11 @@ exports.signin = (req, res) => {
         res.cookie("tokken", token, { expire: new Date() + 9999 });
         //console.log(res);
         // send response to front end
-        const { _id, name, email, role } = users;
+        const { _id, name, email, role, active_trip } = users;
         res.status(200)
         res.json({
             token,
-            user: { _id, name, email, role }
+            user: { _id, name, email, role, active_trip },
         })
         return res
     })
@@ -92,23 +92,22 @@ exports.isSignedin = (req, res, next) => {
         }
         //another working solution END
     }
-    if (token) {
+    if (token != undefined && token && token != 'undefined') {
         jwt.verify(token, process.env.SECRET, (err, decodestring) => {
             if (err) {
                 console.log(err)
-                res.statusMessage = "User seems to be incorrect";
-                return res.status(400).end();
+                res.statusMessage = "User authentication expired";
+                return res.status(401).end();
             }
             else {
                 req.auth = decodestring
-                
                 next()
             }
         })
     }
     else {
         res.statusMessage = "User not signed in";
-        return res.status(400).end();
+        return res.status(401).end();
     }
 }
 

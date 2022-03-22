@@ -21,7 +21,7 @@ const center = {
     lng: -80.54225947407059,
 };
 
-export default function DriveRide({ type }) {
+export default function DriveRide({ type, setToken, setActiveTrip }) {
     const [showModal, setShowModal] = useState(false);
     const [modalTitle, setModalTitle] = useState('Title Error');
     const [mapType, setMapType] = useState();
@@ -78,7 +78,7 @@ export default function DriveRide({ type }) {
             max_riders: riders
         }
         console.log(data);
-        return fetch(configData.END_POINT + '/drive', {
+        return fetch(configData.END_POINT + '/trip/drive', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -88,17 +88,63 @@ export default function DriveRide({ type }) {
             body: JSON.stringify(data)
         })
             .then((response) => {
-                if (response.ok) {
+                if (response.ok)
                     return response.json();
-                }
+                else if (response.status===401)
+                    setToken(null);
                 throw new Error(response.statusText);
             })
             .then((responseJson) => {
                 console.log(responseJson);
+                setActiveTrip(responseJson._id);
+                window.location.reload();
             })
             .catch((error) => {
                 console.log(error);
                 alert(error);
+                window.location.reload();
+            });
+    }
+
+    const handleRideSubmit = (event) => {
+        event.preventDefault();
+        const data = {
+            src: {
+                lat: mapCoords.src.lat,
+                lng: mapCoords.src.lng
+            },
+            dst: {
+                lat: mapCoords.dst.lat,
+                lng: mapCoords.dst.lng
+            },
+            dateTime: dateTime,
+        }
+        console.log(data);
+        return fetch(configData.END_POINT + '/trip/ride', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer ' + Cookies.get('tokken'),  //another working solution
+                'Coookie': Cookies.get('tokken')
+            },
+            body: JSON.stringify(data)
+        })
+            .then((response) => {
+                if (response.ok)
+                    return response.json();
+                else if (response.status===401)
+                    setToken(null);
+                throw new Error(response.statusText);
+            })
+            .then((responseJson) => {
+                console.log(responseJson);
+                setActiveTrip(responseJson._id);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.log(error);
+                alert(error);
+                window.location.reload();
             });
     }
 
@@ -170,7 +216,7 @@ export default function DriveRide({ type }) {
                                             <Button variant="primary" type="submit" data-test="drive-button" style={{ marginTop: '3rem' }} onClick={handleDriveSubmit}>
                                                 Ready to drive!
                                             </Button> :
-                                            <Button variant="primary" type="submit" data-test="ride-button" style={{ marginTop: '3rem' }}>
+                                            <Button variant="primary" type="submit" data-test="ride-button" style={{ marginTop: '3rem' }} onClick={handleRideSubmit}>
                                                 Ready to ride!
                                             </Button>
                                     }
