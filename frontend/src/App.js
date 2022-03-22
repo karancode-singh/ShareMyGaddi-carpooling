@@ -10,6 +10,7 @@ import useToken from './libraries/UseToken';
 import Navbar from './components/navbar/Navbar';
 import NotFound from './components/misc/NotFound';
 import TripHistory from './components/triphistory/TripHistory';
+import ActiveTrip from './components/activetrip/ActiveTrip';
 import { useLoadScript } from '@react-google-maps/api';
 import DriveRide from './components/main/DriveRide';
 
@@ -36,6 +37,7 @@ function App() {
         <Route exact path='/drive' element={token ? <DriveRide type='drive' /> : <Navigate to="/" />} />
         <Route exact path='/ride' element={token ? <DriveRide type='ride' /> : <Navigate to="/" />} />
         <Route exact path='/trip-history' element={token ? <TripHistory /> : <Navigate to="/" />} />
+        <Route exact path='/active-trip' element={token ? <ActiveTrip /> : <Navigate to="/drive" />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>
