@@ -23,3 +23,7 @@
 .active-trip-row{
     width: 80%;
 }
+
+#cancelTripButton{
+    margin-top: .625rem;
+}
