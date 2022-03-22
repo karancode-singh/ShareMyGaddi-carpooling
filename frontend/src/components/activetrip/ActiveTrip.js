@@ -1,10 +1,12 @@
-import React from 'react'
+import {React, useState} from 'react'
 import { Button, Col, Container, FloatingLabel, Form, Row } from 'react-bootstrap';
 
 import './ActiveTrip.css'
 
 export default function ActiveTrip() {
-  return (
+
+    const [isDriver, setisDriver] = useState(true)
+    return (
     <>
         <h1 id="pageTitle">Active Trip page</h1>
         <Container id="activeTripContainer">
@@ -22,7 +24,10 @@ export default function ActiveTrip() {
                     <h3>Rider(s):</h3>
                 </Row>
             </div>
-            <Button variant='danger' id='cancelTripButton'> Cancel trip </Button>
+            <Row>
+                {isDriver? <Button variant='primary' id='cancelTripButton'> Done </Button>: null}
+                <Button variant='danger' id='cancelTripButton'> Cancel trip </Button>
+            </Row>
         </Container>
         
     </>
