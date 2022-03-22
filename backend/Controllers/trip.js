@@ -68,6 +68,7 @@ exports.ride = (req, res) => {
                 available_riders: true
             }, function (err, trips) {
                 if (err) {
+                    console.log("ERROR");
                     res.statusMessage = "No matches found. No trips around your time.";
                     return res.status(400).end();
                 }
@@ -80,6 +81,7 @@ exports.ride = (req, res) => {
                         radiusOffset
                     );
                     if (found) {
+                        console.log("found");
                         found = PolyUtil.isLocationOnPath(
                             req.body.dst,
                             tempTrip.route.slice(pctLen),

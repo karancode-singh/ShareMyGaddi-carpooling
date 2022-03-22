@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^3.3.10",
+    "@mapbox/polyline": "^1.1.1",
     "body-parser": "^1.19.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
