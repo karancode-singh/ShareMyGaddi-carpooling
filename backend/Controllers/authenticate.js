@@ -39,7 +39,8 @@ exports.signup = (req, res) => {
         res.json({
             name: user.name,
             email: user.email,
-            _id: user._id
+            _id: user._id,
+            token: token
         })
         return res
     })
@@ -100,6 +101,7 @@ exports.isSignedin = (req, res, next) => {
             }
             else {
                 req.auth = decodestring
+                
                 next()
             }
         })

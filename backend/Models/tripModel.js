@@ -36,8 +36,9 @@ const tripSchema = new schema({
         type: Array,
         default: []
     },
-    status: {
-        type: String,   //completed/cancelled
+    completed: {    // false: active
+        type: Boolean,
+        default: false
     },
 }, { timestamps: true });
 

@@ -43,7 +43,8 @@ const userSchema = new schema({
         default: []
     },
     active_trip: {
-        type: mongoose.ObjectId
+        type: mongoose.ObjectId,
+        //default:null
     },
     trip_role_driver: {
         type: Boolean

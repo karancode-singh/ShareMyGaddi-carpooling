@@ -9,7 +9,7 @@ dotenv.config()
 
 // const MS_PER_MINUTE = 60000;
 const offsetDurationInMinutes = 15;
-const pct = .2;
+const pct = .3; // Percent of route points for source (others are checked for destination)
 const radiusOffset = 50;    //TODO: TUNE
 
 exports.drive = (req, res) => {
@@ -50,7 +50,9 @@ exports.drive = (req, res) => {
 }
 
 exports.ride = (req, res) => {
+    console.log(req.auth._id)
     User.findById(req.auth._id, (err, user) => {
+        console.log(err);
         if (err)
             return res.status(500).end();
         if (user.active_trip == undefined || user.active_trip == null) {
@@ -61,11 +63,12 @@ exports.ride = (req, res) => {
             let endDateTime = new Date(req.body.dateTime);
             endDateTime.setMinutes(endDateTime.getMinutes() + offsetDurationInMinutes);
             Trip.find({
+                completed: false,   //trip is active
+                available_riders: true,
                 date: {
                     $gte: startDateTime,
                     $lte: endDateTime
                 },
-                available_riders: true
             }, function (err, trips) {
                 if (err) {
                     console.log("ERROR");
@@ -186,6 +189,77 @@ exports.cancelTrip = (req, res) => {
                     return res;
                 });
             });
+        }
+    })
+}
+
+exports.tripHistory = (req, res) => {
+    User.findById(req.auth._id, (err, user) => {
+        if (err)
+            return res.status(500).end();
+        else {
+            Trip.find({ '_id': { $in: user.trips } }, (err, trips) => {
+                if (err)
+                    return res.status(500).end();
+                res.status(200).json(trips);
+                return res;
+            })
+        }
+    })
+}
+
+exports.tripDone = (req, res) => {
+    User.findById(req.auth._id, (err, user) => {
+        if (err)
+            return res.status(500).end();
+        else {
+            if (user.active_trip == undefined || user.active_trip == null) {
+                res.statusMessage = "No active trip";
+                return res.status(400).end();
+            } else {
+                Trip.findById(user.active_trip, (err, trip) => {
+                    if (err)
+                        return res.status(500).end();
+                    else {
+                        trip.completed = true;
+                        trip.save((err) => {    //1
+                            if (err) {
+                                res.statusMessage = "Error in saving trip status.";
+                                return res.status(500).end();
+                            }
+                        });
+                        user.trips.push(trip._id);
+                        user.active_trip = null;
+                        user.trip_role_driver = null;
+                        user.save((err) => {    //2
+                            if (err) {
+                                res.statusMessage = "Error in saving trip to table.";
+                                return res.status(500).end();
+                            }
+                        });
+                        trip.riders.forEach(rider => {  //3
+                            User.findById(rider, (err, user_rider) => {
+                                if (err)
+                                    return res.status(500).end();
+                                else {
+                                    user_rider.trips.push(trip._id);
+                                    user_rider.active_trip = null;
+                                    user_rider.trip_role_driver = null;
+                                    user_rider.save((err) => {
+                                        if (err) {
+                                            //TODO: revert
+                                            res.statusMessage = "Error in saving user data for a rider.";
+                                            return res.status(500).end();
+                                        }
+                                    })
+                                }
+                            })
+                        });
+                        //POTENTIAL ISSUE (should not be since foreach is NOT async): Need to return 200 when 1, 2, 3 (all) are done
+                        return res.status(200).end();
+                    }
+                })
+            }
         }
     })
 }
