@@ -181,19 +181,61 @@ exports.cancelTrip = (req, res) => {
                     return res.status(500).end();
                 if (trip) {
                     if (user.trip_role_driver) {
+                        trip.riders.forEach(rider => {  //3
+                            User.findById(rider, (err, user_rider) => {
+                                if (err)
+                                    return res.status(500).end();
+                                else {
+                                    user_rider.active_trip = null;
+                                    user_rider.trip_role_driver = null;
+                                    user_rider.save((err) => {
+                                        if (err) {
+                                            //TODO: revert
+                                            res.statusMessage = "Error in saving user data for a rider.";
+                                            return res.status(500).end();
+                                        }
+                                    })
+                                }
+                            })
+                        });
                         trip.deleteOne((err) => {
-                            if (err)
+                            if (err) {
+                                res.statusMessage = "Error in deleting trip object";
                                 return res.status(500).end();
+                            }
                         });
                     } else {
-                        trip.riders = trip.riders.filter(function (element) {
-                            return element != user._id;
-                        });
-                        trip.available_riders = true;
-                        trip.save((err) => {
-                            if (err)
-                                return res.status(500).end();
-                        });
+                        const riderIndex = trip.riders.indexOf(user._id);
+                        trip.waypoints.splice(riderIndex * 2, 2);
+                        mapsClient.directions({
+                            params: {
+                                origin: trip.source,
+                                destination: trip.destination,
+                                waypoints: trip.waypoints,
+                                drivingOptions: {
+                                    departureTime: new Date(trip.dateTime),  // for the time N milliseconds from now.
+                                },
+                                optimize: true,
+                                key: process.env.MAPS_API_KEY
+                            },
+                            timeout: 2000, // milliseconds
+                        })
+                            .then((r) => {
+                                const routeArray = polylineUtil.decode(r.data.routes[0].overview_polyline.points);
+                                trip.route = Object.values(routeArray)
+                                    .map(item => ({ lat: item[0], lng: item[1] }));
+                                trip.riders.splice(riderIndex);
+                                trip.available_riders = true;
+                                trip.save((err) => {
+                                    if (err)
+                                        return res.status(500).end();
+                                });
+                            })
+                            .catch((e) => {
+                                console.log(e.response.data);
+                                res.statusMessage = e.response.data.error_message;
+                                return res.status(400).end();
+                            });
                     }
                 }
                 user.active_trip = null;
@@ -230,12 +272,11 @@ exports.tripDriver = (req, res) => {
         if (err)
             return res.status(500).end();
         else {
-            if(user.trip_role_driver==undefined || user.trip_role_driver== false || user.trip_role_driver==null)
-            {
-                res.status(200).json({"isdriver":false})
+            if (user.trip_role_driver == undefined || user.trip_role_driver == false || user.trip_role_driver == null) {
+                res.status(200).json({ "isdriver": false })
             }
-            else{
-                res.status(200).json({"isdriver":true})
+            else {
+                res.status(200).json({ "isdriver": true })
             }
         }
     })
