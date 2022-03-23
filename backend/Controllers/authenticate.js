@@ -7,7 +7,7 @@ const dotenv = require("dotenv");
 dotenv.config()
 
 exports.signout = (req, res) => {
-    //console.log(req)
+   
     if (Object.keys(req.cookies) != 'tokken') {
         res.statusMessage = "user already signedout";
         return res.status(400).end();
@@ -68,7 +68,7 @@ exports.signin = (req, res) => {
         const token = jwt.sign({ _id: user._id }, process.env.SECRET)
         // put in cookie
         res.cookie("tokken", token, { expire: new Date() + 9999 });
-        //console.log(res);
+        
         // send response to front end
         const { _id, name, lastname, email, role, active_trip } = user;
         res.status(200);
