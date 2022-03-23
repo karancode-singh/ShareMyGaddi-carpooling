@@ -249,7 +249,7 @@ paths:
             description: No Ride found on specified path or time
           500:
             description: Server Error
-  /api/trip/isDriver:
+  /api/trip/isdriver:
       get:
         summary: Get Status of driver
         tags: [Drive]

@@ -7,6 +7,7 @@ const dotenv = require("dotenv");
 dotenv.config()
 
 exports.signout = (req, res) => {
+    //console.log(req)
     if (Object.keys(req.cookies) != 'tokken') {
         res.statusMessage = "user already signedout";
         return res.status(400).end();
@@ -82,6 +83,7 @@ exports.signin = (req, res) => {
 
 exports.isSignedin = (req, res, next) => {
     let token = req.get('coookie')
+    console.log(token)
     if (!token && req.headers['authorization']) {
         //another working solution BEGIN
         const bearerHeader = req.headers['authorization'];
@@ -111,14 +113,14 @@ exports.isSignedin = (req, res, next) => {
 }
 
 
-exports.isAuthenticated = (req, res, next) => {
-    let check = req.profile && req.auth && req.profile._id == req.auth._id;
-    //console.log(req.profile._id)
-    //console.log(req.auth)
-    if (!check) {
-        return res.status(400).json({
-            error: "Access denied......"
-        })
-    }
-    next()
-}
+// exports.isAuthenticated = (req, res, next) => {
+//     let check = req.profile && req.auth && req.profile._id == req.auth._id;
+//     //console.log(req.profile._id)
+//     //console.log(req.auth)
+//     if (!check) {
+//         return res.status(400).json({
+//             error: "Access denied......"
+//         })
+//     }
+//     next()
+// }
