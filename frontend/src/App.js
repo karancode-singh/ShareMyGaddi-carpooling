@@ -13,7 +13,7 @@ import TripHistory from './components/triphistory/TripHistory';
 import ActiveTrip from './components/activetrip/ActiveTrip';
 import { useLoadScript } from '@react-google-maps/api';
 import DriveRide from './components/main/DriveRide';
-import UseActiveTrip from 'libraries/UseActiveTrip';
+import UseActiveTrip from './libraries/UseActiveTrip';
 
 const libraries = ['places'];
 
