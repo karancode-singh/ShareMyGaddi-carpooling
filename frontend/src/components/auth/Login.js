@@ -41,12 +41,12 @@ export default function Login({ setToken, setActiveTrip }) {
         }
         const sessionUserDetails = await loginUser(data);
         if (sessionUserDetails) {
-            if (sessionUserDetails.token)
-                setToken(sessionUserDetails.token);
             if (sessionUserDetails.user.active_trip)
                 setActiveTrip(sessionUserDetails.user.active_trip);
+            if (sessionUserDetails.token)
+                setToken({ token: sessionUserDetails.token, name: sessionUserDetails.user.name });
+            window.location.reload();
         }
-        window.location.reload();
     }
 
     function validateForm() {

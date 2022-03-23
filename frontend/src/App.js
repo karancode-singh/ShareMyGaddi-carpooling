@@ -10,6 +10,7 @@ import useToken from './libraries/UseToken';
 import Navbar from './components/navbar/Navbar';
 import NotFound from './components/misc/NotFound';
 import TripHistory from './components/triphistory/TripHistory';
+import ActiveTrip from './components/activetrip/ActiveTrip';
 import { useLoadScript } from '@react-google-maps/api';
 import DriveRide from './components/main/DriveRide';
 import UseActiveTrip from 'libraries/UseActiveTrip';
@@ -18,8 +19,7 @@ const libraries = ['places'];
 
 function App() {
   const { activeTrip, setActiveTrip } = UseActiveTrip();
-  const { token, setToken } = useToken(setActiveTrip);
-
+  const { token, name, setToken } = useToken(setActiveTrip);
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: configData.MAPS_API_KEY,
@@ -31,15 +31,15 @@ function App() {
 
   return (
     <Router>
-      <Navbar setToken={setToken} />
+      <Navbar setToken={setToken} activeTrip={activeTrip} name={name} />
       <Routes>
         <Route exact path='/' element={activeTrip ? <Navigate to="/active-trip" /> : <Navigate to="/trip-history" />} />
         <Route exact path='/login' element={token ? <Navigate to="/" /> : <Login setToken={setToken} setActiveTrip={setActiveTrip} />} />
         <Route exact path='/signup' element={token ? <Navigate to="/" /> : <SignUp setToken={setToken} />} />
         <Route exact path='/drive' element={activeTrip ? <Navigate to="/active-trip" /> : (token ? <DriveRide type='drive' setToken={setToken} setActiveTrip={setActiveTrip} /> : <Navigate to="/login" />)} />
         <Route exact path='/ride' element={activeTrip ? <Navigate to="/active-trip" /> : (token ? <DriveRide type='ride' setToken={setToken} setActiveTrip={setActiveTrip} /> : <Navigate to="/login" />)} />
+        <Route exact path='/active-trip' element={token ? (activeTrip ? <ActiveTrip /> : <Navigate to="/trip-history" />) : <Navigate to="/login" />} />
         <Route exact path='/trip-history' element={token ? <TripHistory /> : <Navigate to="/login" />} />
-        <Route exact path='/active-trip' element={token ? <TripHistory /> : <Navigate to="/login" />} /> {/*change to: ActiveTrip*/}
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>

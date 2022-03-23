@@ -35,13 +35,12 @@ exports.signup = (req, res) => {
         // put in cookie
         res.cookie("tokken", token, { expire: new Date() + 9999 });
         // send response to front end
+        const { _id, name, lastname, email, role, active_trip } = user;
         res.status(200);
         res.json({
-            name: user.name,
-            email: user.email,
-            _id: user._id,
-            token: token
-        })
+            token,
+            user: { _id, name: name + ' ' + lastname, email, role, active_trip },
+        });
         return res
     })
 
@@ -55,27 +54,27 @@ exports.signin = (req, res) => {
         return res.status(422).end();
     }
 
-    User.findOne({ email }, (err, users) => {
-        if (err || !users) {
+    User.findOne({ email }, (err, user) => {
+        if (err || !user) {
             res.statusMessage = "User email does not exist";
             return res.status(400).end();
         }
-        if (!users.authenticate(password)) {
+        if (!user.authenticate(password)) {
             res.statusMessage = "Email and Password does not match"
             return res.status(401).end();
         }
         // create token and put in cookie
-        const token = jwt.sign({ _id: users._id }, process.env.SECRET)
+        const token = jwt.sign({ _id: user._id }, process.env.SECRET)
         // put in cookie
         res.cookie("tokken", token, { expire: new Date() + 9999 });
         //console.log(res);
         // send response to front end
-        const { _id, name, email, role, active_trip } = users;
-        res.status(200)
+        const { _id, name, lastname, email, role, active_trip } = user;
+        res.status(200);
         res.json({
             token,
-            user: { _id, name, email, role, active_trip },
-        })
+            user: { _id, name: name + ' ' + lastname, email, role, active_trip },
+        });
         return res
     })
 

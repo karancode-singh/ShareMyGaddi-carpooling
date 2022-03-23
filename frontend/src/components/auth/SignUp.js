@@ -46,7 +46,7 @@ export default function SignUp({ setToken }) {
     }
     const sessionUserDetails = await signupUser(data);
     if (sessionUserDetails && sessionUserDetails.token) {
-      setToken(sessionUserDetails.token);
+      setToken({ token: sessionUserDetails.token, name: sessionUserDetails.user.name });
       window.location.reload();
     }
   }
