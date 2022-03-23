@@ -7,6 +7,7 @@ const dotenv = require("dotenv");
 dotenv.config()
 
 exports.signout = (req, res) => {
+   
     if (Object.keys(req.cookies) != 'tokken') {
         res.statusMessage = "user already signedout";
         return res.status(400).end();
@@ -35,13 +36,12 @@ exports.signup = (req, res) => {
         // put in cookie
         res.cookie("tokken", token, { expire: new Date() + 9999 });
         // send response to front end
+        const { _id, name, lastname, email, role, active_trip } = user;
         res.status(200);
         res.json({
-            name: user.name,
-            email: user.email,
-            _id: user._id,
-            token: token
-        })
+            token,
+            user: { _id, name: name + ' ' + lastname, email, role, active_trip },
+        });
         return res
     })
 
@@ -55,27 +55,27 @@ exports.signin = (req, res) => {
         return res.status(422).end();
     }
 
-    User.findOne({ email }, (err, users) => {
-        if (err || !users) {
+    User.findOne({ email }, (err, user) => {
+        if (err || !user) {
             res.statusMessage = "User email does not exist";
             return res.status(400).end();
         }
-        if (!users.authenticate(password)) {
+        if (!user.authenticate(password)) {
             res.statusMessage = "Email and Password does not match"
             return res.status(401).end();
         }
         // create token and put in cookie
-        const token = jwt.sign({ _id: users._id }, process.env.SECRET)
+        const token = jwt.sign({ _id: user._id }, process.env.SECRET)
         // put in cookie
         res.cookie("tokken", token, { expire: new Date() + 9999 });
-        //console.log(res);
+        
         // send response to front end
-        const { _id, name, email, role } = users;
-        res.status(200)
+        const { _id, name, lastname, email, role, active_trip } = user;
+        res.status(200);
         res.json({
             token,
-            user: { _id, name, email, role }
-        })
+            user: { _id, name: name + ' ' + lastname, email, role, active_trip },
+        });
         return res
     })
 
@@ -83,7 +83,8 @@ exports.signin = (req, res) => {
 
 exports.isSignedin = (req, res, next) => {
     let token = req.get('coookie')
-    if (!token) {
+    console.log(token)
+    if (!token && req.headers['authorization']) {
         //another working solution BEGIN
         const bearerHeader = req.headers['authorization'];
         if (bearerHeader) {
@@ -92,35 +93,34 @@ exports.isSignedin = (req, res, next) => {
         }
         //another working solution END
     }
-    if (token) {
+    if (token && token != 'undefined') {
         jwt.verify(token, process.env.SECRET, (err, decodestring) => {
             if (err) {
                 console.log(err)
-                res.statusMessage = "User seems to be incorrect";
-                return res.status(400).end();
+                res.statusMessage = "User authentication expired";
+                return res.status(401).end();
             }
             else {
                 req.auth = decodestring
-                
                 next()
             }
         })
     }
     else {
         res.statusMessage = "User not signed in";
-        return res.status(400).end();
+        return res.status(401).end();
     }
 }
 
 
-exports.isAuthenticated = (req, res, next) => {
-    let check = req.profile && req.auth && req.profile._id == req.auth._id;
-    //console.log(req.profile._id)
-    //console.log(req.auth)
-    if (!check) {
-        return res.status(400).json({
-            error: "Access denied......"
-        })
-    }
-    next()
-}
+// exports.isAuthenticated = (req, res, next) => {
+//     let check = req.profile && req.auth && req.profile._id == req.auth._id;
+//     //console.log(req.profile._id)
+//     //console.log(req.auth)
+//     if (!check) {
+//         return res.status(400).json({
+//             error: "Access denied......"
+//         })
+//     }
+//     next()
+// }

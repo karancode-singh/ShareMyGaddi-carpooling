@@ -12,12 +12,30 @@ const offsetDurationInMinutes = 15;
 const pct = .3; // Percent of route points for source (others are checked for destination)
 const radiusOffset = 50;    //TODO: TUNE
 
+exports.activeTrip = (req, res) => {
+    User.findById(req.auth._id, (err, user) => {
+        if (err)
+            return res.status(500).end();
+        else if (user.active_trip == undefined || user.active_trip == null) {
+            res.statusMessage = "No active trip";
+            return res.status(400).end();
+        } else {
+            Trip.findById(user.active_trip, (err, trip) => {
+                if (err)
+                    return res.status(500).end();
+                res.status(200).json(trip);
+                return res;
+            })
+        }
+    })
+}
+
 exports.drive = (req, res) => {
     User.findById(req.auth._id, (err, user) => {
         if (err)
             return res.status(500).end();
         if (user.active_trip == undefined || user.active_trip == null) {
-            console.log('drive req.body', req.body);
+            
             const tripObj = new Trip({
                 driver: req.auth._id,
                 source: req.body.src,
@@ -50,14 +68,14 @@ exports.drive = (req, res) => {
 }
 
 exports.ride = (req, res) => {
-    console.log(req.auth._id)
+    
     User.findById(req.auth._id, (err, user) => {
-        console.log(err);
+        
         if (err)
             return res.status(500).end();
         if (user.active_trip == undefined || user.active_trip == null) {
             //Matching logic START
-            console.log('ride req.body', req.body);
+            
             let startDateTime = new Date(req.body.dateTime);
             startDateTime.setMinutes(startDateTime.getMinutes() - offsetDurationInMinutes);
             let endDateTime = new Date(req.body.dateTime);
@@ -71,18 +89,22 @@ exports.ride = (req, res) => {
                 },
             }, function (err, trips) {
                 if (err) {
+                    
                     res.statusMessage = "No matches found. No trips around your time.";
                     return res.status(400).end();
                 }
                 var trip;
                 trips.forEach(tempTrip => {
+                    
                     const pctLen = parseInt(tempTrip.route.length * pct)
                     let found = PolyUtil.isLocationOnPath(
                         req.body.src,
                         tempTrip.route.slice(0, pctLen),
                         radiusOffset
                     );
+                    
                     if (found) {
+                        
                         found = PolyUtil.isLocationOnPath(
                             req.body.dst,
                             tempTrip.route.slice(pctLen),
@@ -136,7 +158,7 @@ exports.ride = (req, res) => {
                         });
                     })
                     .catch((e) => {
-                        console.log(e.response.data);
+                      
                         res.statusMessage = e.response.data.error_message;
                         return res.status(400).end();
                     });
@@ -149,7 +171,9 @@ exports.ride = (req, res) => {
 }
 
 exports.cancelTrip = (req, res) => {
+   
     User.findById(req.auth._id, (err, user) => {
+        
         if (err)
             return res.status(500).end();
         if (user.active_trip == undefined || user.active_trip == null) {
@@ -161,19 +185,61 @@ exports.cancelTrip = (req, res) => {
                     return res.status(500).end();
                 if (trip) {
                     if (user.trip_role_driver) {
+                        trip.riders.forEach(rider => {  //3
+                            User.findById(rider, (err, user_rider) => {
+                                if (err)
+                                    return res.status(500).end();
+                                else {
+                                    user_rider.active_trip = null;
+                                    user_rider.trip_role_driver = null;
+                                    user_rider.save((err) => {
+                                        if (err) {
+                                            //TODO: revert
+                                            res.statusMessage = "Error in saving user data for a rider.";
+                                            return res.status(500).end();
+                                        }
+                                    })
+                                }
+                            })
+                        });
                         trip.deleteOne((err) => {
-                            if (err)
+                            if (err) {
+                                res.statusMessage = "Error in deleting trip object";
                                 return res.status(500).end();
+                            }
                         });
                     } else {
-                        trip.riders = trip.riders.filter(function (element) {
-                            return element != user._id;
-                        });
-                        trip.available_riders = true;
-                        trip.save((err) => {
-                            if (err)
-                                return res.status(500).end();
-                        });
+                        const riderIndex = trip.riders.indexOf(user._id);
+                        trip.waypoints.splice(riderIndex * 2, 2);
+                        mapsClient.directions({
+                            params: {
+                                origin: trip.source,
+                                destination: trip.destination,
+                                waypoints: trip.waypoints,
+                                drivingOptions: {
+                                    departureTime: new Date(trip.dateTime),  // for the time N milliseconds from now.
+                                },
+                                optimize: true,
+                                key: process.env.MAPS_API_KEY
+                            },
+                            timeout: 2000, // milliseconds
+                        })
+                            .then((r) => {
+                                const routeArray = polylineUtil.decode(r.data.routes[0].overview_polyline.points);
+                                trip.route = Object.values(routeArray)
+                                    .map(item => ({ lat: item[0], lng: item[1] }));
+                                trip.riders.splice(riderIndex);
+                                trip.available_riders = true;
+                                trip.save((err) => {
+                                    if (err)
+                                        return res.status(500).end();
+                                });
+                            })
+                            .catch((e) => {
+                                
+                                res.statusMessage = e.response.data.error_message;
+                                return res.status(400).end();
+                            });
                     }
                 }
                 user.active_trip = null;
@@ -258,6 +324,21 @@ exports.tripDone = (req, res) => {
                     }
                 })
             }
+        }
+    })
+}
+
+exports.isDriver = (req, res) => {
+    User.findById(req.auth._id, (err, user) => {
+        if (err)
+            return res.status(500).end();
+        else {
+            if (user.trip_role_driver == undefined || user.trip_role_driver == null) {
+                res.statusMessage = "No active trip";
+                return res.status(400).end();
+            }
+            else
+                res.status(200).json({ "isdriver": user.trip_role_driver })
         }
     })
 }
