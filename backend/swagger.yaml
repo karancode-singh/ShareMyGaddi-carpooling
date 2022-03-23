@@ -133,7 +133,7 @@ paths:
             description: Bad Request ... 
   /api/trip/drive:
       post:
-        summary: Sigin user
+        summary: Make a Drive
         tags: [Drive]
         security: 
           - bearerAuth: []
@@ -162,7 +162,7 @@ paths:
                       example:
                         [
                           
-                          {lat: 43.4885 ,lng: -80.54153000000001 },{lat: 43.48774 ,lng: -80.54155}
+                        { lat: 43.4885, lng: -80.54153000000001},{lat: 43.48774,lng: -80.54155},{lat: 43.48718,lng: -80.54146},{lat: 43.48682,lng: -80.54142}, {lat: 43.48666,lng: -80.54136000000001}, {lat: 43.48651,lng: -80.5413},{lat: 43.486160000000005,lng: -80.54113000000001},{lat:43.4859,lng: -80.54095000000001},{lat: 43.485290000000006,lng: -80.54042000000001}, {lat: 43.48443,lng: -80.53964},{lat: 43.48415000000001,lng: -80.54033000000001},{lat: 43.48402,lng: -80.54057},{lat: 43.483940000000004,lng: -80.54068000000001},{lat: 43.483830000000005,lng: -80.54076},{lat: 43.48306,lng: -80.54127000000001},{lat: 43.482490000000006,lng: -80.54162000000001},{lat: 43.48151,lng: -80.54219},{lat: 43.48127,lng: -80.54228},{lat: 43.48115000000001,lng: -80.54230000000001},{lat: 43.480920000000005,lng: -80.54231},{lat: 43.48067,lng: -80.54227},{lat: 43.480500000000006,lng: -80.54221000000001},{lat: 43.4802,lng: -80.54204},{lat:43.479310000000005,lng: -80.54147},{lat: 43.47815000000001,lng: -80.54069000000001},{lat: 43.4774,lng: -80.54023000000001},{lat: 43.477000000000004,lng: -80.53997000000001},{lat: 43.47692000000001,lng: -80.54021},{lat: 43.47625,lng: -80.54204},{lat: 43.47605,lng: -80.54263},{lat: 43.47605,lng: -80.54275000000001},{lat: 43.47589000000001,lng: -80.54322},{lat: 43.47509,lng: -80.54553000000001},{lat: 43.47476,lng: -80.54653},{lat:43.474500000000006,lng: -80.54728},{lat: 43.47384,lng: -80.54908},{lat: 43.47334, lng: -80.55040000000001},{lat: 43.47169,lng: -80.55501000000001},{lat: 43.47063000000001,lng: -80.55792000000001},{lat: 43.47052,lng: -80.5583},{lat: 43.470380000000006,lng: -80.55867},{lat: 43.469840000000005,lng: -80.56019},{lat: 43.46886000000001,lng: -80.56293000000001}
                         ]  
                     dateTime:
                       type: string 
@@ -180,6 +180,87 @@ paths:
             description: Trip already Exits
           500:
             description: Server Error 
+  /api/trip:
+      post:
+        summary: Cancel Trip
+        tags: [Drive]
+        security: 
+          - bearerAuth: []
+  /api/trip/ride:
+      post:
+        summary: Ride
+        tags: [Drive]
+        security: 
+          - bearerAuth: []
+        requestBody:
+          required: true
+          content:
+            application/Json:
+                schema:
+                  type: object
+                  properties:
+                    src:
+                      type: object
+                      example: 
+                        lat: 43.4868212345 
+                        lng: -80.541412345
+                      required: true 
+                    dst:
+                      type: object
+                      example: 
+                        lat: 43.474554312 
+                        lng: -80.5472854312
+                      required: true 
+                    dateTime:
+                      type: string 
+                      example: 2022-03-19T18:47:07.066Z  
+        responses:
+          200:
+            description: Ride succesfull found
+          400:
+            description: No Ride found on specified path or time
+          500:
+            description: Server Error        
+  /api/trip/history:
+      get:
+        summary: Get Trip History
+        tags: [Drive]
+        security: 
+          - bearerAuth: []
+        
+        responses:
+          200:
+            description: Ride succesfull found
+          400:
+            description: No Ride found on specified path or time
+          500:
+            description: Server Error
+  /api/trip/done:
+      post:
+        summary: Complete Active Trip
+        tags: [Drive]
+        security: 
+          - bearerAuth: []
+        
+        responses:
+          200:
+            description: Ride succesfull found
+          400:
+            description: No Ride found on specified path or time
+          500:
+            description: Server Error
+  /api/trip/isDriver:
+      get:
+        summary: Get Status of driver
+        tags: [Drive]
+        security: 
+          - bearerAuth: []
+        
+        responses:
+          200:
+            description: Drivers status Found
+          500:
+            description: Server Error                                         
                                      
 
         
