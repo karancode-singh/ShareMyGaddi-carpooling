@@ -178,6 +178,8 @@ paths:
             description: Trip was succesfull
           400:
             description: Trip already Exits
+          401:  
+            description: User not signed in  
           500:
             description: Server Error 
   /api/trip:
@@ -219,6 +221,8 @@ paths:
             description: Ride succesfull found
           400:
             description: No Ride found on specified path or time
+          401:  
+            description: User not signed in  
           500:
             description: Server Error        
   /api/trip/history:
@@ -233,6 +237,8 @@ paths:
             description: Ride succesfull found
           400:
             description: No Ride found on specified path or time
+          401:  
+            description: User not signed in  
           500:
             description: Server Error
   /api/trip/done:
@@ -247,9 +253,11 @@ paths:
             description: Ride succesfull found
           400:
             description: No Ride found on specified path or time
+          401:  
+            description: User not signed in
           500:
             description: Server Error
-  /api/trip/isDriver:
+  /api/trip/isdriver:
       get:
         summary: Get Status of driver
         tags: [Drive]
@@ -259,6 +267,8 @@ paths:
         responses:
           200:
             description: Drivers status Found
+          401:  
+            description: User not signed in
           500:
             description: Server Error                                         
                                      

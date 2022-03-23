@@ -35,7 +35,7 @@ exports.drive = (req, res) => {
         if (err)
             return res.status(500).end();
         if (user.active_trip == undefined || user.active_trip == null) {
-            console.log('drive req.body', req.body);
+            
             const tripObj = new Trip({
                 driver: req.auth._id,
                 source: req.body.src,
@@ -68,14 +68,14 @@ exports.drive = (req, res) => {
 }
 
 exports.ride = (req, res) => {
-    console.log(req.auth._id)
+    
     User.findById(req.auth._id, (err, user) => {
-        //console.log(err);
+        
         if (err)
             return res.status(500).end();
         if (user.active_trip == undefined || user.active_trip == null) {
             //Matching logic START
-            console.log('ride req.body', req.body);
+            
             let startDateTime = new Date(req.body.dateTime);
             startDateTime.setMinutes(startDateTime.getMinutes() - offsetDurationInMinutes);
             let endDateTime = new Date(req.body.dateTime);
@@ -89,22 +89,22 @@ exports.ride = (req, res) => {
                 },
             }, function (err, trips) {
                 if (err) {
-                    console.log("ERROR");
+                    
                     res.statusMessage = "No matches found. No trips around your time.";
                     return res.status(400).end();
                 }
                 var trip;
                 trips.forEach(tempTrip => {
-                    //console.log("hello")
+                    
                     const pctLen = parseInt(tempTrip.route.length * pct)
                     let found = PolyUtil.isLocationOnPath(
                         req.body.src,
                         tempTrip.route.slice(0, pctLen),
                         radiusOffset
                     );
-                    console.log(tempTrip.route.slice(0, pctLen))
+                    
                     if (found) {
-                        //console.log("found");
+                        
                         found = PolyUtil.isLocationOnPath(
                             req.body.dst,
                             tempTrip.route.slice(pctLen),
@@ -158,7 +158,7 @@ exports.ride = (req, res) => {
                         });
                     })
                     .catch((e) => {
-                        console.log(e.response.data);
+                      
                         res.statusMessage = e.response.data.error_message;
                         return res.status(400).end();
                     });
@@ -171,9 +171,9 @@ exports.ride = (req, res) => {
 }
 
 exports.cancelTrip = (req, res) => {
-    console.log("hooo")
+   
     User.findById(req.auth._id, (err, user) => {
-        console.log("HI")
+        
         if (err)
             return res.status(500).end();
         if (user.active_trip == undefined || user.active_trip == null) {
@@ -236,7 +236,7 @@ exports.cancelTrip = (req, res) => {
                                 });
                             })
                             .catch((e) => {
-                                console.log(e.response.data);
+                                
                                 res.statusMessage = e.response.data.error_message;
                                 return res.status(400).end();
                             });
