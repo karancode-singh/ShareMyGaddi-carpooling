@@ -1,0 +1,29 @@
+#activeTripContainer {
+    display: flex;
+    flex-direction: column;
+    
+    align-items: center;
+    justify-content: center;
+
+}
+
+.active-trip-card {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 75%;
+    height: 20%;
+    
+    border: .125rem solid black;
+}
+
+.active-trip-row{
+    width: 80%;
+}
+
+#cancelTripButton{
+    margin-top: .625rem;
+}
