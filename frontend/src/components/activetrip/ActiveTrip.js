@@ -5,7 +5,7 @@ import configData from "../../config.json";
 
 import './ActiveTrip.css'
 
-export default function ActiveTrip() {
+export default function ActiveTrip({setActiveTrip}) {
 
     const [isDriver, setIsDriver] = useState(false);
 
@@ -28,6 +28,29 @@ export default function ActiveTrip() {
         alert(error);
     });
 
+    // Handle 'Cancel' button
+    const handleCancel = (e) => {
+        e.preventDefault();
+
+        return fetch(configData.END_POINT + '/trip', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Coookie': Cookies.get('tokken')
+            },
+        }).then((response) => {
+            if (response.ok){
+                setActiveTrip(null);
+                alert("Trip cancelled successfully");
+                window.location.reload();
+                return;
+            }
+            throw new Error(response.statusText);
+        }).catch((error) => {
+            console.log(error);
+            alert(error);
+        });
+    }
     return (
     <>
         <h1 id="pageTitle">Active Trip page</h1>
@@ -48,7 +71,7 @@ export default function ActiveTrip() {
             </div>
             <Row>
                 {isDriver? <Button variant='primary' id='cancelTripButton'> Done </Button>: null}
-                <Button variant='danger' id='cancelTripButton'> Cancel trip </Button>
+                <Button variant='danger' id='cancelTripButton' onClick={handleCancel}> Cancel trip </Button>
             </Row>
         </Container>
         
