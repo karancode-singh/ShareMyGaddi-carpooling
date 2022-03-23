@@ -39,7 +39,8 @@ exports.signup = (req, res) => {
         res.json({
             name: user.name,
             email: user.email,
-            _id: user._id
+            _id: user._id,
+            token: token
         })
         return res
     })
@@ -80,50 +81,46 @@ exports.signin = (req, res) => {
 
 }
 
-
-// exports.isSignedin= expressJwt({
-//     secret:process.env.SECRET,
-//     algorithms: ['sha1', 'RS256', 'HS256'],
-//     userProperty:"auth"
-// })
-
-exports.isSignedin= (req,res,next)=>{
-    let token = Object.values(req.cookies)[0]; // check in other system
-    if(token){
-        jwt.verify(token,process.env.SECRET,(err,decodestring)=>{
-            if(err)
-            {
+exports.isSignedin = (req, res, next) => {
+    let token = req.get('coookie')
+    if (!token) {
+        //another working solution BEGIN
+        const bearerHeader = req.headers['authorization'];
+        if (bearerHeader) {
+            const bearer = bearerHeader.split(' ');
+            token = bearer[1];
+        }
+        //another working solution END
+    }
+    if (token) {
+        jwt.verify(token, process.env.SECRET, (err, decodestring) => {
+            if (err) {
                 console.log(err)
-                return res.status(400).json({
-                    error:"User seems to be incorrect"
-                })
+                res.statusMessage = "User seems to be incorrect";
+                return res.status(400).end();
             }
-            else{
-                req.auth=decodestring
-                //console.log(decodestring)
+            else {
+                req.auth = decodestring
+                
                 next()
             }
         })
     }
-    else{
-
-                return res.status(400).json({
-                    error:"User not signed in....."
-                })
+    else {
+        res.statusMessage = "User not signed in";
+        return res.status(400).end();
     }
 }
 
 
-exports.isAuthenticated = (req,res,next) => {
+exports.isAuthenticated = (req, res, next) => {
     let check = req.profile && req.auth && req.profile._id == req.auth._id;
     //console.log(req.profile._id)
     //console.log(req.auth)
-    if(!check){
+    if (!check) {
         return res.status(400).json({
-            error:"Access denied......"
+            error: "Access denied......"
         })
     }
     next()
 }
-
-//export {signin, signout, signup, isSignedin, isAuthenticated}

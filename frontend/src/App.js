@@ -29,7 +29,6 @@ function App() {
   return (
     <Router>
       <Navbar setToken={setToken} />
-      {/* <Navbar /> */}
       <Routes>
         <Route exact path='/' element={token ? <Navigate to="/drive" /> : <Navigate to="/login" />} />
         <Route exact path='/login' element={token ? <Navigate to="/" /> : <Login setToken={setToken} />} />

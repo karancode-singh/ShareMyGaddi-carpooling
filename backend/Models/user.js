@@ -12,7 +12,7 @@ const userSchema = new schema({
         require: true,
         maxlength: 32,
         trim: true
-    },    
+    },
     lastname: {
         type: String,
         maxlength: 32,
@@ -38,11 +38,17 @@ const userSchema = new schema({
         data: Buffer,
         ContentType: String
     },
-    Rides: {
+    trips: {
         type: Array,
         default: []
     },
-
+    active_trip: {
+        type: mongoose.ObjectId,
+        //default:null
+    },
+    trip_role_driver: {
+        type: Boolean
+    }
 }, { timestamps: true });
 userSchema.virtual("password").set(function (password) {
     this._password = password,
