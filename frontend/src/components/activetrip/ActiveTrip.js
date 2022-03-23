@@ -1,11 +1,33 @@
 import {React, useState} from 'react'
-import { Button, Col, Container, FloatingLabel, Form, Row } from 'react-bootstrap';
+import { Button, Container, Row } from 'react-bootstrap';
+import Cookies from 'js-cookie';
+import configData from "../../config.json";
 
 import './ActiveTrip.css'
 
 export default function ActiveTrip() {
 
-    const [isDriver, setIsDriver] = useState(true)
+    const [isDriver, setIsDriver] = useState(false);
+
+    // Enable 'Done' button only in driver mode 
+    fetch(configData.END_POINT + '/trip/is-driver', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Coookie': Cookies.get('tokken')
+        }
+    }).then((response) => {
+        if (response.ok) {
+            return response.json();
+        }
+    }).then((responseJson) => {
+        if(responseJson.isdriver){
+            setIsDriver(true)
+        }
+    }).catch((error) => {
+        alert(error);
+    });
+
     return (
     <>
         <h1 id="pageTitle">Active Trip page</h1>
