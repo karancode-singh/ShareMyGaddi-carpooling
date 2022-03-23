@@ -1,26 +1,27 @@
 import { useState } from 'react';
 import Cookies from 'js-cookie';
 
-export default function useToken() {
-    const getToken = () => {
-        const userToken = Cookies.get('tokken');
-        return userToken;
-    };
-
-    const [token, setToken] = useState(getToken());
+export default function useToken(setActiveTrip) {
+    const [token, setToken] = useState(Cookies.get('tokken'));
+    const [name, setName] = useState(Cookies.get('name'));
 
     const saveToken = data => {
         if (data === null) {
             Cookies.remove('tokken');
+            Cookies.remove('name');
+            setActiveTrip(null);
         }
         else {
-            Cookies.set('tokken', data);
+            Cookies.set('tokken', data.token);
+            Cookies.set('name', data.name);
             setToken(data.token);
+            setName(data.name);
         }
     };
 
     return {
         setToken: saveToken,
-        token
+        token,
+        name
     }
 }

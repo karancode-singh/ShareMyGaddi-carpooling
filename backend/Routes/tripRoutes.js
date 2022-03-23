@@ -2,7 +2,7 @@ const express = require("express");
 const { isSignedin } = require("../Controllers/authenticate");
 
 var router = express.Router()
-const { drive, ride, cancelTrip, tripDone, tripHistory,tripDriver } = require("../Controllers/trip.js");
+const { drive, ride, cancelTrip, tripDone, tripHistory, activeTrip, isDriver } = require("../Controllers/trip.js");
 
 router.post("/trip/drive", isSignedin, drive)  // Swagger Api done
 router.post("/trip/ride", isSignedin, ride)    //Swagger Api done
