@@ -1,4 +1,8 @@
 import React from 'react';
+import * as GrIcons from 'react-icons/gr'
+import sourceImg from '../../start-location.svg';
+import destinationImg from '../../pin-location.svg';
+import './TripHistory.css';
 export default function TripHistory() {
 
     const tripDetails = [
@@ -6,25 +10,29 @@ export default function TripHistory() {
             source: "Home",
             destination: "University of Waterloo",
             tripDate: "01-03-2022",
-            rider: "Alex"
+            riderCount: 2,
+            
         },
         {
             source: "University of Waterloo",
             destination: "Phillip Street",
             tripDate: "01-03-2022",
-            rider: "Nelson"
+            riderCount: 3,
         },
         {
             source: "Phillip Street",
             destination: "University of Waterloo",
             tripDate: "01-03-2022",
-            rider: "Ran"
+            riderCount: 1,
+            
         },
         {
             source: "lester ",
             destination: "University of Waterloo",
             tripDate: "01-03-2022",
-            rider: "Ran"
+            riderCount: 1,
+            time:"2 pm"
+            
         }
     ]
 
@@ -33,14 +41,17 @@ export default function TripHistory() {
         destination = "Default Text",
         imgsrc = "default_holder.js/100px180",
         tripDate = "defaultDate",
-        rider = "defaultRider"
+        riderCount = "defaultRider",
+        time = "2 pm"
+        
     }
     ) => (
         
-            <div className="card-body mb-4 mt-4 mx-4 bg-dark text-white">
+            <div className="card-body mb-4 mt-4 mx-4 text-black">
                 <div className="row">
-                    <div className="col-md-6">
-                        <div className="well">{source}</div>
+                    <div className="col-md-3">
+                        <img className= 'tripImage'src={sourceImg}></img>
+                        <span className="well">{source}</span>
                     </div>
                     <div className="col-md-3 offset-md-3">
                         <div className="well">{tripDate}</div>
@@ -48,8 +59,12 @@ export default function TripHistory() {
                 </div>
 
                 <div className="row">
-                    <div className="col-md-6">
-                        <div className="well">{destination}</div>
+                    <div className="col-md-3">
+                    <img className = 'tripImage' src={destinationImg}></img>
+                        <span className="well">{destination}</span>
+                    </div>
+                    <div className="col-md-3 offset-md-3">
+                        <div className="well">{time}</div>
                     </div>
                 </div>
 
@@ -57,7 +72,8 @@ export default function TripHistory() {
 
                 <div className="row">
                     <div className="col-md-6">
-                        <div className="well">{rider}</div>
+                    <GrIcons.GrGroup className= "groupIcon" style={{ marginRight: '0.3rem' , stroke: 'white'}}/>
+                         <span className="well">{riderCount}</span> 
                     </div>
                 </div>
             </div>
