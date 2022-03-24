@@ -1,11 +1,40 @@
 import {React, useState} from 'react'
 import { Button, Container, Row } from 'react-bootstrap';
 import Cookies from 'js-cookie';
+import Geocode from "react-geocode";
 import configData from "../../config.json";
 
 import './ActiveTrip.css'
 
+Geocode.setApiKey(configData.MAPS_API_KEY);
+
 export default function ActiveTrip({setActiveTrip}) {
+
+    const getLocFromCoords = (coords, type) =>{
+        let lat = coords['lat']
+        let long =  coords['lng']
+    
+        Geocode.fromLatLng(lat, long).then(
+            (res) => {
+                const location = res.results[0].formatted_address;
+                if(type === 'src'){
+                    setsource(location)
+                }
+                else{
+                    setdestination(location)
+                }
+            },
+            (err) => {
+                console.error(err);
+                if(type === 'src'){
+                    setsource(lat+','+long)
+                }
+                else{
+                    setdestination(lat+','+long)
+                }
+            }
+        );
+    }
 
     const [isDriver, setIsDriver] = useState(false);
 
@@ -51,6 +80,32 @@ export default function ActiveTrip({setActiveTrip}) {
             alert(error);
         });
     }
+
+    // Active Trip details
+    const [source, setsource] = useState("")
+    const [destination, setdestination] = useState("")
+    const [datetime, setdatetime] = useState("")
+    const [driver, setdriver] = useState("")
+
+    fetch(configData.END_POINT + '/trip/activetrip', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        'Coookie': Cookies.get('tokken')
+    }
+    }).then((response) => {
+        if (response.ok) {
+            return response.json();
+        }
+    }).then((responseJson) => {
+        getLocFromCoords(responseJson.source,'src')
+        getLocFromCoords(responseJson.destination,'dest')
+        setdatetime(responseJson.dateTime)
+        setdriver(responseJson.driver)
+    }).catch((error) => {
+        alert(error);
+    });
+
     return (
     <>
         <h1 id="pageTitle">Active Trip page</h1>
@@ -58,14 +113,14 @@ export default function ActiveTrip({setActiveTrip}) {
             <div className="active-trip-card">
                 <h1>Summary</h1>
                 <Row className='active-trip-row'>
-                    <h3>Source:</h3>
-                    <h3>Destination:</h3>
-                    <h3>Date:</h3>
+                    <h3>Source: {source}</h3>
+                    <h3>Destination: {destination}</h3>
+                    <h3>Date: {datetime}</h3>
                 </Row>
 
                 <h1>Details</h1>
                 <Row className='active-trip-row'>
-                    <h3>Driver:</h3>
+                    <h3>Driver: {driver}</h3>
                     <h3>Rider(s):</h3>
                 </Row>
             </div>
