@@ -3,8 +3,16 @@ import * as GrIcons from 'react-icons/gr'
 import sourceImg from '../../start-location.svg';
 import destinationImg from '../../pin-location.svg';
 import './TripHistory.css';
+import { useEffect, useState } from "react";
+import Cookies from 'js-cookie'
+import configData from "../../config.json";
 export default function TripHistory() {
 
+    // ngOninit(){
+    //     this.tripDetails = getTripHistory()
+    // }
+    
+    // let tripDetails: any
     const tripDetails = [
         {
             source: "Home",
@@ -35,6 +43,36 @@ export default function TripHistory() {
             
         }
     ]
+    
+   
+    // function getTripHistory() {
+    //     return fetch(configData.END_POINT + '/trip/history', {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     }).then(data => data.json());
+    // }
+
+    const [users, setUsers] = useState([])
+    
+    const fetchData = async () => {
+        const response = await fetch(configData.END_POINT + '/trip/history',{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Coookie': Cookies.get('tokken')
+            }
+        })
+        const data = await response.json() 
+        // setUsers(data)
+        console.log(data)
+    }
+    
+    useEffect(() => {
+        fetchData()
+    }, [])
+
 
     const CardView = ({
         source = "Default Title",
@@ -44,8 +82,7 @@ export default function TripHistory() {
         riderCount = "defaultRider",
         time = "2 pm"
         
-    }
-    ) => (
+    }) => (
         
             <div className="card-body mb-4 mt-4 mx-4 text-black">
                 <div className="row">
@@ -73,12 +110,14 @@ export default function TripHistory() {
                 <div className="row">
                     <div className="col-md-6">
                     <GrIcons.GrGroup className= "groupIcon" style={{ marginRight: '0.3rem' , stroke: 'white'}}/>
-                         <span className="well">{riderCount}</span> 
+                        <span className="well">{riderCount}</span> 
                     </div>
                 </div>
             </div>
         
     );
-    return tripDetails.map((data, index) => <CardView key={index} {...data} />);
-}
+        //return tripDetails.map((data, index) => <CardView key={index} {...data} />);
+    return users.map((data, index) => <CardView key={index} {...data} />);
+    
+} 
 
