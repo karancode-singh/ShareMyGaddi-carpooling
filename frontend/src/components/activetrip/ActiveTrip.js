@@ -1,4 +1,4 @@
-import {React, useState} from 'react'
+import {React, useState, useEffect} from 'react'
 import { Button, Container, Row } from 'react-bootstrap';
 import Cookies from 'js-cookie';
 import Geocode from "react-geocode";
@@ -39,23 +39,25 @@ export default function ActiveTrip({setActiveTrip}) {
     const [isDriver, setIsDriver] = useState(false);
 
     // Enable 'Done' button only in driver mode 
-    fetch(configData.END_POINT + '/trip/isdriver', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Coookie': Cookies.get('tokken')
-        }
-    }).then((response) => {
-        if (response.ok) {
-            return response.json();
-        }
-    }).then((responseJson) => {
-        if(responseJson.isdriver){
-            setIsDriver(true)
-        }
-    }).catch((error) => {
-        alert(error);
-    });
+    useEffect(() => {
+        fetch(configData.END_POINT + '/trip/isdriver', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Coookie': Cookies.get('tokken')
+            }
+        }).then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+        }).then((responseJson) => {
+            if(responseJson.isdriver){
+                setIsDriver(true)
+            }
+        }).catch((error) => {
+            alert(error);
+        });
+    },[]);
 
     // Handle 'Cancel' button
     const handleCancel = (e) => {
@@ -87,24 +89,26 @@ export default function ActiveTrip({setActiveTrip}) {
     const [datetime, setdatetime] = useState("")
     const [driver, setdriver] = useState("")
 
-    fetch(configData.END_POINT + '/trip/activetrip', {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-        'Coookie': Cookies.get('tokken')
-    }
-    }).then((response) => {
-        if (response.ok) {
-            return response.json();
+    useEffect(() => {
+        fetch(configData.END_POINT + '/trip/activetrip', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Coookie': Cookies.get('tokken')
         }
-    }).then((responseJson) => {
-        getLocFromCoords(responseJson.source,'src')
-        getLocFromCoords(responseJson.destination,'dest')
-        setdatetime(responseJson.dateTime)
-        setdriver(responseJson.driver)
-    }).catch((error) => {
-        alert(error);
-    });
+        }).then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+        }).then((responseJson) => {
+            getLocFromCoords(responseJson.source,'src')
+            getLocFromCoords(responseJson.destination,'dest')
+            setdatetime(responseJson.dateTime)
+            setdriver(responseJson.driver)
+        }).catch((error) => {
+            alert(error);
+        });
+    },[]);
 
     return (
     <>
