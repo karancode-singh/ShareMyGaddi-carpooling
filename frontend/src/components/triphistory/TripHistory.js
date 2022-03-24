@@ -1,18 +1,12 @@
-import React from 'react';
+import {React, useEffect, useState } from 'react';
 import * as GrIcons from 'react-icons/gr'
 import sourceImg from '../../start-location.svg';
 import destinationImg from '../../pin-location.svg';
 import './TripHistory.css';
-import { useEffect, useState } from "react";
 import Cookies from 'js-cookie'
 import configData from "../../config.json";
-export default function TripHistory() {
 
-    // ngOninit(){
-    //     this.tripDetails = getTripHistory()
-    // }
-    
-    // let tripDetails: any
+export default function TripHistory() {
     const tripDetails = [
         {
             source: "Home",
@@ -116,8 +110,6 @@ export default function TripHistory() {
             </div>
         
     );
-        //return tripDetails.map((data, index) => <CardView key={index} {...data} />);
     return users.map((data, index) => <CardView key={index} {...data} />);
-    
 } 
 
