@@ -7,49 +7,40 @@ import Cookies from 'js-cookie'
 import configData from "../../config.json";
 
 export default function TripHistory() {
-    const tripDetails = [
-        {
-            source: "Home",
-            destination: "University of Waterloo",
-            tripDate: "01-03-2022",
-            riderCount: 2,
+    // const tripDetails = [
+    //     {
+    //         source: "Home",
+    //         destination: "University of Waterloo",
+    //         tripDate: "01-03-2022",
+    //         riderCount: 2,
             
-        },
-        {
-            source: "University of Waterloo",
-            destination: "Phillip Street",
-            tripDate: "01-03-2022",
-            riderCount: 3,
-        },
-        {
-            source: "Phillip Street",
-            destination: "University of Waterloo",
-            tripDate: "01-03-2022",
-            riderCount: 1,
+    //     },
+    //     {
+    //         source: "University of Waterloo",
+    //         destination: "Phillip Street",
+    //         tripDate: "01-03-2022",
+    //         riderCount: 3,
+    //     },
+    //     {
+    //         source: "Phillip Street",
+    //         destination: "University of Waterloo",
+    //         tripDate: "01-03-2022",
+    //         riderCount: 1,
             
-        },
-        {
-            source: "lester ",
-            destination: "University of Waterloo",
-            tripDate: "01-03-2022",
-            riderCount: 1,
-            time:"2 pm"
+    //     },
+    //     {
+    //         source: "lester ",
+    //         destination: "University of Waterloo",
+    //         tripDate: "01-03-2022",
+    //         riderCount: 1,
+    //         time:"2 pm"
             
-        }
-    ]
-    
+    //     }
+    // ]
    
-    // function getTripHistory() {
-    //     return fetch(configData.END_POINT + '/trip/history', {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //     }).then(data => data.json());
-    // }
 
-    const [users, setUsers] = useState([])
     
+    const [tripDetails, setTripDetails] = useState([])
     const fetchData = async () => {
         const response = await fetch(configData.END_POINT + '/trip/history',{
             method: 'GET',
@@ -59,8 +50,22 @@ export default function TripHistory() {
             }
         })
         const data = await response.json() 
-        // setUsers(data)
-        console.log(data)
+
+        // Parse Data
+        let tempArray = []
+        for(let i =0; i< data.length; i++){
+            let thisTrip = data[i]
+            let newTrip = {}
+            // newTrip["source"] = thisTrip["source"]
+            newTrip["source"] = "Source"
+            // newTrip["destination"] = thisTrip["destination"]
+            newTrip["destination"] = "destination"
+            newTrip["tripDate"] = thisTrip["dateTime"]
+            newTrip["riderCount"] = thisTrip["riders"].length
+
+            tempArray.push(newTrip)
+        }
+        setTripDetails(tempArray)
     }
     
     useEffect(() => {
@@ -74,10 +79,8 @@ export default function TripHistory() {
         imgsrc = "default_holder.js/100px180",
         tripDate = "defaultDate",
         riderCount = "defaultRider",
-        time = "2 pm"
         
     }) => (
-        
             <div className="card-body mb-4 mt-4 mx-4 text-black">
                 <div className="row">
                     <div className="col-md-3">
@@ -109,7 +112,7 @@ export default function TripHistory() {
                 </div>
             </div>
         
-    );
-    return users.map((data, index) => <CardView key={index} {...data} />);
+        );
+        return TripHistory.map((data, index) => <CardView key={index} {...data} />);
 } 
 
