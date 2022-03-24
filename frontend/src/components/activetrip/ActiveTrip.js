@@ -10,7 +10,7 @@ export default function ActiveTrip({setActiveTrip}) {
     const [isDriver, setIsDriver] = useState(false);
 
     // Enable 'Done' button only in driver mode 
-    fetch(configData.END_POINT + '/trip/is-driver', {
+    fetch(configData.END_POINT + '/trip/isdriver', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
