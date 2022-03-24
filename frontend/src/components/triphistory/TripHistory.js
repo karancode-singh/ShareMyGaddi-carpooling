@@ -97,9 +97,9 @@ export default function TripHistory() {
                     <img className = 'tripImage' src={destinationImg}></img>
                         <span className="well">{destination}</span>
                     </div>
-                    <div className="col-md-3 offset-md-3">
+                    {/* <div className="col-md-3 offset-md-3">
                         <div className="well">{time}</div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <hr></hr>
@@ -113,6 +113,16 @@ export default function TripHistory() {
             </div>
         
         );
-        return TripHistory.map((data, index) => <CardView key={index} {...data} />);
+        return(
+            <>
+            {tripDetails.length ===0? <h1>No trips found</h1>:
+                tripDetails.map((data,index) => {
+                    return(
+                    <CardView key={index} {...data} />
+                    )
+                })
+            }
+            </>
+        )
 } 
 
