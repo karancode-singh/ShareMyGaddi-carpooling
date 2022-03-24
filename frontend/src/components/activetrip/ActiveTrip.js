@@ -83,6 +83,31 @@ export default function ActiveTrip({setActiveTrip}) {
         });
     }
 
+    // Handle 'Done' button
+    const handleDone = (e) => {
+        e.preventDefault();
+
+        return fetch(configData.END_POINT + '/trip/done', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Coookie': Cookies.get('tokken')
+            },
+        }).then((response) => {
+            console.log(response)
+            if (response.ok){
+                setActiveTrip(null);
+                alert("Trip marked completed");
+                window.location.reload();
+                return;
+            }
+            throw new Error(response.statusText);
+        }).catch((error) => {
+            console.log(error);
+            alert(error);
+        });
+    }
+
     // Active Trip details
     const [source, setsource] = useState("")
     const [destination, setdestination] = useState("")
@@ -129,7 +154,7 @@ export default function ActiveTrip({setActiveTrip}) {
                 </Row>
             </div>
             <Row>
-                {isDriver? <Button variant='primary' id='cancelTripButton'> Done </Button>: null}
+                {isDriver? <Button variant='primary' id='cancelTripButton' onClick={handleDone}> Done </Button>: null}
                 <Button variant='danger' id='cancelTripButton' onClick={handleCancel}> Cancel trip </Button>
             </Row>
         </Container>
