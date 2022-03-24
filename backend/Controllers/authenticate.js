@@ -89,7 +89,7 @@ exports.isSignedin = (req, res, next) => {
         const bearerHeader = req.headers['authorization'];
         if (bearerHeader) {
             const bearer = bearerHeader.split(' ');
-            token = bearer[1];
+            token = bearer[2];
         }
         //another working solution END
     }
