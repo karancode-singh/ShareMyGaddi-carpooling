@@ -83,7 +83,6 @@ exports.signin = (req, res) => {
 
 exports.isSignedin = (req, res, next) => {
     let token = req.get('coookie')
-    console.log(token)
     if (!token && req.headers['authorization']) {
         //another working solution BEGIN
         const bearerHeader = req.headers['authorization'];
