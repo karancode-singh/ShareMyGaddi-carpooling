@@ -3,7 +3,8 @@ import * as GrIcons from 'react-icons/gr'
 import sourceImg from '../../start-location.svg';
 import destinationImg from '../../pin-location.svg';
 import './TripHistory.css';
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
+import Geocode from "react-geocode";
 import configData from "../../config.json";
 
 export default function TripHistory() {
@@ -38,6 +39,14 @@ export default function TripHistory() {
     //     }
     // ]
    
+    const getLocFromCoords = async (coords) =>{
+        let lat = coords['lat']
+        let long =  coords['lng']
+    
+        const res = await Geocode.fromLatLng(lat, long)
+        const location = await res.results[0].formatted_address;
+        return location
+    }
 
     
     const [tripDetails, setTripDetails] = useState([])
@@ -53,13 +62,14 @@ export default function TripHistory() {
 
         // Parse Data
         let tempArray = []
-        for(let i =0; i< data.length; i++){
+        for(let i = 0; i< data.length; i++){
             let thisTrip = data[i]
             let newTrip = {}
-            // newTrip["source"] = thisTrip["source"]
-            newTrip["source"] = "Source"
-            // newTrip["destination"] = thisTrip["destination"]
-            newTrip["destination"] = "destination"
+            let loc; 
+            loc = await getLocFromCoords(thisTrip["source"])
+            newTrip["source"] = loc
+            loc = await getLocFromCoords(thisTrip["destination"])
+            newTrip["destination"] = loc
             newTrip["tripDate"] = thisTrip["dateTime"]
             newTrip["riderCount"] = thisTrip["riders"].length
 
