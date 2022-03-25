@@ -1,7 +1,10 @@
 import {React, useEffect, useState } from 'react';
+import {Row, Col} from 'react-bootstrap'
 import * as GrIcons from 'react-icons/gr'
 import sourceImg from '../../start-location.svg';
 import destinationImg from '../../pin-location.svg';
+import dtImg from '../../date-and-time.svg';
+import groupImg from '../../group.svg';
 import './TripHistory.css';
 import Cookies from 'js-cookie';
 import Geocode from "react-geocode";
@@ -92,32 +95,39 @@ export default function TripHistory() {
         
     }) => (
             <div className="card-body mb-4 mt-4 mx-4 text-black">
-                <div className="row">
-                    <div className="col-md-3">
+                <div className='detail-container'>
+                    <div className='detail-row'>
                         <img className= 'tripImage'src={sourceImg}></img>
-                        <span className="well">{source}</span>
-                    </div>
-                    <div className="col-md-3 offset-md-3">
-                        <div className="well">{tripDate}</div>
+                        <h6 className='detail-heading'>Source: </h6>
+                        <h6 className='detail-heading'>{source}</h6>
                     </div>
                 </div>
 
-                <div className="row">
-                    <div className="col-md-3">
-                    <img className = 'tripImage' src={destinationImg}></img>
-                        <span className="well">{destination}</span>
+                <div className='detail-container'>
+                    <div className='detail-row'>
+                        <img className= 'tripImage'src={destinationImg}></img>
+                        <h6 className='detail-heading'>Destiation: </h6>
+                        <h6 className='detail-heading'>{destination}</h6>
                     </div>
-                    {/* <div className="col-md-3 offset-md-3">
-                        <div className="well">{time}</div>
-                    </div> */}
                 </div>
 
                 <hr></hr>
 
-                <div className="row">
-                    <div className="col-md-6">
-                    <GrIcons.GrGroup className= "groupIcon" style={{ marginRight: '0.3rem' , stroke: 'white'}}/>
-                        <span className="well">{riderCount}</span> 
+                <div className='detail-container'>
+                    <div className='detail-row'>
+                        <img className= 'tripImage' src={dtImg}></img>
+                        <h6 className='detail-heading'>Date and time: </h6>
+                        <h6 className='detail-heading'>{tripDate}</h6>
+                    </div>
+                </div>
+
+                
+
+                <div className='detail-container'>
+                    <div className='detail-row'>
+                    <img className= 'tripImage' src={groupImg}></img>
+                        <h6 className='detail-heading'>No. of riders: </h6>
+                        <h6 className='detail-heading'>{riderCount}</h6> 
                     </div>
                 </div>
             </div>
