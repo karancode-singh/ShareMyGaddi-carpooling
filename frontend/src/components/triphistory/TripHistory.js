@@ -51,6 +51,11 @@ export default function TripHistory() {
         return location
     }
 
+    const getDateandTime = (dtString) =>{
+        let [date,time] = dtString.split('T')
+        time = time.split('.')[0]
+        return date+' @ '+time
+    }
     
     const [tripDetails, setTripDetails] = useState([])
     const fetchData = async () => {
@@ -73,7 +78,7 @@ export default function TripHistory() {
             newTrip["source"] = loc
             loc = await getLocFromCoords(thisTrip["destination"])
             newTrip["destination"] = loc
-            newTrip["tripDate"] = thisTrip["dateTime"]
+            newTrip["tripDate"] = getDateandTime(thisTrip["dateTime"])
             newTrip["riderCount"] = thisTrip["riders"].length
 
             tempArray.push(newTrip)
@@ -89,7 +94,6 @@ export default function TripHistory() {
     const CardView = ({
         source = "Default Title",
         destination = "Default Text",
-        imgsrc = "default_holder.js/100px180",
         tripDate = "defaultDate",
         riderCount = "defaultRider",
         
