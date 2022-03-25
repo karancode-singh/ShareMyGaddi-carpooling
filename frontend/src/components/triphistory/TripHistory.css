@@ -1,15 +1,32 @@
-.tripDate{
+/* .tripDate{
     float: right !important;
+} */
+
+.detail-container{
+    display: flex;
+    flex-direction: column;
 }
 
-.source{
+.detail-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    margin: .625rem 0; 
+}
+
+.detail-heading{
+    margin: 0rem .625rem;
+    font-size: 1.25rem;
+}
+/* .source{
     text-align: start;
     margin-right: 80%;
-}
+} */
 
 .card-body{
     padding: 25px;
-    background-color: cornflowerblue
+    background-color: rgb(250, 246, 246)
 }
 
 .trip-card{
@@ -20,7 +37,7 @@
     margin-right: 30px !important;
 }
 .tripImage{
-    height: 70%;
+    height: 1.625rem;
     width: 4%;
-    margin-right: 20px;
+    margin-right: 1 rem;
 }

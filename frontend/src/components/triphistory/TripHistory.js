@@ -1,9 +1,13 @@
 import {React, useEffect, useState } from 'react';
+import {Row, Col} from 'react-bootstrap'
 import * as GrIcons from 'react-icons/gr'
 import sourceImg from '../../start-location.svg';
 import destinationImg from '../../pin-location.svg';
+import dtImg from '../../date-and-time.svg';
+import groupImg from '../../group.svg';
 import './TripHistory.css';
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
+import Geocode from "react-geocode";
 import configData from "../../config.json";
 
 export default function TripHistory() {
@@ -38,7 +42,20 @@ export default function TripHistory() {
     //     }
     // ]
    
+    const getLocFromCoords = async (coords) =>{
+        let lat = coords['lat']
+        let long =  coords['lng']
+    
+        const res = await Geocode.fromLatLng(lat, long)
+        const location = await res.results[0].formatted_address;
+        return location
+    }
 
+    const getDateandTime = (dtString) =>{
+        let [date,time] = dtString.split('T')
+        time = time.split('.')[0]
+        return date+' @ '+time
+    }
     
     const [tripDetails, setTripDetails] = useState([])
     const fetchData = async () => {
@@ -53,14 +70,15 @@ export default function TripHistory() {
 
         // Parse Data
         let tempArray = []
-        for(let i =0; i< data.length; i++){
+        for(let i = 0; i< data.length; i++){
             let thisTrip = data[i]
             let newTrip = {}
-            // newTrip["source"] = thisTrip["source"]
-            newTrip["source"] = "Source"
-            // newTrip["destination"] = thisTrip["destination"]
-            newTrip["destination"] = "destination"
-            newTrip["tripDate"] = thisTrip["dateTime"]
+            let loc; 
+            loc = await getLocFromCoords(thisTrip["source"])
+            newTrip["source"] = loc
+            loc = await getLocFromCoords(thisTrip["destination"])
+            newTrip["destination"] = loc
+            newTrip["tripDate"] = getDateandTime(thisTrip["dateTime"])
             newTrip["riderCount"] = thisTrip["riders"].length
 
             tempArray.push(newTrip)
@@ -76,38 +94,44 @@ export default function TripHistory() {
     const CardView = ({
         source = "Default Title",
         destination = "Default Text",
-        imgsrc = "default_holder.js/100px180",
         tripDate = "defaultDate",
         riderCount = "defaultRider",
         
     }) => (
             <div className="card-body mb-4 mt-4 mx-4 text-black">
-                <div className="row">
-                    <div className="col-md-3">
+                <div className='detail-container'>
+                    <div className='detail-row'>
                         <img className= 'tripImage'src={sourceImg}></img>
-                        <span className="well">{source}</span>
-                    </div>
-                    <div className="col-md-3 offset-md-3">
-                        <div className="well">{tripDate}</div>
+                        <h6 className='detail-heading'>Source: </h6>
+                        <h6 className='detail-heading'>{source}</h6>
                     </div>
                 </div>
 
-                <div className="row">
-                    <div className="col-md-3">
-                    <img className = 'tripImage' src={destinationImg}></img>
-                        <span className="well">{destination}</span>
+                <div className='detail-container'>
+                    <div className='detail-row'>
+                        <img className= 'tripImage'src={destinationImg}></img>
+                        <h6 className='detail-heading'>Destiation: </h6>
+                        <h6 className='detail-heading'>{destination}</h6>
                     </div>
-                    {/* <div className="col-md-3 offset-md-3">
-                        <div className="well">{time}</div>
-                    </div> */}
                 </div>
 
                 <hr></hr>
 
-                <div className="row">
-                    <div className="col-md-6">
-                    <GrIcons.GrGroup className= "groupIcon" style={{ marginRight: '0.3rem' , stroke: 'white'}}/>
-                        <span className="well">{riderCount}</span> 
+                <div className='detail-container'>
+                    <div className='detail-row'>
+                        <img className= 'tripImage' src={dtImg}></img>
+                        <h6 className='detail-heading'>Date and time: </h6>
+                        <h6 className='detail-heading'>{tripDate}</h6>
+                    </div>
+                </div>
+
+                
+
+                <div className='detail-container'>
+                    <div className='detail-row'>
+                    <img className= 'tripImage' src={groupImg}></img>
+                        <h6 className='detail-heading'>No. of riders: </h6>
+                        <h6 className='detail-heading'>{riderCount}</h6> 
                     </div>
                 </div>
             </div>
