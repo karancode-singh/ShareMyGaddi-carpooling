@@ -9,9 +9,18 @@
 
 .card-body{
     padding: 25px;
+    background-color: cornflowerblue
 }
 
 .trip-card{
     margin: 20px;
     background-color: aqua;
+}
+.groupIcon{
+    margin-right: 30px !important;
+}
+.tripImage{
+    height: 70%;
+    width: 4%;
+    margin-right: 20px;
 }
