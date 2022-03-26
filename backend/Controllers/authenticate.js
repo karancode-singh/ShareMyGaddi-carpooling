@@ -88,14 +88,15 @@ exports.isSignedin = (req, res, next) => {
         const bearerHeader = req.headers['authorization'];
         if (bearerHeader) {
             const bearer = bearerHeader.split(' ');
-            token = bearer[2]; //This has to be 2 please donot update me
+            
+            token = bearer[1]; //This has to be 2 please donot update me
         }
         //another working solution END
     }
     if (token && token != 'undefined') {
         jwt.verify(token, process.env.SECRET, (err, decodestring) => {
             if (err) {
-                console.log(err)
+                
                 res.statusMessage = "User authentication expired";
                 return res.status(401).end();
             }
