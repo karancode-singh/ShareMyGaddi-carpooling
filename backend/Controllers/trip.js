@@ -13,8 +13,7 @@ const pct = .3; // Percent of route points for source (others are checked for de
 const radiusOffset = 50;    //TODO: TUNE
 
 exports.activeTrip = (req, res) => {
-    var riderArray=[];
-    var done=false;
+    var riderArray = [];
     User.findById(req.auth._id, (err, user) => {
        
        if (user.active_trip == undefined || user.active_trip == null) {
@@ -22,34 +21,30 @@ exports.activeTrip = (req, res) => {
             return res.status(400).end();
         }
         Trip.findById(user.active_trip, (err, trip) => {
+
             User.findById(trip.driver, (err, user_driver) => {
                 const riders = trip.riders;
-                    var i=0;
-                    riders.forEach(rider => {
-                        User.findById(rider, (err, user_rider) => {
+
+                var i = 0;
+                riders.forEach(rider => {
+                    User.findById(rider, (err, user_rider) => {
+
                         if (err)
-                        {
                             return res.status(500).end();
-                        }
                         riderArray.push(String(user_rider.name + ' ' + user_rider.lastname));
                         i++;
-                        if(i==riders.length)
-                        {
-                            return res.status(200).json({   // add contents which are required
-                                riders:riderArray,
-                                driver:user_driver.name
-
+                        if (i == riders.length) {
+                            return res.status(200).json({
+                                ...trip._doc,
+                                riders: riderArray,
+                                driver: user_driver.name + ' ' + user_driver.lastname
                             })
                         }
-                })  
-            })
-                // user_driver_val=user_driver.name;
-                //res.driverss = String(user_driver.name);    
+                    })
+                })
             });
-            
         });
     });
-   
 }
 
 exports.drive = (req, res) => {
