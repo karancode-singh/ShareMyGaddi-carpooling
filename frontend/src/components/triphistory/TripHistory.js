@@ -1,6 +1,4 @@
 import {React, useEffect, useState } from 'react';
-import {Row, Col} from 'react-bootstrap'
-import * as GrIcons from 'react-icons/gr'
 import sourceImg from '../../start-location.svg';
 import destinationImg from '../../pin-location.svg';
 import dtImg from '../../date-and-time.svg';
