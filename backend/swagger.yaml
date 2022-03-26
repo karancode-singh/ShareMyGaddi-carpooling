@@ -273,7 +273,20 @@ paths:
             description: Server Error                                         
                                      
 
+  /api/trip/activetrip:
+      get:
+        summary: Get Status of active trip
+        tags: [Drive]
+        security: 
+          - bearerAuth: []
         
+        responses:
+          200:
+            description: Drivers status Found
+          401:  
+            description: User not signed in
+          500:
+            description: Server Error        
         
    
 
