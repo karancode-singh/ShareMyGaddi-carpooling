@@ -10,6 +10,12 @@ Geocode.setApiKey(configData.MAPS_API_KEY);
 
 export default function ActiveTrip({setActiveTrip}) {
 
+    const getDateandTime = (dtString) =>{
+        let [date,time] = dtString.split('T')
+        time = time.split('.')[0]
+        return date+' @ '+time
+    }
+
     const getLocFromCoords = (coords, type) =>{
         let lat = coords['lat']
         let long =  coords['lng']
@@ -128,7 +134,7 @@ export default function ActiveTrip({setActiveTrip}) {
         }).then((responseJson) => {
             getLocFromCoords(responseJson.source,'src')
             getLocFromCoords(responseJson.destination,'dest')
-            setdatetime(responseJson.dateTime)
+            setdatetime(getDateandTime(responseJson.dateTime))
             setdriver(responseJson.driver)
         }).catch((error) => {
             alert(error);
