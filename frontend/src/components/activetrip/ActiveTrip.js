@@ -1,5 +1,6 @@
-import {React, useState, useEffect} from 'react'
+import {React, useState, useEffect, useRef} from 'react'
 import { Button, Container, Row } from 'react-bootstrap';
+import {GoogleMap,DirectionsRenderer, DirectionsService} from '@react-google-maps/api';
 import Cookies from 'js-cookie';
 import Geocode from "react-geocode";
 import configData from "../../config.json";
@@ -7,15 +8,47 @@ import configData from "../../config.json";
 import './ActiveTrip.css'
 
 Geocode.setApiKey(configData.MAPS_API_KEY);
-
+// Map options
+const mapContainerStyle = {
+    height: "60vh",
+    width: "100%",
+};
+const options = {
+    disableDefaultUI: true,
+    zoomControl: true,
+};
+const center = {
+    lat: 43.473078230478336,
+    lng: -80.54225947407059,
+};
 export default function ActiveTrip({setActiveTrip}) {
+    // For Map
+    const [dateTime, setDateTime] = useState(new Date(new Date().getTime() + (60 * 60 * 1000)));
+    const [mapCoords, setMapCoords] = useState({})
+    const [routeResp, setRouteResp] = useState();
+    const mapRef = useRef();
+    
+    const onMapLoad = (map) => {
+        mapRef.current = map;
+    };
 
+    const directionsCallback = (response) => {
+        if (response !== null) {
+            if (response.status === 'OK')
+                setRouteResp(response)
+            else
+                alert('Problem fetching directions')
+        } else alert('Problem fetching directions')
+    }
+
+    // Format date and time
     const getDateandTime = (dtString) =>{
         let [date,time] = dtString.split('T')
         time = time.split('.')[0]
         return date+' @ '+time
     }
 
+    // To convert location coordinates into names
     const getLocFromCoords = (coords, type) =>{
         let lat = coords['lat']
         let long =  coords['lng']
@@ -133,6 +166,7 @@ export default function ActiveTrip({setActiveTrip}) {
                 return response.json();
             }
         }).then((responseJson) => {
+            console.log(responseJson)
             getLocFromCoords(responseJson.source,'src')
             getLocFromCoords(responseJson.destination,'dest')
             setdatetime(getDateandTime(responseJson.dateTime))
@@ -148,6 +182,12 @@ export default function ActiveTrip({setActiveTrip}) {
                 temp_riders = "No rider currently"
             }
             setriders(temp_riders)
+
+            // Set Map Coords
+            mapCoords['src'] = responseJson.source
+            mapCoords['dst'] = responseJson.destination
+            setMapCoords(mapCoords)
+            console.log(mapCoords)
 
         }).catch((error) => {
             alert(error);
@@ -177,7 +217,42 @@ export default function ActiveTrip({setActiveTrip}) {
                 <Button variant='danger' id='cancelTripButton' onClick={handleCancel}> Cancel trip </Button>
             </Row>
         </Container>
-        
+
+        <Container id="mapContainer">
+            <GoogleMap
+                mapContainerStyle={mapContainerStyle}
+                zoom={15}
+                center={center}
+                options={options}
+                onLoad={onMapLoad}>
+                {
+                    (routeResp == null && mapCoords['src'] != null && mapCoords['dst'] != null) && (
+                        <DirectionsService
+                            // required
+                            options={{
+                                destination: mapCoords['dst'],
+                                origin: mapCoords['src'],
+                                travelMode: 'DRIVING',
+                                drivingOptions: {
+                                    departureTime: dateTime
+                                }
+                            }}
+                            callback={directionsCallback}
+                        />
+                    )
+                }
+                {
+                    routeResp !== null && (
+                        <DirectionsRenderer
+                            options={{
+                                directions: routeResp
+                            }}
+                        />
+                    )
+                }
+            </GoogleMap>
+        </Container>
+
     </>
   )
 }

@@ -1,9 +1,25 @@
+#mainContainer{
+    display: flex;
+    flex-direction: column;
+
+}
+
 #activeTripContainer {
     display: flex;
     flex-direction: column;
-    
+
     align-items: center;
     justify-content: center;
+}
+
+#mapContainer {
+    display: flex;
+    width: 40%;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 1.25rem;
 }
 
 .active-trip-card {
@@ -13,7 +29,7 @@
     align-items: center;
     justify-content: center;
 
-    width: 75%;
+    width: 95%;
     height: 20%;
     
     background-color: rgb(250, 246, 246);
