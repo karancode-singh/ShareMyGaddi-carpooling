@@ -28,6 +28,14 @@ exports.activeTrip = (req, res) => {
                 if (err)
                     return res.status(500).end();
                 const riders = trip.riders;
+                if(riders.length === 0){
+                    res.status(200).json({
+                        ...trip._doc,
+                        riders: riderArray,
+                        driver: user_driver.name + ' ' + user_driver.lastname
+                    })
+                }
+                
                 var i = 0;
                 riders.forEach(rider => {
                     User.findById(rider, (err, user_rider) => {
