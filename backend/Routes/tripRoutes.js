@@ -9,6 +9,6 @@ router.post("/trip/ride", isSignedin, ride)    //Swagger Api done
 router.delete("/trip", isSignedin, cancelTrip) // Swagger Api pending
 router.post("/trip/done", isSignedin, tripDone) // Swagger Api pending
 router.get("/trip/history", isSignedin, tripHistory)// Swagger Api pending
-router.get("/trip/isdriver", isSignedin, isDriver)
+router.get("/trip/isdriver", isSignedin, isDriver) 
 router.get("/trip/activetrip", isSignedin, activeTrip)
 module.exports = router;

@@ -15,19 +15,16 @@ const radiusOffset = 50;    //TODO: TUNE
 exports.activeTrip = (req, res) => {
     var riderArray = [];
     User.findById(req.auth._id, (err, user) => {
-        if (err)
-            return res.status(500).end();
-        else if (user.active_trip == undefined || user.active_trip == null) {
+       
+       if (user.active_trip == undefined || user.active_trip == null) {
             res.statusMessage = "No active trip";
             return res.status(400).end();
         }
         Trip.findById(user.active_trip, (err, trip) => {
-            if (err)
-                return res.status(500).end();
+
             User.findById(trip.driver, (err, user_driver) => {
-                if (err)
-                    return res.status(500).end();
                 const riders = trip.riders;
+              
                 if(riders.length === 0){
                     res.status(200).json({
                         ...trip._doc,
@@ -35,10 +32,11 @@ exports.activeTrip = (req, res) => {
                         driver: user_driver.name + ' ' + user_driver.lastname
                     })
                 }
-                
+              
                 var i = 0;
                 riders.forEach(rider => {
                     User.findById(rider, (err, user_rider) => {
+
                         if (err)
                             return res.status(500).end();
                         riderArray.push(String(user_rider.name + ' ' + user_rider.lastname));
@@ -161,25 +159,25 @@ exports.ride = (req, res) => {
                         trip.riders.push(user._id);
                         trip.available_riders = !(trip.riders.length === trip.max_riders);
                         trip.save((err, trip) => {
-                            if (err)
-                                return res.status(500).end();
+                            // if (err)
+                            //     return res.status(500).end();
                             res.status(200).json(trip);
                             user.active_trip = trip._id;
                             user.trip_role_driver = false;
                             user.save((err) => {
-                                if (err) {
-                                    //TODO: revert
-                                    return res.status(500).end();
-                                }
+                                // if (err) {
+                                //     //TODO: revert
+                                //     return res.status(500).end();
+                                // }
                                 return res;
                             })
                             return res.status(500).end();
                         });
                     })
-                    .catch((e) => {
-                        res.statusMessage = e.response.data.error_message;
-                        return res.status(400).end();
-                    });
+                    // .catch((e) => {
+                    //     res.statusMessage = e.response.data.error_message;
+                    //     return res.status(400).end();
+                    // });
             });
         } else {
             res.statusMessage = "A trip is already active";
@@ -190,15 +188,15 @@ exports.ride = (req, res) => {
 
 exports.cancelTrip = (req, res) => {
     User.findById(req.auth._id, (err, user) => {
-        if (err)
-            return res.status(500).end();
+        // if (err)
+        //     return res.status(500).end();
         if (user.active_trip == undefined || user.active_trip == null) {
             res.statusMessage = "No active trip";
             return res.status(400).end();
         } else {
             Trip.findById(user.active_trip, (err, trip) => {
-                if (err)
-                    return res.status(500).end();
+                // if (err)
+                //     return res.status(500).end();
                 if (trip) {
                     if (user.trip_role_driver) {
                         trip.riders.forEach(rider => {  //3
@@ -209,20 +207,20 @@ exports.cancelTrip = (req, res) => {
                                     user_rider.active_trip = null;
                                     user_rider.trip_role_driver = null;
                                     user_rider.save((err) => {
-                                        if (err) {
-                                            //TODO: revert
-                                            res.statusMessage = "Error in saving user data for a rider.";
-                                            return res.status(500).end();
-                                        }
+                                        // if (err) {
+                                        //     //TODO: revert
+                                        //     res.statusMessage = "Error in saving user data for a rider.";
+                                        //     return res.status(500).end();
+                                        // }
                                     })
                                 }
                             })
                         });
                         trip.deleteOne((err) => {
-                            if (err) {
-                                res.statusMessage = "Error in deleting trip object";
-                                return res.status(500).end();
-                            }
+                            // if (err) {
+                            //     res.statusMessage = "Error in deleting trip object";
+                            //     return res.status(500).end();
+                            // }
                         });
                     } else {
                         const riderIndex = trip.riders.indexOf(user._id);
@@ -260,10 +258,10 @@ exports.cancelTrip = (req, res) => {
                 user.active_trip = null;
                 user.trip_role_driver = null;
                 user.save((err) => {
-                    if (err) {
-                        res.statusMessage = "Error in saving user. Trip was deleted/modified.";
-                        return res.status(500).end();
-                    }
+                    // if (err) {
+                    //     res.statusMessage = "Error in saving user. Trip was deleted/modified.";
+                    //     return res.status(500).end();
+                    // }
                     res.status(200).end();
                     return res;
                 });
@@ -274,86 +272,87 @@ exports.cancelTrip = (req, res) => {
 
 exports.tripHistory = (req, res) => {
     User.findById(req.auth._id, (err, user) => {
-        if (err)
-            return res.status(500).end();
-        else {
+        // if (err)
+        //     return res.status(500).end();
+        // else {
             Trip.find({ '_id': { $in: user.trips } }, (err, trips) => {
-                if (err)
-                    return res.status(500).end();
+                // if (err)
+                //     return res.status(500).end();
                 res.status(200).json(trips);
                 return res;
             })
-        }
+        // }
     })
 }
 
 exports.tripDone = (req, res) => {
     User.findById(req.auth._id, (err, user) => {
-        if (err)
-            return res.status(500).end();
-        else {
+        // if (err)
+        //     return res.status(500).end();
+        // else {
+            
             if (user.active_trip == undefined || user.active_trip == null) {
                 res.statusMessage = "No active trip";
                 return res.status(400).end();
             } else {
                 Trip.findById(user.active_trip, (err, trip) => {
-                    if (err)
-                        return res.status(500).end();
-                    else {
+                    // if (err)
+                    //     return res.status(500).end();
+                    // else {
                         trip.completed = true;
                         trip.save((err) => {    //1
-                            if (err) {
-                                res.statusMessage = "Error in saving trip status.";
-                                return res.status(500).end();
-                            }
+                            // if (err) {
+                            //     res.statusMessage = "Error in saving trip status.";
+                            //     return res.status(500).end();
+                            // }
                         });
                         user.trips.push(trip._id);
                         user.active_trip = null;
                         user.trip_role_driver = null;
                         user.save((err) => {    //2
-                            if (err) {
-                                res.statusMessage = "Error in saving trip to table.";
-                                return res.status(500).end();
-                            }
+                            // if (err) {
+                            //     res.statusMessage = "Error in saving trip to table.";
+                            //     return res.status(500).end();
+                            // }
                         });
                         trip.riders.forEach(rider => {  //3
                             User.findById(rider, (err, user_rider) => {
-                                if (err)
-                                    return res.status(500).end();
-                                else {
+                                // if (err)
+                                //     return res.status(500).end();
+                                // else {
                                     user_rider.trips.push(trip._id);
                                     user_rider.active_trip = null;
                                     user_rider.trip_role_driver = null;
                                     user_rider.save((err) => {
-                                        if (err) {
-                                            //TODO: revert
-                                            res.statusMessage = "Error in saving user data for a rider.";
-                                            return res.status(500).end();
-                                        }
+                                        // if (err) {
+                                        //     //TODO: revert
+                                        //     res.statusMessage = "Error in saving user data for a rider.";
+                                        //     return res.status(500).end();
+                                        // }
                                     })
-                                }
+                                // }
                             })
                         });
                         //POTENTIAL ISSUE (should not be since foreach is NOT async): Need to return 200 when 1, 2, 3 (all) are done
                         return res.status(200).end();
-                    }
+                    // }
                 })
             }
-        }
+        // }
     })
 }
 
+
+
 exports.isDriver = (req, res) => {
     User.findById(req.auth._id, (err, user) => {
-        if (err)
-            return res.status(500).end();
-        else {
+        
             if (user.trip_role_driver == undefined || user.trip_role_driver == null) {
                 res.statusMessage = "No active trip";
                 return res.status(400).end();
             }
             else
                 res.status(200).json({ "isdriver": user.trip_role_driver })
-        }
+        
     })
 }
