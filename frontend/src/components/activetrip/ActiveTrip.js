@@ -119,6 +119,7 @@ export default function ActiveTrip({setActiveTrip}) {
     const [destination, setdestination] = useState("")
     const [datetime, setdatetime] = useState("")
     const [driver, setdriver] = useState("")
+    const [riders, setriders] = useState("")
 
     useEffect(() => {
         fetch(configData.END_POINT + '/trip/activetrip', {
@@ -136,6 +137,18 @@ export default function ActiveTrip({setActiveTrip}) {
             getLocFromCoords(responseJson.destination,'dest')
             setdatetime(getDateandTime(responseJson.dateTime))
             setdriver(responseJson.driver)
+
+            let all_riders = responseJson.riders
+            var temp_riders = ""
+            for(let i = 0; i< all_riders.length - 1; i++){
+                temp_riders += all_riders[i] + ', '
+            }
+            
+            if(temp_riders === ""){
+                temp_riders = "No rider currently"
+            }
+            setriders(temp_riders)
+
         }).catch((error) => {
             alert(error);
         });
@@ -156,7 +169,7 @@ export default function ActiveTrip({setActiveTrip}) {
                 <h1>Details</h1>
                 <Row className='active-trip-row'>
                     <h3>Driver: {driver}</h3>
-                    <h3>Rider(s):</h3>
+                    <h3>Rider(s): {riders}</h3>
                 </Row>
             </div>
             <Row>
