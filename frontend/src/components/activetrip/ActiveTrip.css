@@ -4,7 +4,6 @@
     
     align-items: center;
     justify-content: center;
-
 }
 
 .active-trip-card {
@@ -17,6 +16,7 @@
     width: 75%;
     height: 20%;
     
+    background-color: rgb(250, 246, 246);
     border: .125rem solid black;
 }
 
@@ -26,4 +26,17 @@
 
 #cancelTripButton{
     margin-top: .625rem;
+}
+
+#pageTitle{
+    text-align: center;
+
+    margin: 1.25rem;
+
+    font-size: 3.25rem;
+    color : #060b26;
+}
+
+.trip-attributes{
+    font-weight: bold;
 }

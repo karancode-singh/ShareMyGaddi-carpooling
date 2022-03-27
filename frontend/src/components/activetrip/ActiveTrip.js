@@ -156,20 +156,20 @@ export default function ActiveTrip({setActiveTrip}) {
 
     return (
     <>
-        <h1 id="pageTitle">Active Trip page</h1>
+        <h1 id="pageTitle">Active Trip</h1>
         <Container id="activeTripContainer">
             <div className="active-trip-card">
                 <h1>Summary</h1>
                 <Row className='active-trip-row'>
-                    <h3>Source: {source}</h3>
-                    <h3>Destination: {destination}</h3>
-                    <h3>Date: {datetime}</h3>
+                    <h3><span className='trip-attributes'>Source</span>: {source}</h3>
+                    <h3><span className='trip-attributes'>Destination</span>: {destination}</h3>
+                    <h3><span className='trip-attributes'>Date</span>: {datetime}</h3>
                 </Row>
 
                 <h1>Details</h1>
                 <Row className='active-trip-row'>
-                    <h3>Driver: {driver}</h3>
-                    <h3>Rider(s): {riders}</h3>
+                    <h3><span className='trip-attributes'>Driver</span>: {driver}</h3>
+                    <h3><span className='trip-attributes'>Rider(s)</span>: {riders}</h3>
                 </Row>
             </div>
             <Row>
