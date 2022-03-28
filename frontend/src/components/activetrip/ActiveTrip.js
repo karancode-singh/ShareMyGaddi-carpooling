@@ -23,13 +23,9 @@ const center = {
 };
 export default function ActiveTrip({ setActiveTrip }) {
     // For Map
-    const [dateTime, setDateTime] = useState(new Date(new Date().getTime() + (60 * 60 * 1000)));
     const [mapCoords, setMapCoords] = useState({})
     const [routeResp, setRouteResp] = useState();
-    const [markers, setMarkers] = useState([{
-        lat: 43.478571657498485,
-        lng: -80.53595091846755
-    }]);
+    const [waypoints, setWaypoints] = useState([]);
     const mapRef = useRef();
 
     const onMapLoad = (map) => {
@@ -52,6 +48,13 @@ export default function ActiveTrip({ setActiveTrip }) {
         dtString = d.toTimeString();
         let time = dtString.split(' ')[0].split(':')
         return date + ' @ ' + time[0] + ':' + time[1]
+    }
+
+    const setWaypointsFn = (localWaypoints) => {
+        localWaypoints.forEach(function(part, index) {
+            this[index] = {location: this[index], stopover: false}
+          }, localWaypoints);
+        setWaypoints(localWaypoints);
     }
 
     // To convert location coordinates into names
@@ -173,11 +176,11 @@ export default function ActiveTrip({ setActiveTrip }) {
             }
         }).then((responseJson) => {
             console.log(responseJson)
-            getLocFromCoords(responseJson.source, 'src')
-            getLocFromCoords(responseJson.destination, 'dest')
+            setWaypointsFn(responseJson.waypoints)
             setdatetime(getDateandTime(responseJson.dateTime))
             setdriver(responseJson.driver)
-            setMarkers(responseJson.waypoints)
+            getLocFromCoords(responseJson.source, 'src')
+            getLocFromCoords(responseJson.destination, 'dest')
             let all_riders = responseJson.riders
             var temp_riders = ""
             for (let i = 0; i < all_riders.length - 1; i++) {
@@ -217,9 +220,8 @@ export default function ActiveTrip({ setActiveTrip }) {
                                 destination: mapCoords['dst'],
                                 origin: mapCoords['src'],
                                 travelMode: 'DRIVING',
-                                drivingOptions: {
-                                    departureTime: dateTime
-                                }
+                                waypoints: waypoints,
+                                optimizeWaypoints: true,
                             }}
                             callback={directionsCallback}
                         />
@@ -234,30 +236,16 @@ export default function ActiveTrip({ setActiveTrip }) {
                         />
                     )
                 }
-                {/* {
-                        markers.map(marker => {
-                            <Marker
-                                key={`${marker.lat}-${marker.lng}`}
-                                position={{ lat: marker.lat, lng: marker.lng }}
-                            />
-                        })
-                    } */}
-
             </GoogleMap>
             <Container id="activeTripContainer" fluid="lg">
                 <Row style={{ marginTop: '1rem' }}>
                     <Col md="10">
-                        {/* <div className="active-trip-card"> */}
-                        <h1>Summary</h1>
-                        <Row className='active-trip-row'>
-                            <h3><span className='trip-attributes'>Source</span>: {source}</h3>
+                        <h1>Active Trip Details</h1>
+                        <Row>
+                            <h3 style={{ marginTop: '1rem' }}><span className='trip-attributes'>Source</span>: {source}</h3>
                             <h3><span className='trip-attributes'>Destination</span>: {destination}</h3>
                             <h3><span className='trip-attributes'>Date</span>: {datetime}</h3>
-                        </Row>
-
-                        <h1 style={{ marginTop: '1rem' }}>Details</h1>
-                        <Row className='active-trip-row'>
-                            <h3><span className='trip-attributes'>Driver</span>: {driver}</h3>
+                            <h3 style={{ marginTop: '1rem' }}><span className='trip-attributes'>Driver</span>: {driver}</h3>
                             <h3><span className='trip-attributes'>Rider(s)</span>: {riders}</h3>
                         </Row>
                     </Col>
