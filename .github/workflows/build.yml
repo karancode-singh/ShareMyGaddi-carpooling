@@ -1,11 +1,9 @@
 # This is a basic workflow to help you get started with Actions
-name: CI-CD
+name: build
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -68,20 +66,8 @@ jobs:
       #  run: |
       #    echo Add other actions to build,
       #    echo test, and deploy your project.
-      
-  deploy-backend:
-    runs-on: ubuntu-latest
-    # needs: [build-backend]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: akhileshns/heroku-deploy@v3.12.12 
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "ece651-backend"
-          heroku_email: "karanjot21@gmail.com"
-          buildpack: heroku/nodejs
-          appdir: "backend"
   
+  #TODO: remove once frontend corrected on heroku
   deploy-frontend:
     runs-on: ubuntu-latest
     # needs: [build-frontend]
