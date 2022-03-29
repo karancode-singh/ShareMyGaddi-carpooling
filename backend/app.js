@@ -6,7 +6,7 @@ const cookieparser = require('cookie-parser');
 const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config()
-const {Client} = require("@googlemaps/google-maps-services-js");
+const { Client } = require("@googlemaps/google-maps-services-js");
 const swaggerUI = require("swagger-ui-express");
 const YAML = require("yamljs");
 const swaggerDocument = YAML.load('./swagger.yaml');
@@ -49,30 +49,12 @@ app.use("/api", allusersRoutes);
 app.use("/api", tripRoutes);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
-// const client = new Client({});
-
-// client
-//   .directions({
-//     params: {
-//       origin: "University of Waterloo",
-//       destination:"62 University Avenue waterloo",
-//       key: "AIzaSyA0TMLllm-NV9F0jmVCExcPYJI4WtHQ7z0",
-//     },
-//     timeout: 1000, // milliseconds
-//   })
-//   .then((r) => {
-//       console.log("success")
-//     console.log(r.data);
-//   })
-//   .catch((e) => {
-//     console.log(e);
-//   });
-//export default app;
-// import app from './app.js';
-// import mongoose from "mongoose";
-// import dotenv from "dotenv";
-
-// Include variables from .env
+app.get('/', (req, res) => {
+    res.send('/ Working!');
+});
+app.get('/api', (req, res) => {
+    res.send('/api Working!');
+});
 
 app.listen(process.env.PORT || 80, () => {
     console.log(`Listening on a port`);
