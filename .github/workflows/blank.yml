@@ -1,6 +1,5 @@
 # This is a basic workflow to help you get started with Actions
-
-name: CI
+name: CI-CD
 
 # Controls when the workflow will run
 on:
@@ -72,10 +71,7 @@ jobs:
       
   deploy-backend:
     runs-on: ubuntu-latest
-    needs: [build-backend]
-    defaults:
-      run:
-        working-directory: backend
+    # needs: [build-backend]
     steps:
       - uses: actions/checkout@v3
       - uses: akhileshns/heroku-deploy@v3.12.12 
@@ -84,13 +80,11 @@ jobs:
           heroku_app_name: "ece651-backend"
           heroku_email: "karanjot21@gmail.com"
           buildpack: heroku/nodejs
+          appdir: "backend"
   
   deploy-frontend:
     runs-on: ubuntu-latest
-    needs: [build-frontend]
-    defaults:
-      run:
-        working-directory: backend
+    # needs: [build-frontend]
     steps:
       - uses: actions/checkout@v3
       - uses: akhileshns/heroku-deploy@v3.12.12 
@@ -98,4 +92,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "ece651-frontend"
           heroku_email: "karanjot21@gmail.com"
-          buildpack: heroku/nodejs
+          buildpack: heroku/frontend
+          appdir: "frontend"
