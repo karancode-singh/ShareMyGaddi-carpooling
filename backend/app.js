@@ -74,8 +74,8 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // Include variables from .env
 
-app.listen(process.env.PORT, () => {
-    console.log(`Listening to port ${process.env.PORT}`);
+app.listen(process.env.PORT || 80, () => {
+    console.log(`Listening on a port`);
 })
 module.exports = app;
 // MongoDb connection

@@ -3,11 +3,10 @@ import { Button, Col, Container, Row } from 'react-bootstrap';
 import { GoogleMap, DirectionsRenderer, DirectionsService, Marker } from '@react-google-maps/api';
 import Cookies from 'js-cookie';
 import Geocode from "react-geocode";
-import configData from "../../config.json";
 
 import './ActiveTrip.css'
 
-Geocode.setApiKey(configData.MAPS_API_KEY);
+Geocode.setApiKey(process.env.REACT_APP_MAPS_API_KEY);
 // Map options
 const mapContainerStyle = {
     height: "35vh",
@@ -88,7 +87,7 @@ export default function ActiveTrip({ setActiveTrip }) {
 
     // Enable 'Done' button only in driver mode 
     useEffect(() => {
-        fetch(configData.END_POINT + '/trip/isdriver', {
+        fetch(process.env.REACT_APP_END_POINT + '/trip/isdriver', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -111,7 +110,7 @@ export default function ActiveTrip({ setActiveTrip }) {
     const handleCancel = (e) => {
         e.preventDefault();
 
-        return fetch(configData.END_POINT + '/trip', {
+        return fetch(process.env.REACT_APP_END_POINT + '/trip', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -135,7 +134,7 @@ export default function ActiveTrip({ setActiveTrip }) {
     const handleDone = (e) => {
         e.preventDefault();
 
-        return fetch(configData.END_POINT + '/trip/done', {
+        return fetch(process.env.REACT_APP_END_POINT + '/trip/done', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -164,7 +163,7 @@ export default function ActiveTrip({ setActiveTrip }) {
     const [riders, setriders] = useState("")
 
     useEffect(() => {
-        fetch(configData.END_POINT + '/trip/activetrip', {
+        fetch(process.env.REACT_APP_END_POINT + '/trip/activetrip', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

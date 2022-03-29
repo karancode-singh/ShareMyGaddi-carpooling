@@ -1,6 +1,5 @@
 # This is a basic workflow to help you get started with Actions
-
-name: CI
+name: CI-CD
 
 # Controls when the workflow will run
 on:
@@ -93,5 +92,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "ece651-frontend"
           heroku_email: "karanjot21@gmail.com"
-          buildpack: heroku/frontend
+          buildpack: heroku/nodejs
           appdir: "frontend"
