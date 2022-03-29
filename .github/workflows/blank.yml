@@ -83,6 +83,7 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "ece651-backend"
           heroku_email: "karanjot21@gmail.com"
+          buildpack: heroku/nodejs
   
   deploy-frontend:
     runs-on: ubuntu-latest
@@ -97,3 +98,4 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "ece651-frontend"
           heroku_email: "karanjot21@gmail.com"
+          buildpack: heroku/nodejs
