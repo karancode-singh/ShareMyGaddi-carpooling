@@ -42,11 +42,33 @@ exports.signup = (req, res) => {
             token,
             user: { _id, name: name + ' ' + lastname, email, role, active_trip },
         });
+        
         return res
     })
 
 }
+exports.delete_user =(req,res)=>{
 
+    User.findById(req.body._id,(err,trip)=>{
+       
+        if((err)||(trip==null)){
+            res.status(400).json({error:"user cannot be found"})
+            return res;
+        }
+        trip.deleteOne((err)=>{
+            
+            // if(err)
+            // {
+            //     res.status(400).json({error:"user cannot be deleted"})
+            //     return res;
+
+            // }
+            return res.status(200).end();
+        })
+    })
+    
+
+}
 exports.signin = (req, res) => {
     const { email, password } = req.body;
     const error = validationResult(req)

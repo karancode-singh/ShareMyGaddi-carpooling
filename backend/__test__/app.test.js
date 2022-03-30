@@ -15,10 +15,12 @@ const drivertest="/api/trip/isdriver";
 const cancel ="/api/trip";
 const ongoingcomplete="/api/trip/done";
 const ride="/api/trip/ride";
+const delete_user="/api/delete";
 let token;
 let token2;
 let token3;
 let token4;
+let req_id;
     beforeAll((done) => {
       request(app)
         .post(signin)
@@ -74,14 +76,16 @@ let token4;
 describe(signup_route, () => {
   it("post" + signup_route, async () => {
     const response = await request(app).post(signup_route).send({
-      name: "user24356",
+      name: "user243567",
       Lastname: "user",
-      email: "user243564@gmil.com",
-      password: "user24356",
+      email: "user2435647@gmil.com",
+      password: "user243567",
     });
     expect(response.status).toEqual(400);
+    
   });
 });
+
 
 describe(signup_route, () => {
   it("post" + signup_route, async () => {
@@ -95,17 +99,37 @@ describe(signup_route, () => {
   });
 });
 // Integration Test Signup
-// describe(signup_route, () => {
-//   it("post" + signup_route, async () => {
-//     const response = await request(app).post(signup_route).send({
-//       name: "user129",
-//       Lastname: "user_surname",
-//       email: "user129@gmil.com",
-//       password: "user129",
-//     });
-//     expect(response.status).toEqual(200);
-//   });
-// });
+describe(signup_route, () => {
+  it("post" + signup_route, async () => {
+    const response = await request(app).post(signup_route).send({
+      name: "user141",
+      Lastname: "user_surname",
+      email: "user141@gmil.com",
+      password: "user138",
+    });
+    expect(response.status).toEqual(200);
+
+    req_id=response.body.user._id;
+  });
+});
+
+describe(delete_user, () => {
+  it("delete" + delete_user, async () => {
+    const response = await request(app).delete(delete_user).send({
+      _id:req_id
+    });
+    expect(response.status).toEqual(200);
+  });
+});
+describe(delete_user, () => {
+  it("delete" + delete_user, async () => {
+    const response = await request(app).delete(delete_user).send({
+      _id:req_id
+    });
+    expect(response.status).toEqual(400);
+  });
+});
+
 
 //-------------------------------------------------------------------------------------------
 //Unit & Integration Testing for Signin Route

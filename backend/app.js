@@ -33,7 +33,7 @@ const tripRoutes = require("./Routes/tripRoutes");
 
 
 // MongoDb connection
-var db=mongoose.connect(process.env.DATABASE_URI)
+var db=mongoose.connect(process.env.DATABASE_URI).then(console.log("DB connected"))
 //.catch(error => console.log(error));
 
 //Middleware
@@ -48,19 +48,12 @@ app.use("/api", allusersRoutes);
 app.use("/api", tripRoutes);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
-app.get('/', (req, res) => {
-    res.send('/ Working!');
-});
-app.get('/api', (req, res) => {
-    res.send('/api Working!');
-});
-
-var server=app.listen(process.env.PORT || 8000, () => {
+app.listen(process.env.PORT || 8000, () => {
     console.log(`Listening on a port`);
 })
 
-server.close()
+
 
     
-module.exports = server;
+module.exports = app;
 // MongoDb connection
