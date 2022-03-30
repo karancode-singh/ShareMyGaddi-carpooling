@@ -8,7 +8,6 @@ import groupImg from '../../group.svg';
 import './TripHistory.css';
 import Cookies from 'js-cookie';
 import Geocode from "react-geocode";
-import configData from "../../config.json";
 
 export default function TripHistory() {
     const getLocFromCoords = async (coords) => {
@@ -30,7 +29,7 @@ export default function TripHistory() {
 
     const [tripDetails, setTripDetails] = useState([])
     const fetchData = async () => {
-        const response = await fetch(configData.END_POINT + '/trip/history', {
+        const response = await fetch(process.env.REACT_APP_END_POINT + '/trip/history', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

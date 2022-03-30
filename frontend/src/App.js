@@ -3,7 +3,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css'
-import configData from "./config.json";
 import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
 import useToken from './libraries/UseToken';
@@ -22,7 +21,7 @@ function App() {
   const { token, name, setToken } = useToken(setActiveTrip);
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: configData.MAPS_API_KEY,
+    googleMapsApiKey: process.env.REACT_APP_MAPS_API_KEY,
     libraries
   });
 
