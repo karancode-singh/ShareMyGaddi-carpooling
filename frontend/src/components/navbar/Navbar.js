@@ -9,7 +9,6 @@ import { Button } from 'react-bootstrap';
 import defaultImg from '../../logo.svg';
 import './Navbar.css';
 import { SidebarData } from './SidebarData';
-import configData from "../../config.json";
 
 export default function Navbar({ setToken, activeTrip, name }) {
     const location = useLocation();
@@ -17,7 +16,7 @@ export default function Navbar({ setToken, activeTrip, name }) {
     const showSidebar = () => setSidebar(!sidebar);
 
     function logoutUser() {
-        return fetch(configData.END_POINT + '/signout', {
+        return fetch(process.env.REACT_APP_END_POINT + '/signout', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
