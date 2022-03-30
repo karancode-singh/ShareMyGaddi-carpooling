@@ -1,9 +1,8 @@
 import React, { createContext, useState } from "react";
-import configData from "../config.json";
 
 const initialState = {
-  // mapsKey: configData.MAPS_API_KEY,
-  endPoint: configData.END_POINT
+  // mapsKey: process.env.REACT_APP_MAPS_API_KEY,
+  endPoint: process.env.REACT_APP_END_POINT
 }
 
 export const GlobalContext = createContext();

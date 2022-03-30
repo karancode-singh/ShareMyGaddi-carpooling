@@ -3,7 +3,6 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import './SignUp.css';
 import { Link } from "react-router-dom";
-import configData from "../../config.json";
 
 export default function SignUp({ setToken }) {
 
@@ -14,7 +13,7 @@ export default function SignUp({ setToken }) {
   const [confirmpassword, setconfirmPassword] = useState("");
 
   function signupUser(userDetails) {
-    return fetch(configData.END_POINT + '/signup', {
+    return fetch(process.env.REACT_APP_END_POINT + '/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

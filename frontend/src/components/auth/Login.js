@@ -3,7 +3,6 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import './Login.css';
 import { Link } from "react-router-dom";
-import configData from "../../config.json";
 
 export default function Login({ setToken, setActiveTrip }) {
 
@@ -11,7 +10,7 @@ export default function Login({ setToken, setActiveTrip }) {
     const [password, setPassword] = useState("");
 
     function loginUser(credentials) {
-        return fetch(configData.END_POINT + '/signin', {
+        return fetch(process.env.REACT_APP_END_POINT + '/signin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

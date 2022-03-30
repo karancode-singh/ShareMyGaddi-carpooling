@@ -3,13 +3,12 @@ import { Button, Col, Container, FloatingLabel, Form, Row } from 'react-bootstra
 import MapSelector from './MapSelector';
 import { DirectionsRenderer, DirectionsService, GoogleMap } from '@react-google-maps/api';
 import DatePicker from "react-datepicker";
-import configData from "../../config.json";
 import './DriveRide.css';
 import "react-datepicker/dist/react-datepicker.css";
 import Cookies from 'js-cookie';
 import Geocode from "react-geocode";
 
-Geocode.setApiKey(configData.MAPS_API_KEY);
+Geocode.setApiKey(process.env.REACT_APP_MAPS_API_KEY);
 
 const mapContainerStyle = {
     height: "60vh",
@@ -112,7 +111,7 @@ export default function DriveRide({ type, setToken, setActiveTrip }) {
             max_riders: riders
         }
         console.log(data);
-        return fetch(configData.END_POINT + '/trip/drive', {
+        return fetch(process.env.REACT_APP_END_POINT + '/trip/drive', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -154,7 +153,7 @@ export default function DriveRide({ type, setToken, setActiveTrip }) {
             dateTime: dateTime,
         }
         console.log(data);
-        return fetch(configData.END_POINT + '/trip/ride', {
+        return fetch(process.env.REACT_APP_END_POINT + '/trip/ride', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

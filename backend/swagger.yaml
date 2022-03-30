@@ -5,7 +5,9 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:8000
-    description: ShareMyGaddi API server
+    description: Local API server
+  - url: https://ece651-backend.herokuapp.com
+    description: Heroku API server
 components:
   securitySchemes:
    bearerAuth:            
