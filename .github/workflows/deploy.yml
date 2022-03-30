@@ -36,5 +36,8 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "ece651-frontend"
           heroku_email: "karanjot21@gmail.com"
-          buildpack: heroku/nodejs
+          buildpack: "https://github.com/mars/create-react-app-buildpack.git"
           appdir: "frontend"
+        env:
+            REACT_APP_MAPS_API_KEY: ${{secrets.MAPS_API_KEY}}
+            REACT_APP_END_POINT: "https://ece651-backend.herokuapp.com/api"

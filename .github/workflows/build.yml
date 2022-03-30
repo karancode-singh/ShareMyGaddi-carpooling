@@ -66,17 +66,3 @@ jobs:
       #  run: |
       #    echo Add other actions to build,
       #    echo test, and deploy your project.
-  
-  #TODO: remove once frontend corrected on heroku
-  deploy-frontend:
-    runs-on: ubuntu-latest
-    # needs: [build-frontend]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: akhileshns/heroku-deploy@v3.12.12 
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "ece651-frontend"
-          heroku_email: "karanjot21@gmail.com"
-          buildpack: heroku/nodejs
-          appdir: "frontend"
