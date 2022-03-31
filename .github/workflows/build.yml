@@ -34,6 +34,11 @@ jobs:
 
       - name: Run test
         run: npm test
+        env:
+          DATABASE_URI: ${{secrets.DATABASE_URI}}
+          MAPS_API_KEY: ${{secrets.MAPS_API_KEY}}
+          SECRET: ${{secrets.SECRET}}
+          
   # job name
   build-frontend:
     # The type of runner that the job will run on

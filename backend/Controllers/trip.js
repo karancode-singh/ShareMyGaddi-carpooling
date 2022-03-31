@@ -93,8 +93,8 @@ exports.drive = (req, res) => {
 
 exports.ride = (req, res) => {
     User.findById(req.auth._id, (err, user) => {
-        if (err)
-            return res.status(500).end();
+        // if (err)
+        //     return res.status(500).end();
         if (user.active_trip == undefined || user.active_trip == null) {
             //Matching logic START
             let startDateTime = new Date(req.body.dateTime);
