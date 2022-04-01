@@ -246,7 +246,7 @@ export default function DriveRide({ type, setToken, setActiveTrip }) {
                                 <Col className='col-auto'>
                                     {
                                         type === 'drive' ?
-                                            <Button variant="primary" type="submit" data-test="drive-button" style={{ marginTop: '3rem' }} onClick={handleDriveSubmit}>
+                                            <Button variant="primary" type="submit" data-test="drive-submit-button" style={{ marginTop: '3rem' }} onClick={handleDriveSubmit}>
                                                 Ready to drive!
                                             </Button> :
                                             <Button variant="primary" type="submit" data-test="ride-button" style={{ marginTop: '3rem' }} onClick={handleRideSubmit}>

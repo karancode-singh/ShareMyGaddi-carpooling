@@ -103,6 +103,7 @@ export default function MapSelector(props) {
             <input
               type="text"
               placeholder="Search"
+              data-test="map-search"
               value={textBoxText}
               style={autocompleteTextBoxStyle}
               onChange={e => setTextBoxText(e.target.value)}
@@ -116,7 +117,7 @@ export default function MapSelector(props) {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" data-test="close-button" onClick={handleClose}>Close</Button>
-        <Button variant="primary" onClick={() => props.handleCallback(false, props.mapType, marker)}>Select</Button>
+        <Button variant="primary" data-test="map-select" onClick={() => props.handleCallback(false, props.mapType, marker)}>Select</Button>
       </Modal.Footer>
     </Modal>
   )
