@@ -101,8 +101,8 @@ export default function Navbar({ setToken, activeTrip, name }) {
                             })}
                         </ul>
                         <ul className='sidebar-bottom-items' onClick={showSidebar}>
-                            <li className='nav-text'>
-                                <Link to='/' onClick={handleLogOut}> {/*call logout method*/}
+                            <li className='nav-text' data-test="logout-button">
+                                <Link to='/' onClick={handleLogOut} > {/*call logout method*/}
                                     <FaIcons.FaSignOutAlt />
                                     <span style={{ marginLeft: '1rem' }}>Logout</span>
                                 </Link>
