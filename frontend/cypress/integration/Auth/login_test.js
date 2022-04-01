@@ -1,6 +1,6 @@
 it.only('login test',function()
 {
-    cy.visit ("http://localhost:3000/login") 
+    cy.visit ("/login") 
      
     if(cy.get('[data-test="login-form"]').length >0){
         console.log("login button is present")
@@ -33,7 +33,7 @@ it.only('login test',function()
 
 it.only('login test fail',function()
 {
-    cy.visit ("http://localhost:3000/login") 
+    cy.visit ("/login") 
      
     if(cy.get('[data-test="login-form"]').length >0){
         console.log("login button is present")
