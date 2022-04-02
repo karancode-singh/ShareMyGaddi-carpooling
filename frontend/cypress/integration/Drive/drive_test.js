@@ -7,26 +7,22 @@ it.only('drive test',function()
     cy.get('[data-test="login-button"]').click()
     cy.wait(2000)
 
-//     cy.get('.navbar').click()   
    cy.get('[data-test="drive-button"]').click()
-//    cy.get('[data-test="ride-button"]').click()
-// it.only('drive test',function()
-// {
-//     cy.visit ("http://localhost:3000/drive")      
+     
    cy.get('[data-test="source-button"]').click()
    cy.get('[data-test="map-search"]').type("69 Columbia Street West")
    cy.wait(1000)
    cy.get('.pac-item', { timeout: 10000 }).should('be.visible');
    cy.get('[data-test="map-search"]').type('{downarrow}');
-   cy.get('[data-test="map-search"]').type('{enter}');
+   cy.get('[data-test="map-search"]').type('{enter}',{delay:100});
    cy.get('[data-test="map-select"]').click()
 
    cy.get('[data-test="destination-button"]').click()
-   cy.get('[data-test="map-search"]').type("Niagra Falls")
+   cy.get('[data-test="map-search"]').type("62 University Aveneue East")
    cy.wait(1000)
    cy.get('.pac-item', { timeout: 10000 }).should('be.visible');
    cy.get('[data-test="map-search"]').type('{downarrow}');
-   cy.get('[data-test="map-search"]').type('{enter}');
+   cy.get('[data-test="map-search"]').type('{enter}',{delay:100});
    cy.get('[data-test="map-select"]').click()
 
    cy.get('.form-select').select('One')
