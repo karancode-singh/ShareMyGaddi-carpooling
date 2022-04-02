@@ -1,4 +1,12 @@
 {
     "baseUrl":"http://localhost:3000/",  
-    "defaultCommandTimeout":20000
+    "defaultCommandTimeout":20000,
+    "testFiles": [
+        "Auth/login_test.js",
+        "Auth/logout_test.js",
+        "TripHistory/trip_history_test.js",
+        "Not Found/not_found_test.js",
+        "Drive/drive_test.js",
+        "ActiveTrip/active_trip_test.js"
+      ]
 }
