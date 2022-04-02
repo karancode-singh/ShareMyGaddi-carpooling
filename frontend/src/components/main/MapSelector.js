@@ -86,7 +86,7 @@ export default function MapSelector(props) {
       <Modal.Header closeButton>
         <Modal.Title>{props.modalTitle}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body data-test="model-body">
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           zoom={15}
