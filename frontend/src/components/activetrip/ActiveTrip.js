@@ -250,7 +250,7 @@ export default function ActiveTrip({ setActiveTrip }) {
                     </Col>
                     <Col md="2">
                         <Row>
-                            {isDriver ? <Button variant='primary' id='cancelTripButton' onClick={handleDone}> Done </Button> : null}
+                            {isDriver ? <Button variant='primary' id='doneTripButton' onClick={handleDone}> Done </Button> : null}
                             <Button variant='danger' id='cancelTripButton' onClick={handleCancel}> Cancel trip </Button>
                         </Row>
                     </Col>
