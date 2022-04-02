@@ -26,7 +26,7 @@ describe("drive", () => {
      });
 
      it("Should render drive button", () => {
-        const driveButton= wrapper.find(`[data-test='drive-button']`);
+        const driveButton= wrapper.find(`[data-test='drive-submit-button']`);
         expect(driveButton.length).toBe(1);
      });
 
