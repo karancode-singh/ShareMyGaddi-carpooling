@@ -1,0 +1,10 @@
+it.only('active trip test',function()
+{   
+  
+    cy.visit ("/login") 
+
+    cy.get('[data-test="email-form-control"]').type("user1@gmail.com")
+    cy.get('[data-test="password-form-control"]').type("user1")
+    cy.get('[data-test="login-button"]').click()
+    cy.wait(3000)
+})
