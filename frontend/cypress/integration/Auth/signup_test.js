@@ -11,6 +11,7 @@ it.only('signup test',function()
     cy.get('#hamburger').click()
 
     cy.get('[data-test="delete-button"]').click()
+    cy.wait(1000)
 })
 
 it.only('signup test fail',function()
