@@ -249,7 +249,7 @@ export default function DriveRide({ type, setToken, setActiveTrip }) {
                                             <Button variant="primary" type="submit" data-test="drive-submit-button" style={{ marginTop: '3rem' }} onClick={handleDriveSubmit}>
                                                 Ready to drive!
                                             </Button> :
-                                            <Button variant="primary" type="submit" data-test="ride-button" style={{ marginTop: '3rem' }} onClick={handleRideSubmit}>
+                                            <Button variant="primary" type="submit" data-test="ride-submit-button" style={{ marginTop: '3rem' }} onClick={handleRideSubmit}>
                                                 Ready to ride!
                                             </Button>
                                     }
