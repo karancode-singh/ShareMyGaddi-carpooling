@@ -26,9 +26,30 @@ export default function Navbar({ setToken, activeTrip, name }) {
             // }).then(data => data.json());
         }).then(setToken(null));
     }
+
     const handleLogOut = async e => {
         e.preventDefault();
         const data = await logoutUser();
+        console.log(data);
+        window.location.reload();
+    }
+
+    function deleteUser() {
+        return fetch(process.env.REACT_APP_END_POINT + '/delete', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + Cookies.get('tokken')
+            }
+        }).then((res) => {
+            console.log(res)
+            setToken(null)
+        })
+    }
+    
+    const handleDeleteProfile = async e => {
+        e.preventDefault();
+        const data = await deleteUser();
         console.log(data);
         window.location.reload();
     }
@@ -107,6 +128,7 @@ export default function Navbar({ setToken, activeTrip, name }) {
                                     <span style={{ marginLeft: '1rem' }}>Logout</span>
                                 </Link>
                             </li>
+                            <Button variant="danger" onClick={handleDeleteProfile}>Delete Profile</Button>
                         </ul>
                     </nav> : null}
                 {/* Sidebar end*/}
