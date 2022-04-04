@@ -2,8 +2,8 @@ it.only('map close',function()
 {
    cy.visit ("http://localhost:3000/login") 
 
-    cy.get('[data-test="email-form-control"]').type("driver1@gmail.com")
-    cy.get('[data-test="password-form-control"]').type("driver1")
+    cy.get('[data-test="email-form-control"]').type("activetrip@gmail.com")
+    cy.get('[data-test="password-form-control"]').type("activetrip")
     cy.get('[data-test="login-button"]').click()
     cy.wait(2000)
 

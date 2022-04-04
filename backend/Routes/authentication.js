@@ -57,7 +57,7 @@ router.post("/signin", [
 
 ], signin)
 
-router.delete("/delete",delete_user);
+router.delete("/delete",isSignedin,delete_user);
 router.get("/signout", signout)
 
 // router.get("/test",isSignedin,(req,res)=>{

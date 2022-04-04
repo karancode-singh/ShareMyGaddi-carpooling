@@ -49,7 +49,7 @@ exports.signup = (req, res) => {
 }
 exports.delete_user =(req,res)=>{
 
-    User.findById(req.body._id,(err,trip)=>{
+    User.findById(req.auth._id,(err,trip)=>{
        
         if((err)||(trip==null)){
             res.status(400).json({error:"user cannot be found"})
