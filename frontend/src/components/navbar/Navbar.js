@@ -128,7 +128,7 @@ export default function Navbar({ setToken, activeTrip, name }) {
                                     <span style={{ marginLeft: '1rem' }}>Logout</span>
                                 </Link>
                             </li>
-                            <Button variant="danger" onClick={handleDeleteProfile}>Delete Profile</Button>
+                            <Button variant="danger" data-test="delete-button" onClick={handleDeleteProfile}>Delete Profile</Button>
                         </ul>
                     </nav> : null}
                 {/* Sidebar end*/}
