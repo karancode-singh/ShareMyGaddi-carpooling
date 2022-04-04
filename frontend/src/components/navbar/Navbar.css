@@ -120,3 +120,7 @@
   justify-content: flex-start;
   align-items: center;
 }
+
+#deleteProfileButton {
+  margin-top: auto;
+}
