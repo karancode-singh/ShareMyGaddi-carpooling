@@ -21,6 +21,7 @@ let token2;
 let token3;
 let token4;
 let req_id;
+let token5;
     beforeAll((done) => {
       request(app)
         .post(signin)
@@ -113,22 +114,30 @@ describe(signup_route, () => {
   });
 });
 
+describe(signin, () => {
+  it("post" + signin, async () => {
+    const response = await request(app).post(signin).send({
+      email: "user141@gmil.com",
+      password: "user138",
+    });
+    expect(response.status).toEqual(200);
+    token5=response.body.token;
+  });
+});
+
 describe(delete_user, () => {
   it("delete" + delete_user, async () => {
-    const response = await request(app).delete(delete_user).send({
-      _id:req_id
-    });
+    const response = await request(app).delete(delete_user).set('Authorization', `Bearer ${token5}`);
     expect(response.status).toEqual(200);
   });
 });
 describe(delete_user, () => {
   it("delete" + delete_user, async () => {
-    const response = await request(app).delete(delete_user).send({
-      _id:req_id
-    });
+    const response = await request(app).delete(delete_user).set('Authorization', `Bearer ${token5}`);
     expect(response.status).toEqual(400);
   });
 });
+
 
 
 //-------------------------------------------------------------------------------------------
