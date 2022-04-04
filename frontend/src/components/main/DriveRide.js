@@ -274,9 +274,7 @@ export default function DriveRide({ type, setToken, setActiveTrip }) {
                                             destination: mapCoords['dst'],
                                             origin: mapCoords['src'],
                                             travelMode: 'DRIVING',
-                                            drivingOptions: {
-                                                departureTime: dateTime
-                                            }
+                                            
                                         }}
                                         // required
                                         callback={directionsCallback}

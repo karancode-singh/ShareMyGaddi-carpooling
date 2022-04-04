@@ -10,7 +10,7 @@ dotenv.config()
 // const MS_PER_MINUTE = 60000;
 const offsetDurationInMinutes = 15;
 const pct = .3; // Percent of route points for source (others are checked for destination)
-const radiusOffset = 50;    //TODO: TUNE
+const radiusOffset = 150;    //TODO: TUNE
 
 exports.activeTrip = (req, res) => {
     var riderArray = [];
@@ -118,13 +118,13 @@ exports.ride = (req, res) => {
                     const pctLen = parseInt(tempTrip.route.length * pct)
                     let found = PolyUtil.isLocationOnPath(
                         req.body.src,
-                        tempTrip.route.slice(0, pctLen),
+                        tempTrip.route,
                         radiusOffset
                     );
                     if (found) {
                         found = PolyUtil.isLocationOnPath(
                             req.body.dst,
-                            tempTrip.route.slice(pctLen),
+                            tempTrip.route,
                             radiusOffset
                         );
                         if (found) {
@@ -144,9 +144,6 @@ exports.ride = (req, res) => {
                         origin: trip.source,
                         destination: trip.destination,
                         waypoints: trip.waypoints,
-                        drivingOptions: {
-                            departureTime: new Date(trip.dateTime),  // for the time N milliseconds from now.
-                        },
                         optimize: true,
                         key: process.env.MAPS_API_KEY
                     },
