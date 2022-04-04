@@ -8,6 +8,7 @@
         "TripHistory/trip_history_test.js",
         "Not Found/not_found_test.js",
         "Drive/drive_test.js",
+        "Drive/ride_test.js",
         "ActiveTrip/active_trip_test.js"
       ]
 }
