@@ -32,7 +32,7 @@ export default function DriveRide({ type, setToken, setActiveTrip }) {
         dst: null
     });
     const [routeResp, setRouteResp] = useState();
-    const [dateTime, setDateTime] = useState(new Date(new Date().getTime() + (60 * 60 * 1000)));
+    const [dateTime, setDateTime] = useState(new Date(new Date().getTime()));
     const [riders, setRiders] = useState();
 
     const [srcName, setsrcName] = useState("")
